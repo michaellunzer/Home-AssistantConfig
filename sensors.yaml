@@ -1,0 +1,66 @@
+# Weather prediction
+  - platform: yr
+    name: weather
+    monitored_conditions:
+      - temperature
+      - symbol
+      - precipitation
+      # - windSpeed
+      # - pressure
+      # - windDirection
+      - humidity
+      # - fog
+      - cloudiness
+      # - lowClouds
+      # - mediumClouds
+      # - highClouds
+      # - dewpointTemperature
+      
+# # iPhone Battery Sensor
+#   - platform: template
+#     sensors:
+#       battery_iphone:
+#         friendly_name: LunziPhone Battery
+#         # "entity_id:" ensures that this sensor will only update when your device tracker does.
+#         entity_id: device_tracker.iphone
+#         unit_of_measurement: '%'
+#         value_template: >-
+#             {%- if states.device_tracker.iphone.attributes.battery %}
+#                 {{ states.device_tracker.iphone.attributes.battery|round }}
+#             {% else %}
+#                 {{ states.sensor.battery_iphone.state }}
+#             {%- endif %}
+#         icon_template: >
+#             {% set battery_level = states.sensor.battery_iphone.state|default(0)|int %}
+#             {% set battery_round = (battery_level / 10) |int * 10 %}
+#             {% if battery_round >= 100 %}
+#               mdi:battery
+#             {% elif battery_round > 0 %}
+#               mdi:battery-{{ battery_round }}
+#             {% else %}
+#               mdi:battery-alert
+#             {% endif %}
+
+# CPU Speed Sensor
+  - platform: cpuspeed
+  
+# System Monitor Sensor  
+  - platform: systemmonitor
+    resources:
+    - type: disk_use_percent
+      arg: /home/
+    - type: memory_free
+    - type: memory_use_percent
+    - type: processor_use
+    - type: last_boot
+    - type: since_last_boot
+    
+# Speed Test Sensor
+  - platform: speedtest
+    monitored_conditions:
+      - ping
+      - download
+      - upload
+  - platform: uptime
+    name: "Time Online"
+    unit_of_measurement: hours

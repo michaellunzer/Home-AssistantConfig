@@ -1,0 +1,27 @@
+- alias: Daily Backup at 3 AM
+  trigger:
+    platform: time
+    at: '3:00:00'
+  action:
+  - service: hassio.snapshot_full
+    data_template:
+      name: Automated Backup {{ now().strftime('%Y-%m-%d') }}
+  - service: notify.slack_notify
+    data_template:
+      message: Creating backup named "Automated Backup {{ now().strftime('%Y-%m-%d')
+        }}"
+- action:
+  - data:
+      addon: 7be23ff5_dropbox_sync
+      input:
+        command: upload
+    service: hassio.addon_stdin
+  alias: Upload Snapshot to Dropbox
+  condition:
+  - condition: state
+    entity_id: automation.daily_backup_at_3_am
+    state: '''on'''
+  id: '1522393589366'
+  trigger:
+  - at: 03:12:00
+    platform: time

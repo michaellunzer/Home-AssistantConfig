@@ -1,0 +1,56 @@
+media_player.apple_tv:
+  name:
+  platform: apple_tv
+  unique_id: 305335ec893b8688693a8856f5bb1ef08d6569871573a2948e9d0b4ac6a9c183
+remote.apple_tv:
+  name:
+  platform: apple_tv
+  unique_id: 305335ec893b8688693a8856f5bb1ef08d6569871573a2948e9d0b4ac6a9c183
+media_player.aftt:
+  name:
+  platform: plex
+  unique_id: c7bca7b2554f27e-com-plexapp-android
+media_player.plex_web_chrome:
+  name:
+  platform: plex
+  unique_id: 1q72vmou4tredr42y3wbxef5
+media_player.lunzfireplex:
+  name:
+  platform: plex
+  unique_id: f681519edc75bd1-com-plexapp-android
+media_player.kitchen_speaker:
+  name:
+  platform: cast
+  unique_id: ebcad9ed-3d00-c650-e63f-43e59341020a
+media_player.lunzcast:
+  name:
+  platform: cast
+  unique_id: d862c0a9-725e-ead2-f9fc-46ce386f1917
+sensor.lunziphone_battery_level:
+  name:
+  platform: ios
+  unique_id: level_lunziphone
+sensor.lunziphone_battery_state:
+  name:
+  platform: ios
+  unique_id: state_lunziphone
+light.hue_color_lamp_2:
+  name:
+  platform: hue
+  unique_id: 00:17:88:01:03:53:ed:71-0b
+light.hue_color_lamp_4:
+  name:
+  platform: hue
+  unique_id: 00:17:88:01:03:22:f1:62-0b
+light.hue_color_lamp_1:
+  name:
+  platform: hue
+  unique_id: 00:17:88:01:03:6f:a9:36-0b
+light.hue_color_lamp_3:
+  name:
+  platform: hue
+  unique_id: 00:17:88:01:03:53:f0:0c-0b
+media_player.lunziphone:
+  name:
+  platform: plex
+  unique_id: 27946932-96CF-4866-B310-45B08FF9057E

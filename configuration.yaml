@@ -1,0 +1,165 @@
+homeassistant:
+  # Name of the location where Home Assistant is running
+  name: Home
+  # Location required to calculate the time the sun rises and sets
+  latitude: !secret homeassistant_latitude
+  longitude: !secret homeassistant_longitude
+  # Impacts weather/sunrise data (altitude above sea level in meters)
+  elevation: !secret homeassistant_elevation
+  # metric for Metric, imperial for Imperial
+  unit_system: imperial
+  # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+  time_zone: America/Los_Angeles
+  # Customization file
+  customize: !include customize.yaml
+  packages: !include_dir_named packages
+
+# zone: !include zones.yaml
+
+# switch: !include switches.yaml
+# device_tracker: !include device_tracker.yaml
+
+
+# Show links to resources in log and frontend
+introduction:
+
+# Enables the frontend
+frontend:
+
+# Enables configuration UI
+config:
+
+# Enables iOS
+ios:
+
+http:
+  # Secrets are defined in the file secrets.yaml
+  api_password: !secret http_api_password
+  # Uncomment this if you acre using SSL/TLS, running in Docker container, etc.
+  base_url: !secret http_base_url
+  ssl_certificate: /ssl/fullchain.pem
+  ssl_key: /ssl/privkey.pem
+
+# Checks for available updates
+# Note: This component will send some information about your system to
+# the developers to assist with development of Home Assistant.
+# For more information, please see:
+# https://home-assistant.io/blog/2016/10/25/explaining-the-updater/
+updater:
+  # Optional, allows Home Assistant developers to focus on popular components.
+  # include_used_components: true
+
+# Discover some devices automatically
+discovery:
+
+# Allows you to issue voice commands from the frontend in enabled browsers
+conversation:
+
+# Enables support for tracking state changes over time
+history:
+
+# View all events in a logbook
+logbook:
+
+# Enables a map showing the location of tracked devices
+map:
+
+# Track the sun
+sun:
+
+# Weather prediction
+# sensor:
+#   - platform: yr
+
+# Text to speech
+tts:
+  - platform: google
+
+# Cloud
+cloud:
+
+group: !include_dir_named groups
+automation: !include automations.yaml
+script: !include scripts.yaml
+sensor: !include sensors.yaml
+
+#D-Link Camera
+camera:
+  - platform: mjpeg
+    name: Front Door Camera
+    still_image_url: !secret camera_front_door_still_image_url
+    mjpeg_url: !secret camera_front_door_mjpeg_url
+# Shows device_tracker.tile_kia on a map.
+  - platform: generic
+    name: Kia Tile Map
+    still_image_url: https://maps.googleapis.com/maps/api/staticmap?center={{ states.device_tracker.tile_kia.attributes.latitude }},{{ states.device_tracker.tile_kia.attributes.longitude }}&zoom=17&size=500x500&maptype=roadmap&markers=color:blue%7Clabel:P%7C{{ states.device_tracker.tile_kia.attributes.latitude }},{{ states.device_tracker.tile_kia.attributes.longitude }}
+    limit_refetch_to_url_change: true
+
+light:
+- platform: flux_led
+  devices:
+    192.168.1.121:
+      name: flux_bedroom_light
+
+mqtt:
+  broker: core-mosquitto
+  discovery: true
+  username: !secret MQTT_username
+  password: !secret MQTT_password
+  #discovery_prefix: homeassistant
+
+# cover:
+#   - platform: mqtt
+#     name: "MQTT Cover"
+#     command_topic: "/house/masterbedroom/rollerblind/set"
+#     state_topic: "/house/masterbedroom/rollerblind/status"
+#     availability_topic: "/house/masterbedroom/rollerblind/availability"
+#     qos: 0
+#     retain: true
+#     payload_open: "OPEN"
+#     payload_close: "CLOSE"
+#     payload_stop: "STOP"
+#     state_open: "open"
+#     state_closed: "closed"
+#     payload_available: "online"
+#     payload_not_available: "offline"
+#     optimistic: false
+#     value_template: '{{ value.x }}'
+
+
+
+panel_iframe:
+  configurator:
+    title: Configurator
+    icon: mdi:wrench
+    url: !secret configurator_url
+  terminal:
+    title: Terminal
+    icon: mdi:console
+    url: !secret terminal_url
+
+media_player:
+  - platform: mpd
+    host: !secret mpd_host_lunzpi
+    port: !secret mpd_port_lunzpi
+    name: LunzPi
+  - platform: spotify
+    client_id: !secret spotify_client_id
+    client_secret: !secret spotify_client_secret
+  # - platform: itunes
+  #   host: !secret itunes_host
+
+device_tracker:
+  - platform: tile
+    username: !secret tile_username
+    password: !secret tile_password
+  - platform: asuswrt
+    host: 192.168.1.1
+    username: !secret asus_username
+    password: !secret asus_password
+    # consider_home: 30
+    new_device_defaults:
+      track_new_devices: False
+  - platform: icloud
+    username: !secret icloud_username
+    password: !secret icloud_password
