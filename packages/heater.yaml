@@ -1,0 +1,55 @@
+# homeassistant:
+#   customize:
+#
+#     # Example configuration.yaml entry using 'input_number' in an action in an automation
+#   input_number:
+#     target_temp:
+#       name: Target Heater Temperature Slider
+#       min: 1
+#       max: 30
+#       step: 1
+#       unit_of_measurement: step
+#       icon: mdi:target
+#   # This automation script runs when a value is received via MQTT on retained topic: /house/masterbedroom/rollerblind/
+#   # It sets the value slider on the GUI. This slides also had its own automation when the value is changed.
+#   automation:
+#     - alias: Set temp slider
+#       trigger:
+#         platform: mqtt
+#         topic: "/house/masterbedroom/rollerblind/0/set"
+#       action:
+#         service: input_number.set_value
+#         data_template:
+#           entity_id: input_number.target_temp
+#           value: '{{ trigger.payload}}'
+#   # This automation script runs when the target temperature slider is moved.
+#   # It publishes its value to the same MQTT topic it is also subscribed to.
+#     - alias: Temp slider moved
+#       trigger:
+#         platform: state
+#         entity_id: input_number.target_temp
+#       action:
+#         service: mqtt.publish
+#         data_template:
+#           topic: "/house/masterbedroom/rollerblind/0/set"
+#           retain: true
+#           payload: '{{ states.input_number.target_temp.state | int }}'
+#
+#     # input_number:
+#     #   heater:
+#     #     name: Heater Knob Percentage
+#     #     initial: 0
+#     #     min: 0
+#     #     max: 100
+#     #     step: 5
+#
+#     # automation:
+#     #   - alias: Heater Knob
+#     #     trigger:
+#     #       platform: state
+#     #       entity_id: input_number.heater
+#     #     action:
+#     #       - service: mqtt.publish
+#     #         data_template:
+#     #           topic: "/house/masterbedroom/rollerblind/0/set:command:*:"
+#     #           payload: '{{ states.input_number.heater.state | int }}'

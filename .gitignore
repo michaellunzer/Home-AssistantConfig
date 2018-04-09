@@ -1,6 +1,9 @@
 *
 !*.yaml
 !scenes
+!groups
+!packages
+!homebridge
 !.gitignore
 secrets.yaml
 known_devices.yaml
