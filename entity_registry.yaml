@@ -54,3 +54,39 @@ media_player.lunziphone:
   name:
   platform: plex
   unique_id: 27946932-96CF-4866-B310-45B08FF9057E
+sensor.allergy_index_historical_average:
+  name:
+  platform: pollen
+  unique_id: 94110_allergy_index_historical_average
+sensor.allergy_index_tomorrow:
+  name:
+  platform: pollen
+  unique_id: 94110_allergy_index_tomorrow
+sensor.allergy_index_today:
+  name:
+  platform: pollen
+  unique_id: 94110_allergy_index_today
+sensor.allergy_index_forecasted_average:
+  name:
+  platform: pollen
+  unique_id: 94110_allergy_index_forecasted_average
+sensor.allergy_index_yesterday:
+  name:
+  platform: pollen
+  unique_id: 94110_allergy_index_yesterday
+sensor.cold__flu_forecasted_average:
+  name:
+  platform: pollen
+  unique_id: 94110_cold__flu_forecasted_average
+sensor.us_air_quality_index:
+  name:
+  platform: airvisual
+  unique_id: 37.752377,-122.419362_aqi
+sensor.us_main_pollutant:
+  name:
+  platform: airvisual
+  unique_id: 37.752377,-122.419362_main_pollutant
+sensor.us_air_pollution_level:
+  name:
+  platform: airvisual
+  unique_id: 37.752377,-122.419362_pollution_level

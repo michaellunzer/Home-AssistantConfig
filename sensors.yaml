@@ -1,3 +1,21 @@
+#moon sensor
+  - platform: moon
+  
+# # international Space Station
+#   - platform: iss
+#     # show_on_map: True
+
+# pollen sensor  
+  - platform: pollen
+    zip_code: !secret pollen_zip_code
+    monitored_conditions:
+    - allergy_average_forecasted
+    - allergy_average_historical
+    - allergy_index_today
+    - allergy_index_tomorrow
+    - allergy_index_yesterday
+    - disease_average_forecasted
+
 # Weather prediction
   - platform: yr
     name: weather
@@ -64,3 +82,19 @@
   - platform: uptime
     name: "Time Online"
     unit_of_measurement: hours
+    
+# LastFM
+  - platform: lastfm
+    api_key: !secret lastfm_api_key
+    users:
+      - michaellunzer
+      
+# AirVisual
+  - platform: airvisual
+    api_key: !secret airvisual_api_key
+    monitored_conditions:
+      - us
+    latitude: !secret homeassistant_latitude
+    longitude: !secret homeassistant_longitude
+    radius: 500
+    show_on_map: false

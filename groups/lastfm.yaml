@@ -1,0 +1,8 @@
+#   lastFM:
+    name: "LastFM"
+    icon: mdi:lastfm
+    entities:
+      - sensor.lastfm_michaellunzer
+    #   - sensor.lastfm_michaellunzer.last_played
+    #   - sensor.lastfm_michaellunzer.play_count
+    #   - sensor.lastfm_michaellunzer.top_played

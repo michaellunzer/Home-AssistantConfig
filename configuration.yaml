@@ -94,6 +94,15 @@ camera:
     name: Kia Tile Map
     still_image_url: https://maps.googleapis.com/maps/api/staticmap?center={{ states.device_tracker.tile_kia.attributes.latitude }},{{ states.device_tracker.tile_kia.attributes.longitude }}&zoom=17&size=500x500&maptype=roadmap&markers=color:blue%7Clabel:P%7C{{ states.device_tracker.tile_kia.attributes.latitude }},{{ states.device_tracker.tile_kia.attributes.longitude }}
     limit_refetch_to_url_change: true
+# # International Space Station Map
+  - platform: generic
+    name: ISS
+    still_image_url: https://maps.googleapis.com/maps/api/staticmap?center={{ states.binary_sensor.iss.attributes.lat }},{{ states.binary_sensor.iss.attributes.long }}&zoom=5&size=500x500&maptype=roadmap&markers=color:blue%7Clabel:P%7C{{ states.binary_sensor.iss.attributes.lat }},{{ states.binary_sensor.iss.attributes.long }}
+    limit_refetch_to_url_change: true
+    
+binary_sensor:
+  - platform: iss
+    show_on_map: False
 
 light:
 - platform: flux_led
@@ -163,3 +172,11 @@ device_tracker:
   - platform: icloud
     username: !secret icloud_username
     password: !secret icloud_password
+    
+    
+    # duckDNS
+    duckdns:
+      domain: !secret duckdns_domain
+      access_token: !secret duckdns_access_token
+
+
