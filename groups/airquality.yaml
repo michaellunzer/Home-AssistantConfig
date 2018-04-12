@@ -1,0 +1,7 @@
+#  Air Quality:
+    name: "Air Quality"
+    icon: mdi:chemical-weapon
+    entities:
+    - sensor.us_air_pollution_level
+    - sensor.us_air_quality_index
+    - sensor.us_main_pollutant

@@ -21,7 +21,7 @@ homeassistant:
 
 
 # Show links to resources in log and frontend
-introduction:
+# introduction:
 
 # Enables the frontend
 frontend:
@@ -174,9 +174,9 @@ device_tracker:
     password: !secret icloud_password
     
     
-    # duckDNS
-    duckdns:
-      domain: !secret duckdns_domain
-      access_token: !secret duckdns_access_token
+# duckDNS
+duckdns:
+  domain: !secret duckdns_domain
+  access_token: !secret duckdns_access_token
 
 

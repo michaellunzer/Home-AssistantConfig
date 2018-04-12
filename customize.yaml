@@ -14,3 +14,11 @@ light.bedroom:
   hidden: true
 light.flux_bedroom_light:
   friendly_name: Michael's Bedroom Light
+binary_sensor.iss:
+  hidden: true
+device_tracker.hassio:
+  hidden: true
+device_tracker.d8cb8a70e9cb:
+  friendly_name: 10-LUNZ PC
+device_tracker.b827eb930ed9:
+  hidden: true

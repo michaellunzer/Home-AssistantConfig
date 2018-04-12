@@ -2,5 +2,6 @@
     name: "LunziPhone"
     icon: mdi:cellphone-iphone
     entities:
+      - device_tracker.lunziphone
       - sensor.lunziphone_battery_level
       - sensor.lunziphone_battery_state
