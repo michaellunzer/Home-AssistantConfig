@@ -90,3 +90,7 @@ sensor.us_air_pollution_level:
   name:
   platform: airvisual
   unique_id: 37.752377,-122.419362_pollution_level
+media_player.the_mad_room_speaker:
+  name:
+  platform: cast
+  unique_id: b09b2dc1-716d-90e3-4c22-c1893e066cb7

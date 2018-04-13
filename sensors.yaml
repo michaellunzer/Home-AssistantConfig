@@ -98,3 +98,8 @@
     longitude: !secret homeassistant_longitude
     radius: 500
     show_on_map: false
+
+#DuckDNS Certificate Expirary
+  - platform: cert_expiry
+    host: !secret certificate_expiry_url
+    name: "Home Assistant DuckDNS SSL Certificate"

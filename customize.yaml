@@ -22,3 +22,5 @@ device_tracker.d8cb8a70e9cb:
   friendly_name: 10-LUNZ PC
 device_tracker.b827eb930ed9:
   hidden: true
+media_player.the_mad_room_speaker:
+  hidden: true

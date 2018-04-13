@@ -1,0 +1,4 @@
+# DuckDNS Certificate
+    name: "DuckDNS Certificate"
+    entities:
+      - sensor.home_assistant_duckdns_ssl_certificate
