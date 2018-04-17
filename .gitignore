@@ -4,6 +4,7 @@
 !groups
 !packages
 !homebridge
+!themes
 !.gitignore
 secrets.yaml
 known_devices.yaml

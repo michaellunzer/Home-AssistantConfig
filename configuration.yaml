@@ -25,6 +25,7 @@ homeassistant:
 
 # Enables the frontend
 frontend:
+  themes: !include_dir_named themes
 
 # Enables configuration UI
 config:
@@ -146,6 +147,10 @@ panel_iframe:
     title: Terminal
     icon: mdi:console
     url: !secret terminal_url
+  nodered:
+    title: 'Node-Red'
+    icon: 'mdi:shuffle-variant'
+    url: !secret nodered_url
 
 media_player:
   - platform: mpd
@@ -172,6 +177,7 @@ device_tracker:
   - platform: icloud
     username: !secret icloud_username
     password: !secret icloud_password
+  - platform: bluetooth_tracker
     
     
 # duckDNS
