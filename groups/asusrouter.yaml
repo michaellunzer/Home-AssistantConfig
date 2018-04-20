@@ -2,10 +2,11 @@
     name: "Asus Router"
     icon: mdi:router-wireless
     entities:
-    - device_tracker.20ab37562881
-    - device_tracker.80e65056158c
-    - device_tracker.accf856ba107
+    - device_tracker.10lunz
+    - device_tracker.amandasipad
+    - device_tracker.amandasiphone
+    - device_tracker.lunziphone_2
     - device_tracker.amod
     - device_tracker.amodwin
     - device_tracker.anyoneminutesea
-    - device_tracker.d8cb8a70e9cb
+    - device_tracker.linutt
