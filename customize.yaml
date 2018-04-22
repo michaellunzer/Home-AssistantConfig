@@ -20,7 +20,47 @@ device_tracker.hassio:
   hidden: true
 device_tracker.d8cb8a70e9cb:
   friendly_name: 10-LUNZ PC
+  icon: mdi:windows
 device_tracker.b827eb930ed9:
   hidden: true
 media_player.the_mad_room_speaker:
   hidden: true
+device_tracker.84a46636c112:
+  friendly_name: Living Room TV
+  icon: mdi:television-classic
+device_tracker.echo_dotu14:
+  icon: mdi:amazon-alexa
+device_tracker.amodwin:
+  icon: mdi:windows
+device_tracker.mlunzerlap:
+  icon: mdi:windows
+device_tracker.pb2032:
+  icon: mdi:speaker-wireless
+media_player.samsung_led48_un48h6350:
+  icon: mdi:television-classic
+device_tracker.20ab37562881:
+  icon: mdi:cellphone-iphone
+device_tracker.amod:
+  icon: mdi:cellphone-iphone
+device_tracker.80e65056158c:
+  icon: mdi:tablet-ipad
+media_player.lunzcast:
+  icon: mdi:cast
+media_player.lunzpi:
+  icon: mdi:alarm
+device_tracker.anyoneminutesea:
+  icon: mdi:apple
+device_tracker.linutt:
+  icon: mdi:linux
+device_tracker.accf856ba107:
+  icon: mdi:android
+device_tracker.playbulb_colour:
+  icon: mdi:lightbulb
+device_tracker.wills_iphone_:
+  hidden: true
+device_tracker.matt_mahnkes_mac_pro:
+  hidden: true
+device_tracker.lunziphone_2:
+  icon: mdi:phone-bluetooth
+device_tracker.lunziphone:
+  icon: mdi:cellphone-iphone

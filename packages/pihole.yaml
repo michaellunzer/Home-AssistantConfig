@@ -38,11 +38,13 @@ switch:
         command_state: "curl -X GET 'http://192.168.1.17/admin/api.php?status'"
         value_template: "{{ value_json.status == 'enabled' }}"
 
-group:
-  Pi Hole:
-    entities:
-      - switch.pihole_switch
-      - sensor.pihole_dns_queries_today
-      - sensor.pihole_domains_blocked
-      - sensor.pihole_ads_percentage_blocked_today
-      - sensor.pihole_dns_unique_domains
+
+# moved to /config/groups/pihole.yaml
+# group:
+#   Pi Hole:
+#     entities:
+#       - switch.pihole_switch
+#       - sensor.pihole_dns_queries_today
+#       - sensor.pihole_domains_blocked
+#       - sensor.pihole_ads_percentage_blocked_today
+#       - sensor.pihole_dns_unique_domains

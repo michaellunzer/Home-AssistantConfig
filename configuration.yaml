@@ -151,6 +151,10 @@ panel_iframe:
     title: 'Node-Red'
     icon: 'mdi:shuffle-variant'
     url: !secret nodered_url
+  router:
+    title: Asus Router
+    icon: mdi:router-wireless
+    url: !secret router_url
 
 media_player:
   - platform: mpd

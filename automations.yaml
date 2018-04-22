@@ -25,12 +25,14 @@
   trigger:
   - at: 03:12:00
     platform: time
-#   - alias: 'Set dark theme for the night'
-#     initial_state: True
-#     trigger:
-#       - platform: time
-#         at: '21:00'
-#     action:
-#       - service: frontend.set_theme
-#         data:
-#           name: darkred
+- action:
+  - condition: state
+    entity_id: light.living_room
+    state: 'off'
+  alias: Living Room Hue "unavailable" switch automation
+  condition:
+  - condition: state
+    entity_id: light.hue_color_lamp_2
+    state: unavailable
+  id: '1524244480056'
+  trigger: []
