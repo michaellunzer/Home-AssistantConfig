@@ -62,6 +62,11 @@
 # CPU Speed Sensor
   - platform: cpuspeed
   
+# LunzPi Supervisor Status
+#not currently working for whatever reason
+#   - platform: supervisord
+#     url: http://lunzpi.local:9001/
+  
 # System Monitor Sensor  
   - platform: systemmonitor
     resources:

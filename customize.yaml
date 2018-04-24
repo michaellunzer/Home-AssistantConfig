@@ -64,3 +64,5 @@ device_tracker.lunziphone_2:
   icon: mdi:phone-bluetooth
 device_tracker.lunziphone:
   icon: mdi:cellphone-iphone
+device_tracker.lunrise:
+  icon: mdi:raspberrypi
