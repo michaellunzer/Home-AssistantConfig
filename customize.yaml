@@ -12,8 +12,7 @@ light.hue_color_lamp_4:
   hidden: true
 light.bedroom:
   hidden: true
-light.flux_bedroom_light:
-  friendly_name: Michael's Bedroom Light
+light.flux_bedroom_light: {}
 binary_sensor.iss:
   hidden: true
 device_tracker.hassio:
@@ -66,3 +65,13 @@ device_tracker.lunziphone:
   icon: mdi:cellphone-iphone
 device_tracker.lunrise:
   icon: mdi:raspberrypi
+device_tracker.magic_mouse_2:
+  hidden: true
+device_tracker.amandasiphone:
+  hidden: true
+device_tracker.lunziphone516gb:
+  hidden: true
+device_tracker.lunziphone5:
+  hidden: true
+device_tracker.kindle9edc75bd1:
+  hidden: true

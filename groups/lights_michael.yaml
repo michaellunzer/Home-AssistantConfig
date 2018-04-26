@@ -1,0 +1,5 @@
+#  Michael's Bedroom lights:
+    name: "Michael's Bedroom lights"
+    entities:
+      - light.mclighting01
+      - light.flux_bedroom_light
