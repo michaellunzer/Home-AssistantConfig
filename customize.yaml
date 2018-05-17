@@ -75,3 +75,42 @@ device_tracker.lunziphone5:
   hidden: true
 device_tracker.kindle9edc75bd1:
   hidden: true
+device_tracker.appletv3:
+  hidden: true
+device_tracker.chromecast:
+  hidden: true
+device_tracker.esp_4b8282:
+  hidden: true
+device_tracker.esp_8d4333:
+  hidden: true
+device_tracker.googlehome:
+  hidden: true
+device_tracker.philipshue:
+  hidden: true
+device_tracker.10lunz:
+  icon: mdi:windows
+device_tracker.amandasipad:
+  icon: mdi:tablet-ipad
+camera.laundry_camera:
+  icon: mdi:cctv
+device_tracker.lunzpi:
+  icon: mdi:alarm
+device_tracker.laundry:
+  friendly_name: Laundry Camera
+  icon: mdi:cctv
+device_tracker.debian:
+  hidden: true
+device_tracker.amazonb2554f27e:
+  hidden: true
+device_tracker.amazonb2ccd5d93:
+  hidden: true
+device_tracker.e0319e31ccff:
+  hidden: true
+device_tracker.dc38e1f5b5a0:
+  hidden: true
+device_tracker.mclighting01:
+  hidden: true
+device_tracker.bose_mini_ii_soundlink:
+  hidden: true
+device_tracker.rebecca_hills_iphone:
+  hidden: true
