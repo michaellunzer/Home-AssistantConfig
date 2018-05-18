@@ -17,6 +17,9 @@ homeassistant:
 zone: !include zones.yaml
 #I hope this is the right spot for the zone config.
 
+#testing to see if git deploy key works!
+#  Command to automatically push to github
+#    /bin/bash -c "cd ~/config && git add . && git commit -am 'Daily commit' && git push"
 
 # switch: !include switches.yaml
 # device_tracker: !include device_tracker.yaml
