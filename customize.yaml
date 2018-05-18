@@ -114,3 +114,9 @@ device_tracker.bose_mini_ii_soundlink:
   hidden: true
 device_tracker.rebecca_hills_iphone:
   hidden: true
+zone.oracle_hq:
+  radius: 500
+zone.work:
+  icon: mdi:briefcase
+device_tracker.40b4cde434f4:
+  hidden: true
