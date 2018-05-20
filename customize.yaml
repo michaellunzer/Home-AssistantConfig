@@ -52,6 +52,7 @@ device_tracker.anyoneminutesea:
 device_tracker.linutt:
   icon: mdi:linux
 device_tracker.accf856ba107:
+  friendly_name: Taylor's Android
   icon: mdi:android
 device_tracker.playbulb_colour:
   icon: mdi:lightbulb

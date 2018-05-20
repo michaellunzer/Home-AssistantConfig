@@ -7,10 +7,14 @@
   - data_template:
       name: Automated Backup {{ now().strftime('%Y-%m-%d') }}
     service: hassio.snapshot_full
-  - data_template:
+  - data:
+      message: Hass.io Snapshot Created
+      target:
+      - channel/lunzhome
+    data_template:
       message: Creating backup named "Automated Backup {{ now().strftime('%Y-%m-%d')
         }}"
-    service: notify.ios_lunziphone
+    service: notify.notifier_name
 - id: '1522393589366'
   alias: Upload Snapshot to Dropbox at 3am
   trigger:
@@ -26,17 +30,22 @@
       input:
         command: upload
     service: hassio.addon_stdin
-- action:
-  - condition: state
-    entity_id: light.living_room
-    state: 'off'
+  - data:
+      message: Hass.io Snapshot Uploaded to Dropbox
+      target:
+      - channel/lunzhome
+    service: notify.notifier_name
+- id: '1524244480056'
   alias: Living Room Hue "unavailable" switch automation
+  trigger: []
   condition:
   - condition: state
     entity_id: light.hue_color_lamp_2
-    state: unavailable
-  id: '1524244480056'
-  trigger: []
+    state: '''unavailable'''
+  action:
+  - condition: state
+    entity_id: light.living_room
+    state: '''off'''
 - id: '1526803342640'
   alias: Copy to USB Drive at 3am
   trigger:
