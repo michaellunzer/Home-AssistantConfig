@@ -1,30 +1,31 @@
-- alias: Daily Backup at 3 AM
+- id: b4186bd84bca47a3ad0ccf423c87297b
+  alias: Daily Backup at 3am
   trigger:
+  - at: '3:00:00'
     platform: time
-    at: '3:00:00'
   action:
-  - service: hassio.snapshot_full
-    data_template:
+  - data_template:
       name: Automated Backup {{ now().strftime('%Y-%m-%d') }}
-  - service: notify.slack_notify
-    data_template:
+    service: hassio.snapshot_full
+  - data_template:
       message: Creating backup named "Automated Backup {{ now().strftime('%Y-%m-%d')
         }}"
-- action:
+    service: notify.ios_lunziphone
+- id: '1522393589366'
+  alias: Upload Snapshot to Dropbox at 3am
+  trigger:
+  - at: 03:12:00
+    platform: time
+  condition:
+  - condition: state
+    entity_id: automation.daily_backup_at_3_am
+    state: '''on'''
+  action:
   - data:
       addon: 7be23ff5_dropbox_sync
       input:
         command: upload
     service: hassio.addon_stdin
-  alias: Upload Snapshot to Dropbox
-  condition:
-  - condition: state
-    entity_id: automation.daily_backup_at_3_am
-    state: '''on'''
-  id: '1522393589366'
-  trigger:
-  - at: 03:12:00
-    platform: time
 - action:
   - condition: state
     entity_id: light.living_room
@@ -36,3 +37,16 @@
     state: unavailable
   id: '1524244480056'
   trigger: []
+- id: '1526803342640'
+  alias: Copy to USB Drive at 3am
+  trigger:
+  - at: 03:00:00
+    platform: time
+  condition:
+  - condition: state
+    entity_id: automation.copy_to_usb_drive_at_3am
+    state: '''on'''
+  action:
+  - data:
+      addon: local_copy_backups_to_sda1
+    service: hassio.addon_start

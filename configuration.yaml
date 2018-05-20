@@ -37,6 +37,26 @@ config:
 
 # Enables iOS
 ios:
+#   push:
+#     categories:
+#       - name: Alarm
+#         identifier: 'alarm'
+#         actions:
+#           - identifier: 'SILENCE_ALARM'
+#             title: 'Silence Alarm'
+#             activationMode: 'background'
+#             authenticationRequired: no
+#             destructive: yes
+#             behavior: 'default'
+#       - name: Siren
+#         identifier: 'siren'
+#         actions:
+#           - identifier: 'ACTIVATE_SIRENS'
+#             title: 'Activate Sirens'
+#             activationMode: 'background'
+#             authenticationRequired: no
+#             destructive: yes
+#             behavior: 'default' 
 
 # python_script:
 # https://github.com/maattdiy/home-assistant-config/blob/master/python_scripts/summary.py
@@ -88,6 +108,15 @@ tts:
 # Cloud
 cloud:
 
+
+# PushBullet Notifications
+notify:
+  - name: NOTIFIER_NAME
+    platform: pushbullet
+    api_key: !secret pushbullet_api_key
+
+
+
 group: !include_dir_named groups
 automation: !include automations.yaml
 script: !include scripts.yaml
@@ -102,7 +131,7 @@ camera:
 # Shows device_tracker.tile_kia on a map.
   - platform: generic
     name: Kia Tile Map
-    still_image_url: https://maps.googleapis.com/maps/api/staticmap?center={{ states.device_tracker.tile_kia.attributes.latitude }},{{ states.device_tracker.tile_kia.attributes.longitude }}&zoom=17&size=500x500&maptype=roadmap&markers=color:blue%7Clabel:P%7C{{ states.device_tracker.tile_kia.attributes.latitude }},{{ states.device_tracker.tile_kia.attributes.longitude }}
+    still_image_url: https://maps.googleapis.com/maps/api/staticmap?center={{ states.device_tracker.tile_kia.attributes.latitude }},{{ states.device_tracker.tile_kia.attributes.longitude }}&zoom=19&size=500x500&maptype=roadmap&markers=color:blue%7Clabel:P%7C{{ states.device_tracker.tile_kia.attributes.latitude }},{{ states.device_tracker.tile_kia.attributes.longitude }}
     limit_refetch_to_url_change: true
 # # International Space Station Map
   - platform: generic
@@ -207,8 +236,26 @@ light:
     devices:
       192.168.1.121:
         name: flux_bedroom_light
+        # protocol: 'ledenet'
   - platform: group
     name: Michael's Bedroom Lights
     entities:
       - light.mclighting01
       - light.flux_bedroom_light
+
+
+####################################
+############# SWITCHES #############
+####################################
+
+
+switch:
+  - platform: wake_on_lan    
+    mac_address: "D8-CB-8A-70-E9-CB"
+    name: "10-LUNZ PC"
+    host: 192.168.1.144
+    turn_off:
+        service: hassio.addon_stdin
+        data:
+            addon: core_rpc_shutdown
+            input: 10-LUNZ
