@@ -3,5 +3,5 @@
     icon: mdi:crosshairs-gps
     entities:
       - device_tracker.tile_kia
-      - device_tracker.tile_kia_car_keys_michael
+      - device_tracker.tile_keys_michael
       - device_tracker.tile_lunziphone

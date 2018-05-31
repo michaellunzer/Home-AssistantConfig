@@ -123,3 +123,8 @@ device_tracker.40b4cde434f4:
   hidden: true
 device_tracker.7c1e524355e1:
   hidden: true
+device_tracker.lunzbuntu:
+  friendly_name: lunzbuntu_BT
+  icon: mdi:ubuntu
+device_tracker.hal9000:
+  hidden: true

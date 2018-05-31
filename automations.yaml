@@ -1,7 +1,7 @@
 - id: b4186bd84bca47a3ad0ccf423c87297b
   alias: Daily Backup at 3am
   trigger:
-  - at: '3:00:00'
+  - at: 03:01:00
     platform: time
   action:
   - data_template:
@@ -14,16 +14,16 @@
     data_template:
       message: Creating backup named "Automated Backup {{ now().strftime('%Y-%m-%d')
         }}"
-    service: notify.notifier_name
+    service: notify.pushbullet
 - id: '1522393589366'
   alias: Upload Snapshot to Dropbox at 3am
   trigger:
-  - at: 03:12:00
+  - at: 03:30:00
     platform: time
   condition:
   - condition: state
-    entity_id: automation.daily_backup_at_3_am
-    state: '''on'''
+    entity_id: automation.upload_snapshot_to_dropbox_at_3am
+    state: 'on'
   action:
   - data:
       addon: 7be23ff5_dropbox_sync
@@ -34,28 +34,22 @@
       message: Hass.io Snapshot Uploaded to Dropbox
       target:
       - channel/lunzhome
-    service: notify.notifier_name
-- id: '1524244480056'
-  alias: Living Room Hue "unavailable" switch automation
-  trigger: []
-  condition:
-  - condition: state
-    entity_id: light.hue_color_lamp_2
-    state: '''unavailable'''
-  action:
-  - condition: state
-    entity_id: light.living_room
-    state: '''off'''
+    service: notify.pushbullet
 - id: '1526803342640'
-  alias: Copy to USB Drive at 3am
+  alias: Copy to USB Drive at 3:15am
   trigger:
-  - at: 03:00:00
+  - at: 03:15:00
     platform: time
   condition:
   - condition: state
-    entity_id: automation.copy_to_usb_drive_at_3am
-    state: '''on'''
+    entity_id: automation.copy_to_usb_drive_at_315am
+    state: 'on'
   action:
   - data:
       addon: local_copy_backups_to_sda1
     service: hassio.addon_start
+  - data:
+      message: Hass.io Snapshots copied to USB Drive
+      target:
+      - channel/lunzhome
+    service: notify.pushbullet

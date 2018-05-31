@@ -78,18 +78,6 @@ sensor.cold__flu_forecasted_average:
   name:
   platform: pollen
   unique_id: 94110_cold__flu_forecasted_average
-# sensor.us_air_quality_index:
-#   name:
-#   platform: airvisual
-#   unique_id: 37.752377,-122.419362_aqi
-# sensor.us_main_pollutant:
-#   name:
-#   platform: airvisual
-#   unique_id: 37.752377,-122.419362_main_pollutant
-# sensor.us_air_pollution_level:
-#   name:
-#   platform: airvisual
-#   unique_id: 37.752377,-122.419362_pollution_level
 media_player.the_mad_room_speaker:
   name:
   platform: cast
@@ -110,3 +98,7 @@ media_player.chrome:
   name:
   platform: plex
   unique_id: 0ylmutj3mm1cdeyra3hinceg
+media_player.firefox:
+  name:
+  platform: plex
+  unique_id: 0g9iqdpp7kebpxa27p4e4cbf

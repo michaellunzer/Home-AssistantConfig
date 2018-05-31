@@ -184,6 +184,10 @@ panel_iframe:
     title: 'Node-Red'
     icon: 'mdi:shuffle-variant'
     url: !secret nodered_url
+  sonweb:
+    title: SonWEB
+    icon: mdi:lightbulb-on
+    url: !secret sonweb_url
   # router:
   #   title: Asus Router
   #   icon: mdi:router-wireless
