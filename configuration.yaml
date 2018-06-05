@@ -19,7 +19,10 @@ zone: !include zones.yaml
 
 #testing to see if git deploy key works!
 #  Command to automatically push to github
-#    /bin/bash -c "cd ~/config && git add . && git commit -am 'Daily commit' && git push"
+
+#    0,30 * * * * /bin/bash -c "cd cd /root/config && git add . && git commit -am 'Daily commit `date`' && git push"
+
+
 
 # switch: !include switches.yaml
 # device_tracker: !include device_tracker.yaml
@@ -242,6 +245,15 @@ light:
       192.168.1.121:
         name: flux_bedroom_light
         # protocol: 'ledenet'
+  - platform: mqtt_json  
+    name: "SN1 LED"  
+    state_topic: "bruh/sensornode1"  
+    command_topic: "bruh/sensornode1/set"  
+    brightness: true  
+    flash: true  
+    rgb: true  
+    optimistic: false  
+    qos: 0  
   - platform: group
     name: Michael's Bedroom Lights
     entities:

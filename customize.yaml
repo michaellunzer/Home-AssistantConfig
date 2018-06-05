@@ -128,3 +128,8 @@ device_tracker.lunzbuntu:
   icon: mdi:ubuntu
 device_tracker.hal9000:
   hidden: true
+device_tracker.tile_kia_car_keys_michael:
+  hidden: true
+device_tracker.matthewcsiphone:
+  friendly_name: Matthew's iPhone
+  icon: mdi:phone-bluetooth
