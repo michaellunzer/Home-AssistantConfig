@@ -11,3 +11,4 @@
       - sun.sun
       - sun.next_setting
       - sun.next_rising
+      - sensor.season

@@ -1,5 +1,9 @@
 homekit:
   auto_start: False
+  filter: 
+    include_domains:
+      - light
+      - media_player
 
 automation:
   - alias: 'Start HomeKit'

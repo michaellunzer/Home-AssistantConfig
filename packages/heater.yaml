@@ -53,3 +53,16 @@
 #     #         data_template:
 #     #           topic: "/house/masterbedroom/rollerblind/0/set:command:*:"
 #     #           payload: '{{ states.input_number.heater.state | int }}'
+
+
+
+switch:
+  - platform: mqtt
+    name: Heater
+    state_topic: "sRV/state"
+    command_topic: "sRV/move"
+    payload_on: "ON"
+    payload_off: "OFF"
+    state_on: "OPEN"
+    state_off: "CLOSED"
+    optimistic: true

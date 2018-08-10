@@ -16,13 +16,13 @@
         }}"
     service: notify.pushbullet
 - id: '1522393589366'
-  alias: Upload Snapshot to Dropbox at 3am
+  alias: Upload Snapshot to Dropbox at 5am
   trigger:
-  - at: 03:30:00
+  - at: 05:00:00
     platform: time
   condition:
   - condition: state
-    entity_id: automation.upload_snapshot_to_dropbox_at_3am
+    entity_id: automation.upload_snapshot_to_dropbox_at_5am
     state: 'on'
   action:
   - data:
@@ -36,13 +36,13 @@
       - channel/lunzhome
     service: notify.pushbullet
 - id: '1526803342640'
-  alias: Copy to USB Drive at 3:15am
+  alias: Copy to USB Drive at 4:00am
   trigger:
-  - at: 03:15:00
+  - at: 04:00:00
     platform: time
   condition:
   - condition: state
-    entity_id: automation.copy_to_usb_drive_at_315am
+    entity_id: automation.copy_to_usb_drive_at_400am
     state: 'on'
   action:
   - data:
@@ -53,3 +53,17 @@
       target:
       - channel/lunzhome
     service: notify.pushbullet
+- id: '1529482399644'
+  alias: Day/Night Theme
+  trigger:
+  - event: start
+    platform: homeassistant
+  - entity_id: sun.sun
+    from: above_horizon
+    platform: state
+    to: below_horizon
+  condition: []
+  action:
+  - data:
+      name: dark
+    service: frontend.set_theme

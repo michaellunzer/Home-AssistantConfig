@@ -8,6 +8,7 @@
     - device_tracker.80e65056158c
     - device_tracker.accf856ba107
     - device_tracker.lunziphone
+    - device_tracker.laurasiphone
     - device_tracker.mlunzerlap
     - device_tracker.amod
     - device_tracker.amodwin
@@ -22,3 +23,5 @@
     - device_tracker.mlunzerlap
     - device_tracker.mlunzerus
     - device_tracker.lunztop8
+    - device_tracker.haubuntu 
+    - device_tracker.esp_0aacf7

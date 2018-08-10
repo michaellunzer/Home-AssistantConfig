@@ -13,9 +13,20 @@ homeassistant:
   # Customization file
   customize: !include customize.yaml
   packages: !include_dir_named packages
+  # whitelist_external_dirs:
+  # - /backup
+  # - /config
+  # - /addons
+  # - /share
+  # - /dev
+  # - /mnt/backups
+
+shell_command: !include_dir_named shell_command
 
 zone: !include zones.yaml
 #I hope this is the right spot for the zone config.
+
+#testing to see if git works again!
 
 #testing to see if git deploy key works!
 #  Command to automatically push to github
@@ -23,10 +34,22 @@ zone: !include zones.yaml
 #    0,30 * * * * /bin/bash -c "cd cd /root/config && git add . && git commit -am 'Daily commit `date`' && git push"
 
 
-
 # switch: !include switches.yaml
 # device_tracker: !include device_tracker.yaml
 
+recorder:
+  db_url: mysql://admin:asdf@core-mariadb/homeassistant
+#   purge_keep_days: 2
+#   purge_interval: 2
+
+# influxdb:
+#   host: a0d7b954-influxdb
+#   port: 8086
+#   database: homeassistant
+#   username: !secret influxdb_username
+#   password: !secret influxdb_password
+#   max_retries: 3
+#   default_measurement: state
 
 # Show links to resources in log and frontend
 # introduction:
@@ -59,7 +82,7 @@ ios:
 #             activationMode: 'background'
 #             authenticationRequired: no
 #             destructive: yes
-#             behavior: 'default' 
+#             behavior: 'default'
 
 # python_script:
 # https://github.com/maattdiy/home-assistant-config/blob/master/python_scripts/summary.py
@@ -111,6 +134,13 @@ tts:
 # Cloud
 cloud:
 
+# folder_watcher:
+#   - folder: /config
+#   - folder: /backup
+#   - folder: /addons
+#   - folder: /share
+#   - folder: /mnt/backups
+
 
 # PushBullet Notifications
 notify:
@@ -132,10 +162,10 @@ camera:
     still_image_url: !secret camera_front_door_still_image_url
     mjpeg_url: !secret camera_front_door_mjpeg_url
 # Shows device_tracker.tile_kia on a map.
-  - platform: generic
-    name: Kia Tile Map
-    still_image_url: https://maps.googleapis.com/maps/api/staticmap?center={{ states.device_tracker.tile_kia.attributes.latitude }},{{ states.device_tracker.tile_kia.attributes.longitude }}&zoom=17&size=500x500&maptype=roadmap&markers=color:blue%7Clabel:P%7C{{ states.device_tracker.tile_kia.attributes.latitude }},{{ states.device_tracker.tile_kia.attributes.longitude }}
-    limit_refetch_to_url_change: true
+#   - platform: generic
+#     name: Kia Tile Map
+#     still_image_url: https://maps.googleapis.com/maps/api/staticmap?center={{ states.device_tracker.tile_kia.attributes.latitude }},{{ states.device_tracker.tile_kia.attributes.longitude }}&zoom=17&size=500x500&maptype=roadmap&markers=color:blue%7Clabel:P%7C{{ states.device_tracker.tile_kia.attributes.latitude }},{{ states.device_tracker.tile_kia.attributes.longitude }}
+#     limit_refetch_to_url_change: true
 # # International Space Station Map
   - platform: generic
     name: ISS
@@ -145,6 +175,16 @@ camera:
 binary_sensor:
   - platform: iss
     show_on_map: False
+  - platform: uptimerobot
+    api_key: !secret uptimerobot_api_key
+## This is for the motion Sensor
+#   - platform: mqtt
+#     state_topic: 'room_presence/Michael-room'
+#     name: 'Michael Room Motion Sensor'
+#     payload_on: 1
+#     payload_off: 0
+#     device_class: 'motion'
+#     value_template: '{{ value_json.value }}'
 
 
 mqtt:
@@ -184,17 +224,30 @@ panel_iframe:
     icon: mdi:console
     url: !secret terminal_url
   nodered:
-    title: 'Node-Red'
-    icon: 'mdi:shuffle-variant'
+    title: Node-Red
+    icon: mdi:shuffle-variant
     url: !secret nodered_url
   sonweb:
     title: SonWEB
     icon: mdi:lightbulb-on
     url: !secret sonweb_url
-  # router:
-  #   title: Asus Router
-  #   icon: mdi:router-wireless
-  #   url: !secret router_url
+#   grafana:
+#     title: Grafana
+#     icon: mdi:chart-timeline
+#     url: !secret grafana_url
+#   influxdb:
+#     title: InfluxDB
+#     icon: mdi:chart-areaspline
+#     url: !secret influxdb_url
+  esphomeyaml:
+    title: esphomeyaml
+    icon: mdi:chip
+    url: !secret esphomeyaml_url
+# Need to open up router accessability to internet to enable this. Potentially use Caddy Proxy plugin ?
+#   router:
+#     title: Asus Router
+#     icon: mdi:router-wireless
+#     url: !secret router_url
 
 media_player:
   - platform: mpd
@@ -217,9 +270,9 @@ device_tracker:
     host: 192.168.1.1
     username: !secret asus_username
     password: !secret asus_password
-    # consider_home: 30
+    consider_home: 0:03
     new_device_defaults:
-      track_new_devices: False
+      track_new_devices: True
 #   - platform: icloud
 #     username: !secret icloud_username
 #     password: !secret icloud_password
@@ -245,15 +298,15 @@ light:
       192.168.1.121:
         name: flux_bedroom_light
         # protocol: 'ledenet'
-  - platform: mqtt_json  
-    name: "SN1 LED"  
-    state_topic: "bruh/sensornode1"  
-    command_topic: "bruh/sensornode1/set"  
-    brightness: true  
-    flash: true  
-    rgb: true  
-    optimistic: false  
-    qos: 0  
+  - platform: mqtt_json
+    name: "SN1 LED"
+    state_topic: "bruh/sensornode1"
+    command_topic: "bruh/sensornode1/set"
+    brightness: true
+    flash: true
+    rgb: true
+    optimistic: false
+    qos: 0
   - platform: group
     name: Michael's Bedroom Lights
     entities:
@@ -267,7 +320,7 @@ light:
 
 
 switch:
-  - platform: wake_on_lan    
+  - platform: wake_on_lan
     mac_address: "D8-CB-8A-70-E9-CB"
     name: "10-LUNZ PC"
     host: 192.168.1.144
@@ -276,3 +329,23 @@ switch:
         data:
             addon: core_rpc_shutdown
             input: 10-LUNZ
+  - platform: tuya
+    host: 192.168.1.211
+    local_key: 2ea194588b2096c7
+    device_id: 012007682c3ae84b8282
+    switches:
+      switch1:
+        friendly_name: Zerver External HD
+        id: 1
+      switch2:
+        friendly_name: Fireplace
+        id: 2
+      switch3:
+        friendly_name: Monitor
+        id: 3
+      switch4:
+        friendly_name: Lamp
+        id: 4
+      switch5:
+        friendly_name: USB Switch
+        id: 5

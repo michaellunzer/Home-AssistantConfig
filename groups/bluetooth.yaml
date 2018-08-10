@@ -3,6 +3,7 @@
     icon: mdi:bluetooth
     entities:
     - device_tracker.lunziphone_2
+    - device_tracker.10lunz_2
     - device_tracker.matt_mahnkes_mac_pro
     - device_tracker.pb2032
     - device_tracker.playbulb_colour

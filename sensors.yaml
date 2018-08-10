@@ -1,6 +1,11 @@
 #moon sensor
   - platform: moon
   
+  
+# Season Sensor
+  - platform: season
+    type: astronomical
+  
 # # international Space Station
 #   - platform: iss
 #     # show_on_map: True
@@ -66,12 +71,43 @@
 #not currently working for whatever reason
 #   - platform: supervisord
 #     url: http://lunzpi.local:9001/
+
+
+# HaveIBeenPwned Sensor
+  - platform: haveibeenpwned
+    email: 
+    - !secret email
+
+
+# Version Sensor to add to Raspberry Pi Group
+  - platform: version
+  
+  
+# Folder Sensor (monitors how much stuff is in the folder - in MB)
+#   - platform: folder
+#     folder: /config
+#   - platform: folder
+#     folder: /backup
+#   - platform: folder
+#     folder: /addons
+#   - platform: folder
+#     folder: /share
+#   - platform: folder
+#     folder: /mnt/backups
+    
+# File Sensor
+#   - platform: filesize
+#     file_paths:
+#       - /config/home-assistant_v2.db
+
   
 # System Monitor Sensor  
   - platform: systemmonitor
     resources:
     - type: disk_use_percent
       arg: /home/
+    - type: disk_use_percent
+      arg: /mnt/backups
     - type: memory_free
     - type: memory_use_percent
     - type: processor_use
@@ -80,6 +116,10 @@
     
 # Speed Test Sensor
   - platform: speedtest
+    minute: 30
+    hour:
+    - 0
+    - 12
     monitored_conditions:
       - ping
       - download
@@ -141,3 +181,26 @@
     name: "SN1 Real Feel"
     unit_of_measurement: "°F"
     value_template: '{{ value_json.heatIndex | round(1) }}'
+    
+
+### Room-Assistant Bluetooth LE Presence Detection running on Raspberry Pi Zero W and sending updates over MQTT
+
+  - platform: mqtt_room
+    device_id: e51c8f2fd74b
+    away_timeout: 30
+    name: 'Tile Keys R-A_BT'
+    
+  - platform: mqtt_room
+    device_id: 760e4e3e2f66
+    away_timeout: 30
+    name: 'Pebble 2 Watch R-A_BT'
+    
+  - platform: mqtt_room
+    device_id: 4a896f874cc0
+    away_timeout: 30
+    name: 'Pebble Time Round Watch R-A_BT'
+
+  - platform: mqtt_room
+    device_id: d6234b09ace6
+    away_timeout: 30
+    name: 'Playbulb Bathroom Light R-A_BT'

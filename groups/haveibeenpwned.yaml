@@ -1,0 +1,4 @@
+# Have I been Pwned Sensor
+    name: "Have I been Pwned Sensor"
+    entities:
+      - sensor.breaches_michaellunzergmailcom

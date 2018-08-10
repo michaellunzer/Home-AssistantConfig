@@ -10,6 +10,7 @@ secrets.yaml
 known_devices.yaml
 home-assistant.log
 home-assistant_v2.db
+hassio_configs.txt
 *.pid
 *.xml
 *.csr

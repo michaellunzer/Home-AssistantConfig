@@ -133,3 +133,52 @@ device_tracker.tile_kia_car_keys_michael:
 device_tracker.matthewcsiphone:
   friendly_name: Matthew's iPhone
   icon: mdi:phone-bluetooth
+device_tracker.esp_0aacf7:
+  icon: mdi:chip
+sensor.sn1_humidity:
+  icon: mdi:radiator
+light.sn1_led:
+  icon: mdi:led-on
+switch.10lunz_pc:
+  icon: mdi:desktop-tower
+device_tracker.horacio_perezs_mouse:
+  hidden: true
+device_tracker.404e368c819c:
+  hidden: true
+device_tracker.apple_bluetooth_device:
+  hidden: true
+device_tracker.b808d7430199:
+  hidden: true
+group.lights_michael:
+  friendly_name: Michael's Bedroom Lights
+light.group_for_wakeup:
+  hidden: true
+device_tracker.iphone:
+  hidden: true
+device_tracker.bt_5ce0c5a8dfda:
+  hidden: true
+device_tracker.pogoplug:
+  hidden: true
+device_tracker.apple_tv_2:
+  hidden: true
+device_tracker.margarets_iphone:
+  hidden: true
+device_tracker.android_a1000017f36111:
+  friendly_name: Android IP Camera
+  icon: mdi:cctv
+sensor.ip_webcam_audio_connections:
+  hidden: true
+sensor.ip_webcam_video_connections:
+  hidden: true
+device_tracker.horacios_mouse_1:
+  hidden: true
+device_tracker.iphone_2:
+  friendly_name: Maddi's iPhone
+sensor.tile_keys_ra_bt:
+  icon: mdi:key
+sensor.pebble_2_watch_ra_bt:
+  icon: mdi:watch
+sensor.pebble_time_round_watch_ra_bt:
+  icon: mdi:watch
+sensor.playbulb_bathroom_light_ra_bt:
+  icon: mdi:shower

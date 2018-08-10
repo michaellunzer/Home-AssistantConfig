@@ -24,9 +24,14 @@ sensor:
     host: 192.168.1.17
     monitored_conditions:
       - ads_percentage_today
+      - ads_blocked_today
+      - queries_cached
+      - queries_forwarded
       - unique_domains
       - dns_queries_today
       - domains_being_blocked
+      - unique_clients
+      - clients_ever_seen
 
 # Pi-Hole switch
 switch:
@@ -39,12 +44,23 @@ switch:
         value_template: "{{ value_json.status == 'enabled' }}"
 
 
-# moved to /config/groups/pihole.yaml
-# group:
-#   Pi Hole:
-#     entities:
-#       - switch.pihole_switch
-#       - sensor.pihole_dns_queries_today
-#       - sensor.pihole_domains_blocked
-#       - sensor.pihole_ads_percentage_blocked_today
-#       - sensor.pihole_dns_unique_domains
+# moved back from /config/groups/pihole.yaml
+group:
+  Pi Hole:
+    name: "Pi Hole"
+    icon: mdi:alert-octagon
+    entities:
+      - switch.pihole_switch
+      - sensor.pihole_dns_queries_today
+      - sensor.pihole_ads_blocked_today
+      - sensor.pihole_ads_percentage_today
+      - sensor.pihole_domains_blocked
+      - sensor.pihole_ads_percentage_blocked_today
+      - sensor.pihole_dns_unique_domains
+      - sensor.pihole_dns_unique_clients
+      - sensor.pihole_dns_queries_cached
+      - sensor.pihole_queries_cached
+      - sensor.pihole_dns_queries_forwarded
+      - sensor.pihole_unique_clients
+      - sensor.pihole_seen_clients
+      - sensor.pihole_clients_ever_seen

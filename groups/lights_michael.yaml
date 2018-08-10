@@ -3,3 +3,6 @@
     entities:
       - light.mclighting01
       - light.flux_bedroom_light
+      - switch.lamp
+      - switch.monitor
+      - switch.fireplace
