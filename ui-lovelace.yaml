@@ -190,28 +190,28 @@ views:
 
   - title: Media
     cards:
-    - type: entities
-      title: all remotes
-      show_header_toggle: true
-      entities:
-        - remote.apple_tv
-    - type: media-control
-      entity: media_player.amazon_fire_tv
-    - type: media-control
-      entity: media_player.spotify
-    - type: media-control
-      entity: media_player.lunzpi
-    - type: media-control
-      entity: media_player.kitchen_speaker
-    - type: media-control
-      entity: media_player.lunzcast
-    - type: media-control
-      entity: media_player.apple_tv
-    - type: entities
-      title: LastFM
-      show_header_toggle: true
-      entities:
-        - sensor.lastfm_michaellunzer
+      - type: entities
+        title: all remotes
+        show_header_toggle: true
+        entities:
+          - remote.apple_tv
+      - type: media-control
+        entity: media_player.amazon_fire_tv
+      - type: media-control
+        entity: media_player.spotify
+      - type: media-control
+        entity: media_player.lunzpi
+      - type: media-control
+        entity: media_player.kitchen_speaker
+      - type: media-control
+        entity: media_player.lunzcast
+      - type: media-control
+        entity: media_player.apple_tv
+      - type: entities
+        title: LastFM
+        show_header_toggle: true
+        entities:
+          - sensor.lastfm_michaellunzer
 
 
   - title: Environment

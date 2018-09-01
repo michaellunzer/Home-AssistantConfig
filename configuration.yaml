@@ -39,17 +39,17 @@ zone: !include zones.yaml
 
 recorder:
   db_url: mysql://admin:asdf@core-mariadb/homeassistant
-#   purge_keep_days: 2
-#   purge_interval: 2
+  purge_keep_days: 2
+  purge_interval: 2
 
-# influxdb:
-#   host: a0d7b954-influxdb
-#   port: 8086
-#   database: homeassistant
-#   username: !secret influxdb_username
-#   password: !secret influxdb_password
-#   max_retries: 3
-#   default_measurement: state
+influxdb:
+  host: a0d7b954-influxdb
+  port: 8086
+  database: homeassistant
+  username: !secret influxdb_username
+  password: !secret influxdb_password
+  max_retries: 3
+  default_measurement: state
 
 # Show links to resources in log and frontend
 # introduction:
@@ -186,6 +186,57 @@ binary_sensor:
 #     device_class: 'motion'
 #     value_template: '{{ value_json.value }}'
 
+#
+# Home Assistant YAML
+# Bayesian Binary Sensor
+# https://home-assistant.io/components/binary_sensor.bayesian/
+#
+# Observes many device tracker entities to determine if home or not
+#
+# http://www.diyfuturism.com/index.php/2017/11/26/presence-detection-with-home-assistant-bayesian-probability/
+#
+  - platform: bayesian
+    prior: 0.5
+    name: 'Michael Presence'
+    probability_threshold: 0.9
+    observations:
+    - entity_id: 'device_tracker.lunziphone_wifi'
+      prob_given_true: 0.6
+      prob_given_false: 0.4
+      platform: 'state'
+      to_state: 'home'
+    - entity_id: 'device_tracker.lunziphone_ios'
+      prob_given_true: 0.6
+      prob_given_false: 0.4
+      platform: 'state'
+      to_state: 'home'
+    - entity_id: 'sensor.tile_keys_ra_bt'
+      prob_given_true: 0.6
+      prob_given_false: 0.4
+      platform: 'state'
+      to_state: 'home'
+    # - entity_id: 'sensor.pebble_2_watch_ra_bt'
+    #   prob_given_true: 0.9
+    #   prob_given_false: 0.2
+    #   platform: 'state'
+    #   to_state: 'home'
+    # - entity_id: 'sensor.pebble_time_round_watch_ra_bt'
+    #   prob_given_true: 0.6
+    #   prob_given_false: 0.4
+    #   platform: 'state'
+    #   to_state: 'home'
+    # - entity_id: 'device_tracker.brad_nodered'
+    #   prob_given_true: 0.8
+    #   prob_given_false: 0.2
+    #   platform: 'state'
+    #   to_state: 'home'
+    # - entity_id: 'device_tracker.tile_keys'
+    #   prob_given_true: 0.8
+    #   prob_given_false: 0.4
+    #   platform: 'state'
+    #   to_state: 'home'
+
+
 
 mqtt:
   broker: !secret MQTT_broker
@@ -231,14 +282,14 @@ panel_iframe:
     title: SonWEB
     icon: mdi:lightbulb-on
     url: !secret sonweb_url
-#   grafana:
-#     title: Grafana
-#     icon: mdi:chart-timeline
-#     url: !secret grafana_url
-#   influxdb:
-#     title: InfluxDB
-#     icon: mdi:chart-areaspline
-#     url: !secret influxdb_url
+  grafana:
+    title: Grafana
+    icon: mdi:chart-timeline
+    url: !secret grafana_url
+  influxdb:
+    title: InfluxDB
+    icon: mdi:chart-areaspline
+    url: !secret influxdb_url
   esphomeyaml:
     title: esphomeyaml
     icon: mdi:chip
@@ -276,7 +327,7 @@ device_tracker:
 #   - platform: icloud
 #     username: !secret icloud_username
 #     password: !secret icloud_password
-  - platform: bluetooth_tracker
+#  - platform: bluetooth_tracker                       # Disabled bluetooth tracker on VM
 
 # duckDNS
 duckdns:
@@ -331,8 +382,8 @@ switch:
             input: 10-LUNZ
   - platform: tuya
     host: 192.168.1.211
-    local_key: 2ea194588b2096c7
-    device_id: 012007682c3ae84b8282
+    local_key: !secret tuya_local_key
+    device_id: !secret tuya_device_id
     switches:
       switch1:
         friendly_name: Zerver External HD
