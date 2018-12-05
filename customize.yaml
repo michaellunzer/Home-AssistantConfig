@@ -182,3 +182,5 @@ sensor.pebble_time_round_watch_ra_bt:
   icon: mdi:watch
 sensor.playbulb_bathroom_light_ra_bt:
   icon: mdi:shower
+light.group_for_wakeup_2:
+  hidden: true

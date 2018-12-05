@@ -1,10 +1,15 @@
 #   LunziPhone:
-    name: "LunziPhone & LunziPhone5-16GB"
+    name: "LunziPhone & LunziPad"
     icon: mdi:cellphone-iphone
     entities:
-      - device_tracker.lunziphone
+      - device_tracker.lunziphone_ios
+      - device_tracker.lunziphone_bt
+      - device_tracker.lunziphone_wifi
       - sensor.lunziphone_battery_level
       - sensor.lunziphone_battery_state
+      -  device_tracker.lunzipad_ios
+      - sensor.lunzipad_battery_level_2
+      - sensor.lunzipad_battery_state_2
       - device_tracker.lunziphone516gb
       - sensor.lunziphone516gb_battery_level
       - sensor.lunziphone516gb_battery_state

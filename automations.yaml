@@ -67,3 +67,13 @@
   - data:
       name: dark
     service: frontend.set_theme
+- id: '1543992499281'
+  alias: SFTP Daily Backup at 4 AM
+  trigger:
+  - at: '4:00:00'
+    platform: time
+  condition: []
+  action:
+  - data:
+      addon: ce20243c_remote_backup
+    service: hassio.addon_start

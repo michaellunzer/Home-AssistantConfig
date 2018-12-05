@@ -7,6 +7,8 @@
       - sensor.weather_precipitation
       - sensor.weather_humidity
       - sensor.weather_cloudiness
+      - sensor.weather_fog 
+      - sensor.weather_wind_speed 
       - sensor.moon
       - sun.sun
       - sun.next_setting

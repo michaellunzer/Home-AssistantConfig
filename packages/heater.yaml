@@ -55,14 +55,14 @@
 #     #           payload: '{{ states.input_number.heater.state | int }}'
 
 
-
-switch:
-  - platform: mqtt
-    name: Heater
-    state_topic: "sRV/state"
-    command_topic: "sRV/move"
-    payload_on: "ON"
-    payload_off: "OFF"
-    state_on: "OPEN"
-    state_off: "CLOSED"
-    optimistic: true
+# Just uncomment below:
+# switch:
+#   - platform: mqtt
+#     name: Heater
+#     state_topic: "sRV/state"
+#     command_topic: "sRV/move"
+#     payload_on: "ON"
+#     payload_off: "OFF"
+#     state_on: "OPEN"
+#     state_off: "CLOSED"
+#     optimistic: true

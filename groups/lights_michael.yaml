@@ -1,8 +1,9 @@
-#  Michael's Bedroom lights:
-    name: "Michael's Bedroom lights"
+#  Michael's Bedroom:
+    name: "Michael's Bedroom"
     entities:
       - light.mclighting01
       - light.flux_bedroom_light
       - switch.lamp
       - switch.monitor
       - switch.fireplace
+      - switch.stereo_amp

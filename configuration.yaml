@@ -14,14 +14,14 @@ homeassistant:
   customize: !include customize.yaml
   packages: !include_dir_named packages
   # whitelist_external_dirs:
-  # - /backup
+  # # - /backup
   # - /config
-  # - /addons
-  # - /share
-  # - /dev
+  # # - /addons
+  # # - /share
+  # # - /dev
   # - /mnt/backups
 
-shell_command: !include_dir_named shell_command
+# shell_command: !include_dir_named shell_command
 
 zone: !include zones.yaml
 #I hope this is the right spot for the zone config.
@@ -40,7 +40,7 @@ zone: !include zones.yaml
 recorder:
   db_url: mysql://admin:asdf@core-mariadb/homeassistant
   purge_keep_days: 2
-  purge_interval: 2
+  purge_interval: 1
 
 influxdb:
   host: a0d7b954-influxdb
@@ -128,11 +128,11 @@ sun:
 #   - platform: yr
 
 # Text to speech
-tts:
-  - platform: google
+# tts:
+#   - platform: google
 
 # Cloud
-cloud:
+# cloud:
 
 # folder_watcher:
 #   - folder: /config
@@ -167,24 +167,32 @@ camera:
 #     still_image_url: https://maps.googleapis.com/maps/api/staticmap?center={{ states.device_tracker.tile_kia.attributes.latitude }},{{ states.device_tracker.tile_kia.attributes.longitude }}&zoom=17&size=500x500&maptype=roadmap&markers=color:blue%7Clabel:P%7C{{ states.device_tracker.tile_kia.attributes.latitude }},{{ states.device_tracker.tile_kia.attributes.longitude }}
 #     limit_refetch_to_url_change: true
 # # International Space Station Map
-  - platform: generic
-    name: ISS
-    still_image_url: https://maps.googleapis.com/maps/api/staticmap?center={{ states.binary_sensor.iss.attributes.lat }},{{ states.binary_sensor.iss.attributes.long }}&zoom=5&size=500x500&maptype=roadmap&markers=color:blue%7Clabel:P%7C{{ states.binary_sensor.iss.attributes.lat }},{{ states.binary_sensor.iss.attributes.long }}
-    limit_refetch_to_url_change: true
+#   - platform: generic
+#     name: ISS
+#     still_image_url: https://maps.googleapis.com/maps/api/staticmap?center={{ states.binary_sensor.iss.attributes.lat }},{{ states.binary_sensor.iss.attributes.long }}&zoom=5&size=500x500&maptype=roadmap&markers=color:blue%7Clabel:P%7C{{ states.binary_sensor.iss.attributes.lat }},{{ states.binary_sensor.iss.attributes.long }}
+#     limit_refetch_to_url_change: true
 
 binary_sensor:
-  - platform: iss
-    show_on_map: False
-  - platform: uptimerobot
-    api_key: !secret uptimerobot_api_key
+#   - platform: iss
+#     show_on_map: False
+#   - platform: uptimerobot
+#     api_key: !secret uptimerobot_api_key
 ## This is for the motion Sensor
-#   - platform: mqtt
-#     state_topic: 'room_presence/Michael-room'
-#     name: 'Michael Room Motion Sensor'
-#     payload_on: 1
-#     payload_off: 0
-#     device_class: 'motion'
-#     value_template: '{{ value_json.value }}'
+  - platform: mqtt
+    state_topic: 'room_presence/Michael-room'
+    name: 'Michael Room BTLE Template Sensor'
+    payload_on: 1
+    payload_off: 0
+    device_class: 'motion'
+    value_template: '{{ value_json.value }}'
+  - platform: mqtt
+    state_topic: 'bruh/sensornode1'
+    name: 'Michael Room actual Motion Sensor'
+    payload_on: 'motion detected'
+    payload_off: 'standby'
+    device_class: 'motion'
+    value_template: '{{ states.sensor.sn1_pir.state }}'
+    
 
 #
 # Home Assistant YAML
@@ -196,23 +204,23 @@ binary_sensor:
 # http://www.diyfuturism.com/index.php/2017/11/26/presence-detection-with-home-assistant-bayesian-probability/
 #
   - platform: bayesian
-    prior: 0.5
+    prior: 0.75
     name: 'Michael Presence'
-    probability_threshold: 0.9
+    probability_threshold: 0.95
     observations:
     - entity_id: 'device_tracker.lunziphone_wifi'
-      prob_given_true: 0.6
-      prob_given_false: 0.4
+      prob_given_true: 0.99
+      prob_given_false: 0.1
       platform: 'state'
       to_state: 'home'
     - entity_id: 'device_tracker.lunziphone_ios'
-      prob_given_true: 0.6
-      prob_given_false: 0.4
+      prob_given_true: 0.9
+      prob_given_false: 0.1
       platform: 'state'
       to_state: 'home'
     - entity_id: 'sensor.tile_keys_ra_bt'
-      prob_given_true: 0.6
-      prob_given_false: 0.4
+      prob_given_true: 1
+    #   prob_given_false: 0.1
       platform: 'state'
       to_state: 'home'
     # - entity_id: 'sensor.pebble_2_watch_ra_bt'
@@ -238,12 +246,12 @@ binary_sensor:
 
 
 
-mqtt:
-  broker: !secret MQTT_broker
-  username: !secret MQTT_username
-  password: !secret MQTT_password
-  discovery: true
-  discovery_prefix: homeassistant
+# mqtt:
+#   broker: !secret MQTT_broker
+#   username: !secret MQTT_username
+#   password: !secret MQTT_password
+#   discovery: true
+#   discovery_prefix: homeassistant
 
 # cover:
 #   - platform: mqtt
@@ -301,15 +309,15 @@ panel_iframe:
 #     url: !secret router_url
 
 media_player:
-  - platform: mpd
-    host: !secret mpd_host_lunzpi
-    port: !secret mpd_port_lunzpi
-    name: LunzPi
+#   - platform: mpd                # I don't use this as a media player anymore, just cleaning things up.
+#     host: !secret mpd_host_lunzpi
+#     port: !secret mpd_port_lunzpi
+#     name: LunzPi
   - platform: spotify
     client_id: !secret spotify_client_id
     client_secret: !secret spotify_client_secret
-  - platform: firetv
-    device: "FireTV-Stick"
+#   - platform: firetv
+#     device: "FireTV-Stick"
   # - platform: itunes
   #   host: !secret itunes_host
 
@@ -317,22 +325,44 @@ device_tracker:
   - platform: tile
     username: !secret tile_username
     password: !secret tile_password
-  - platform: asuswrt
-    host: 192.168.1.1
-    username: !secret asus_username
-    password: !secret asus_password
-    consider_home: 0:03
-    new_device_defaults:
-      track_new_devices: True
+  - platform: googlehome
+    host: 192.168.1.237
+#   - platform: nmap_tracker
+#     hosts: 192.168.1.0/24
+#     home_interval: 10
+    # exclude:
+    #  - 192.168.1.12
+    #  - 192.168.1.13
+#   - platform: asuswrt
+#     host: 192.168.1.1
+#     username: !secret asus_username
+#     password: !secret asus_password
+#     protocol: telnet #ssh or telnet
+#     interval_seconds: 30
+#     consider_home: 180
+#     new_device_defaults:
+#       track_new_devices: True
 #   - platform: icloud
 #     username: !secret icloud_username
 #     password: !secret icloud_password
 #  - platform: bluetooth_tracker                       # Disabled bluetooth tracker on VM
 
+# enable in 0.83 or greater
+
+asuswrt:
+    host: 192.168.1.1
+    username: !secret asus_username
+    password: !secret asus_password
+#or
+    # ssh_key: '/config/ssh/asuswrt'  #The path to your SSH private key file associated with your given admin account
+
+
+
 # duckDNS
-duckdns:
-  domain: !secret duckdns_domain
-  access_token: !secret duckdns_access_token
+# If you are running the Hass.io DuckDNS add-on this component is not required. The add-on will keep your IP updated with DuckDNS.
+# duckdns:
+#   domain: !secret duckdns_domain
+#   access_token: !secret duckdns_access_token
 
 
 
@@ -370,6 +400,14 @@ light:
 ####################################
 
 
+# this is for the "new/official" Tuya component -- however it relies on 3rd party external servers.
+# tuya:
+#   username: !secret tuya_username
+#   password: !secret tuya_password
+#   country_code: 1
+#   platform: jinvoo_smart
+
+
 switch:
   - platform: wake_on_lan
     mac_address: "D8-CB-8A-70-E9-CB"
@@ -386,7 +424,7 @@ switch:
     device_id: !secret tuya_device_id
     switches:
       switch1:
-        friendly_name: Zerver External HD
+        friendly_name: Stereo Amp
         id: 1
       switch2:
         friendly_name: Fireplace
@@ -400,3 +438,12 @@ switch:
       switch5:
         friendly_name: USB Switch
         id: 5
+
+
+####################################
+############# INPUT BOOLEAN ########
+####################################
+
+input_boolean:
+  medicine_reminder:
+    name: Adderall Reminder

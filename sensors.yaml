@@ -28,16 +28,45 @@
       - temperature
       - symbol
       - precipitation
-      # - windSpeed
+      - windSpeed
       # - pressure
       # - windDirection
       - humidity
-      # - fog
+      - fog
       - cloudiness
       # - lowClouds
       # - mediumClouds
       # - highClouds
       # - dewpointTemperature
+      
+      
+### Need to setup Darksky sensors first
+### https://diyfuturism.com/index.php/2018/01/13/useful-sensor-wind-direction-home-assistant/
+
+# # Convert the Wind Direction from degrees to cardinal
+# - platform: template
+#   sensors:
+#     friendly_wind_direction:
+#       friendly_name: 'Wind Direction'
+#       value_template: >-
+#         {%if states.sensor.dark_sky_wind_bearing.state | float<=11 %}N
+#         {% elif states.sensor.dark_sky_wind_bearing.state | float>348 %}N
+#         {% elif states.sensor.dark_sky_wind_bearing.state | float<=34 | float>11 %}NNE
+#         {% elif states.sensor.dark_sky_wind_bearing.state | float<=56 | float>34 %}NE
+#         {% elif states.sensor.dark_sky_wind_bearing.state | float<=79 | float>56 %}ENE
+#         {% elif states.sensor.dark_sky_wind_bearing.state | float<=101 | float>79 %}E
+#         {% elif states.sensor.dark_sky_wind_bearing.state | float<=124 | float>101 %}ESE
+#         {% elif states.sensor.dark_sky_wind_bearing.state | float<=146 | float>124 %}SE
+#         {% elif states.sensor.dark_sky_wind_bearing.state | float<=169 | float>146 %}SSE
+#         {% elif states.sensor.dark_sky_wind_bearing.state | float<=191 | float>169 %}S
+#         {% elif states.sensor.dark_sky_wind_bearing.state | float<=214 | float>191 %}SSW
+#         {% elif states.sensor.dark_sky_wind_bearing.state | float<=236 | float>214 %}SW
+#         {% elif states.sensor.dark_sky_wind_bearing.state | float<=259 | float>236 %}WSW
+#         {% elif states.sensor.dark_sky_wind_bearing.state | float<=281 | float>259 %}W
+#         {% elif states.sensor.dark_sky_wind_bearing.state | float<=304 | float>281 %}WNW
+#         {% elif states.sensor.dark_sky_wind_bearing.state | float<=326 | float>304 %}NW
+#         {% elif states.sensor.dark_sky_wind_bearing.state | float<=348 | float>326 %}NNW
+#         {%- endif %}
       
 # # iPhone Battery Sensor
 #   - platform: template
@@ -86,8 +115,8 @@
   
   
 # Folder Sensor (monitors how much stuff is in the folder - in MB)
-#   - platform: folder
-#     folder: /config
+  - platform: folder
+    folder: /config
 #   - platform: folder
 #     folder: /backup
 #   - platform: folder
@@ -108,8 +137,6 @@
     resources:
     - type: disk_use_percent
       arg: /home/
-    - type: disk_use_percent
-      arg: /mnt/backups
     - type: memory_free
     - type: memory_use_percent
     - type: processor_use
@@ -117,26 +144,26 @@
     - type: since_last_boot
     
 ### Not sure if this will work with proxmox to report the host system battery state
-  - platform: linux_battery
+#   - platform: linux_battery
     
 # Speed Test Sensor
-  - platform: speedtest
-    minute: 30
-    hour:
-    - 4
-    monitored_conditions:
-      - ping
-      - download
-      - upload
-  - platform: uptime
-    name: "Time Online"
-    unit_of_measurement: hours
+#   - platform: speedtest
+#     minute: 30
+#     hour:
+#     - 4
+#     monitored_conditions:
+#       - ping
+#       - download
+#       - upload
+#   - platform: uptime
+#     name: "Time Online"
+#     unit_of_measurement: hours
     
 # LastFM
-  - platform: lastfm
-    api_key: !secret lastfm_api_key
-    users:
-      - michaellunzer
+#   - platform: lastfm
+#     api_key: !secret lastfm_api_key
+#     users:
+#       - michaellunzer
       
 # AirVisual
   - platform: airvisual
@@ -208,3 +235,11 @@
     device_id: d6234b09ace6
     away_timeout: 30
     name: 'Playbulb Bathroom Light R-A_BT'
+    
+    
+    ######## Volume Knob ########
+    
+  - platform: mqtt
+    state_topic: "rotary/volume/state"
+    name: "Volume Knob"
+    retain: true
