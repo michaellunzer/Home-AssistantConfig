@@ -1,20 +1,3 @@
-- id: b4186bd84bca47a3ad0ccf423c87297b
-  alias: Daily Backup at 3am
-  trigger:
-  - at: 03:01:00
-    platform: time
-  action:
-  - data_template:
-      name: Automated Backup {{ now().strftime('%Y-%m-%d') }}
-    service: hassio.snapshot_full
-  - data:
-      message: Hass.io Snapshot Created
-      target:
-      - channel/lunzhome
-    data_template:
-      message: Creating backup named "Automated Backup {{ now().strftime('%Y-%m-%d')
-        }}"
-    service: notify.pushbullet
 - id: '1522393589366'
   alias: Upload Snapshot to Dropbox at 5am
   trigger:
@@ -36,7 +19,7 @@
       - channel/lunzhome
     service: notify.pushbullet
 - id: '1526803342640'
-  alias: Copy to USB Drive at 4:00am
+  alias: Copy to USB Drive at 4am
   trigger:
   - at: 04:00:00
     platform: time
@@ -68,7 +51,7 @@
       name: dark
     service: frontend.set_theme
 - id: '1543992499281'
-  alias: SFTP Daily Backup at 4 AM
+  alias: SFTP Daily Backup at 4am
   trigger:
   - at: '4:00:00'
     platform: time
@@ -77,3 +60,79 @@
   - data:
       addon: ce20243c_remote_backup
     service: hassio.addon_start
+- id: '1550625961430'
+  alias: Upload Snapshot to Google Drive at 430am
+  trigger:
+  - at: 04:30:00
+    platform: time
+  condition:
+  - condition: state
+    entity_id: automation.upload_snapshot_to_google_drive_at_430am
+    state: 'on'
+  action:
+  - service: rest_command.google_backup
+  - data: {}
+    service: notify.ios_lunziphone_ios
+  - data:
+      message: Hass.io Snapshot Uploaded to Google Drive
+      target:
+      - channel/lunzhome
+    service: notify.pushbullet
+- id: '1560795323262'
+  alias: Daily Backup at 3am
+  trigger:
+  - at: 03:01:00
+    platform: time
+  condition: []
+  action:
+  - data:
+      addons:
+      - a0d7b954_influxdb
+      - core_mariadb
+      - b794684e_configurator_latest
+      - a0d7b954_pi-hole
+      - 40817795_nginxproxymanager
+      - a0d7b954_sonweb
+      - a0d7b954_grafana
+      - core_duckdns
+      - a0d7b954_ssh
+      - a0d7b954_adb
+      - ce20243c_remote_backup
+      - cebe7a76_hassio_google_drive_backup
+      - a0d7b954_zerotier
+      - a0d7b954_mqtt
+      - a0d7b954_ftp
+      - a0d7b954_logviewer
+      - a0d7b954_glances
+      - a0d7b954_sqlite-web
+      - 6e66619d_room-assistant
+      - a0d7b954_home-panel
+      - local_room-assistant
+      - 03d23610_dasshio
+      - core_git_pull
+      - 7be23ff5_dropbox_sync
+      - core_rpc_shutdown
+      - a0d7b954_appdaemon3
+      - a722577e_apcupsd
+      - a0d7b954_spotify
+      - a0d7b954_aircast
+      - f190cc33_firetv-server
+      - fe41fc28_caddy
+      - e5829d31_devlocator
+      - a0d7b954_jupyterlablite
+      - a0d7b954_motioneye
+      - a0d7b954_nodered
+      - 3833edd4_googlebackup
+      - core_check_config
+      - core_samba
+      folders:
+      - homeassistant
+      - share
+      - ssl
+      name: Automated Partial Backup
+    service: hassio.snapshot_partial
+  - data:
+      message: Creating backup named Automated Backup {{ now().strftime('%Y-%m-%d')}}
+      target:
+      - channel/lunzhome
+    service: notify.pushbullet

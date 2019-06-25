@@ -1,14 +1,14 @@
-#  Michael's Bedroom:
-    name: "Michael's Bedroom"
+#  All the lights in Michael's Bedroom including status LED:
+    name: "Michael's Room Lights"
     entities:
       - light.michael_hue
-      - light.mclighting01
+      - light.cabinet_light
       - light.flux_bedroom_light
       - switch.lamp
       - switch.monitor
       - switch.fireplace
       - switch.stereo_amp
-      - switch.stereo_relay
+      - light.sn1_light
       - switch.sonoff_powerstrip_relay_lamp
       - switch.sonoff_powerstrip_relay_monitor
       - switch.sonoff_powerstrip_relay_fireplace
@@ -21,3 +21,6 @@
     #   - switch.012007682c3ae84b8282_2
     #   - switch.012007682c3ae84b8282_3
     #   - switch.012007682c3ae84b8282_4
+    
+    
+    #   - light.mclighting01

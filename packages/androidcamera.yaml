@@ -1,31 +1,31 @@
-# android_ip_webcam:
-#   - host: 192.168.1.93
-#     port: 8080
-#     # sensors:
-#     #   - audio_connections
-#     #   - battery_level
-#     #   - battery_temp
-#     #   - battery_voltage
-#     #   - light
-#     #   - motion
-#     #   - pressure
-#     #   - proximity
-#     #   - sound
-#     #   - video_connections
-#     switches:
-#     #   - exposure_lock
-#     #   - ffc
-#       - focus
-#     #   - gps_active
-#     #   - night_vision
-#     #   - overlay
-#       - torch
-#     #   - whitebalance_lock
-#     #   - video_recording
+android_ip_webcam:
+  - host: 192.168.1.93
+    port: 8080
+    # sensors:
+    #   - audio_connections
+    #   - battery_level
+    #   - battery_temp
+    #   - battery_voltage
+    #   - light
+    #   - motion
+    #   - pressure
+    #   - proximity
+    #   - sound
+    #   - video_connections
+    switches:
+    #   - exposure_lock
+    #   - ffc
+      - focus
+    #   - gps_active
+    #   - night_vision
+    #   - overlay
+      - torch
+    #   - whitebalance_lock
+    #   - video_recording
     
-# group:
-#   Android IP Camera:
-#     entities:
-#       - switch.ip_webcam_focus
-#       - switch.ip_webcam_torch
-#       - device_tracker.android_a1000017f36111
+group:
+  Android IP Camera:
+    entities:
+      - switch.ip_webcam_focus
+      - switch.ip_webcam_torch
+      - device_tracker.android_a1000017f36111

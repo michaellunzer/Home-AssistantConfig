@@ -225,7 +225,7 @@ views:
           - sensor.allergy_index_today
           - sensor.allergy_index_tomorrow
           - sensor.allergy_index_yesterday
-          - sensor.cold__flu_forecasted_average
+          - sensor.cold_flu_forecasted_average
       - type: entities
         title: Air Quality
         show_header_toggle: true
@@ -519,7 +519,7 @@ views:
 #           - sensor.allergy_index_today
 #           - sensor.allergy_index_tomorrow
 #           - sensor.allergy_index_yesterday
-#           - sensor.cold__flu_forecasted_average
+#           - sensor.cold_flu_forecasted_average
 #       - type: entities
 #         title: LunziPhone & LunziPhone5-16GB
 #         show_header_toggle: true

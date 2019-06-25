@@ -1,3 +1,41 @@
+# Home Assistant configuration
+input_number:
+  stepper_control:
+    name: Stepper Control
+    initial: 0
+    min: -9000
+    max: 9000
+    step: 1
+    # mode: box
+
+automation:
+  - alias: Write Stepper Value to ESP
+    trigger:
+      platform: state
+      entity_id: input_number.stepper_control
+    action:
+      # Replace livingroom with the name you gave the ESP
+      - service: esphome.heater_control_stepper
+        data_template:
+          target: '{{ trigger.to_state.state | int }}'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # homeassistant:
 #   customize:
 #

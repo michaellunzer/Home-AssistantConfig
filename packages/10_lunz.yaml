@@ -1,0 +1,309 @@
+binary_sensor:
+  - platform: mqtt
+    name: "10-LUNZ - Connected"
+    state_topic: "iotlink/workgroup/10-lunz/lwt"
+    value_template: "{{ value }}"
+    payload_on: "ON"
+    payload_off: "OFF"
+    device_class: "connectivity"
+    qos: 1
+
+  - platform: mqtt
+    name: "10-LUNZ - Charging"
+    state_topic: "iotlink/workgroup/10-lunz/windows-monitor/stats/power/status"
+    value_template: "{{ value }}"
+    payload_on: "Online"
+    payload_off: "Offline"
+    device_class: "plug"
+    availability_topic: "iotlink/workgroup/10-lunz/lwt"
+    payload_available: "ON"
+    payload_not_available: "OFF"
+    qos: 1
+
+  - platform: mqtt
+    name: "10-LUNZ - Battery Status"
+    state_topic: "iotlink/workgroup/10-lunz/windows-monitor/stats/battery/status"
+    value_template: "{{ value }}"
+    payload_on: "Online"
+    payload_off: "Offline"
+    device_class: "plug"
+    availability_topic: "iotlink/workgroup/10-lunz/lwt"
+    payload_available: "ON"
+    payload_not_available: "OFF"
+    qos: 1
+
+sensor:
+
+  - platform: mqtt
+    name: "10-LUNZ - Idle Time"
+    state_topic: "iotlink/workgroup/10-lunz/windows-monitor/stats/idle-time/my_user"
+    unit_of_measurement: 'seconds'
+    icon: mdi:timer
+    value_template: "{{ value }}"
+    availability_topic: "iotlink/workgroup/10-lunz/lwt"
+    payload_available: "ON"
+    payload_not_available: "OFF"
+    qos: 1
+
+  - platform: mqtt
+    name: "10-LUNZ - CPU Usage"
+    state_topic: "iotlink/workgroup/10-lunz/windows-monitor/stats/cpu"
+    unit_of_measurement: '%'
+    icon: mdi:speedometer
+    value_template: "{{ value }}"
+    availability_topic: "iotlink/workgroup/10-lunz/lwt"
+    payload_available: "ON"
+    payload_not_available: "OFF"
+    qos: 1
+
+  - platform: mqtt
+    name: "10-LUNZ - RAM Usage"
+    state_topic: "iotlink/workgroup/10-lunz/windows-monitor/stats/memory/usage"
+    unit_of_measurement: '%'
+    icon: mdi:memory
+    value_template: "{{ value }}"
+    availability_topic: "iotlink/workgroup/10-lunz/lwt"
+    payload_available: "ON"
+    payload_not_available: "OFF"
+    qos: 1
+
+  - platform: mqtt
+    name: "10-LUNZ - RAM Available"
+    state_topic: "iotlink/workgroup/10-lunz/windows-monitor/stats/memory/available"
+    unit_of_measurement: 'MB'
+    icon: mdi:memory
+    value_template: "{{ value }}"
+    availability_topic: "iotlink/workgroup/10-lunz/lwt"
+    payload_available: "ON"
+    payload_not_available: "OFF"
+    qos: 1
+
+  - platform: mqtt
+    name: "10-LUNZ - RAM Used"
+    state_topic: "iotlink/workgroup/10-lunz/windows-monitor/stats/memory/used"
+    unit_of_measurement: 'MB'
+    icon: mdi:memory
+    value_template: "{{ value }}"
+    availability_topic: "iotlink/workgroup/10-lunz/lwt"
+    payload_available: "ON"
+    payload_not_available: "OFF"
+    qos: 1
+
+  - platform: mqtt
+    name: "10-LUNZ - RAM Total"
+    state_topic: "iotlink/workgroup/10-lunz/windows-monitor/stats/memory/total"
+    unit_of_measurement: 'MB'
+    icon: mdi:memory
+    value_template: "{{ value }}"
+    availability_topic: "iotlink/workgroup/10-lunz/lwt"
+    payload_available: "ON"
+    payload_not_available: "OFF"
+    qos: 1
+
+  - platform: mqtt
+    name: "10-LUNZ - Remaining Battery"
+    state_topic: "iotlink/workgroup/10-lunz/windows-monitor/stats/battery/remaining-percent"
+    unit_of_measurement: '%'
+    device_class: battery
+    value_template: "{{ value }}"
+    availability_topic: "iotlink/workgroup/10-lunz/lwt"
+    payload_available: "ON"
+    payload_not_available: "OFF"
+    qos: 1
+
+  - platform: mqtt
+    name: "10-LUNZ - Remaining Battery Time"
+    state_topic: "iotlink/workgroup/10-lunz/windows-monitor/stats/battery/remaining-time"
+    unit_of_measurement: 'minutes'
+    icon: mdi:timer
+    value_template: "{{ ( value | float / 60 ) | int }}"
+    availability_topic: "iotlink/workgroup/10-lunz/lwt"
+    payload_available: "ON"
+    payload_not_available: "OFF"
+    qos: 1
+
+  - platform: mqtt
+    name: "10-LUNZ - Predicted Lifetime"
+    state_topic: "iotlink/workgroup/10-lunz/windows-monitor/stats/battery/full-lifetime"
+    unit_of_measurement: 'minutes'
+    icon: mdi:timer
+    value_template: "{{ ( value | float / 60 ) | int }}"
+    availability_topic: "iotlink/workgroup/10-lunz/lwt"
+    payload_available: "ON"
+    payload_not_available: "OFF"
+    qos: 1
+
+  - platform: mqtt
+    name: "10-LUNZ - HDD Usage (C)"
+    state_topic: "iotlink/workgroup/10-lunz/windows-monitor/stats/hard-drive/c/drive-usage"
+    unit_of_measurement: '%'
+    icon: mdi:chart-donut
+    value_template: "{{ value }}"
+    availability_topic: "iotlink/workgroup/10-lunz/lwt"
+    payload_available: "ON"
+    payload_not_available: "OFF"
+    qos: 1
+
+  - platform: mqtt
+    name: "10-LUNZ - HDD Total Size (C)"
+    state_topic: "iotlink/workgroup/10-lunz/windows-monitor/stats/hard-drive/c/total-size"
+    unit_of_measurement: 'MB'
+    icon: mdi:harddisk
+    value_template: "{{ value }}"
+    availability_topic: "iotlink/workgroup/10-lunz/lwt"
+    payload_available: "ON"
+    payload_not_available: "OFF"
+    qos: 1
+
+  - platform: mqtt
+    name: "10-LUNZ - HDD Total Free Space (C)"
+    state_topic: "iotlink/workgroup/10-lunz/windows-monitor/stats/hard-drive/c/total-free-space"
+    unit_of_measurement: 'MB'
+    icon: mdi:harddisk
+    value_template: "{{ value }}"
+    availability_topic: "iotlink/workgroup/10-lunz/lwt"
+    payload_available: "ON"
+    payload_not_available: "OFF"
+    qos: 1
+
+  - platform: mqtt
+    name: "10-LUNZ - HDD Free Space (C)"
+    state_topic: "iotlink/workgroup/10-lunz/windows-monitor/stats/hard-drive/c/available-free-space"
+    unit_of_measurement: 'MB'
+    icon: mdi:harddisk
+    value_template: "{{ value }}"
+    availability_topic: "iotlink/workgroup/10-lunz/lwt"
+    payload_available: "ON"
+    payload_not_available: "OFF"
+    qos: 1
+
+  - platform: mqtt
+    name: "10-LUNZ - HDD Used Space (C)"
+    state_topic: "iotlink/workgroup/10-lunz/windows-monitor/stats/hard-drive/c/used-space"
+    unit_of_measurement: 'MB'
+    icon: mdi:harddisk
+    value_template: "{{ value }}"
+    availability_topic: "iotlink/workgroup/10-lunz/lwt"
+    payload_available: "ON"
+    payload_not_available: "OFF"
+    qos: 1
+
+  - platform: mqtt
+    name: "10-LUNZ - HDD Format (C)"
+    state_topic: "iotlink/workgroup/10-lunz/windows-monitor/stats/hard-drive/c/drive-format"
+    unit_of_measurement: ''
+    icon: mdi:harddisk
+    value_template: "{{ value }}"
+    availability_topic: "iotlink/workgroup/10-lunz/lwt"
+    payload_available: "ON"
+    payload_not_available: "OFF"
+    qos: 1
+
+  - platform: mqtt
+    name: "10-LUNZ - HDD Label (C)"
+    state_topic: "iotlink/workgroup/10-lunz/windows-monitor/stats/hard-drive/c/volume-label"
+    unit_of_measurement: ''
+    icon: mdi:harddisk
+    value_template: "{{ value }}"
+    availability_topic: "iotlink/workgroup/10-lunz/lwt"
+    payload_available: "ON"
+    payload_not_available: "OFF"
+    qos: 1
+
+camera:
+  - platform: mqtt
+    name: "10-LUNZ - Screen 0"
+    topic: "iotlink/workgroup/10-lunz/windows-monitor/stats/display/0/screen"
+
+
+switch:
+  - platform: template
+    switches:
+      10_lunz:
+        friendly_name: "10 LUNZ"
+        value_template: "{{ is_state('binary_sensor.10_lunz_connected', 'on') }}"
+        turn_on:
+          service: script.10_lunz_wake
+        turn_off:
+          service: script.10_lunz_suspend
+        icon_template: mdi:laptop
+
+script:
+  10_lunz_wake:
+    alias: "10-LUNZ - Wake"
+    sequence:
+      - service: wake_on_lan.send_magic_packet
+        data:
+          mac: "XX:XX:XX:XX:XX:XX"
+
+  10_lunz_shutdown:
+    alias: "10-LUNZ - Shutdown"
+    sequence:
+      - service: mqtt.publish
+        data:
+          topic: "iotlink/workgroup/10-lunz/commands/shutdown"
+          payload: ""
+
+  10_lunz_suspend:
+    alias: "10-LUNZ - Suspend"
+    sequence:
+      - service: mqtt.publish
+        data:
+          topic: "iotlink/workgroup/10-lunz/commands/suspend"
+          payload: ""
+
+  10_lunz_hibernate:
+    alias: "10-LUNZ - Hibernate"
+    sequence:
+      - service: mqtt.publish
+        data:
+          topic: "iotlink/workgroup/10-lunz/commands/hibernate"
+          payload: ""
+
+  10_lunz_reboot:
+    alias: "10-LUNZ - Reboot"
+    sequence:
+      - service: mqtt.publish
+        data:
+          topic: "iotlink/workgroup/10-lunz/commands/reboot"
+          payload: ""
+
+  10_lunz_lock:
+    alias: "10-LUNZ - Lock"
+    sequence:
+      - service: mqtt.publish
+        data:
+          topic: "iotlink/workgroup/10-lunz/commands/lock"
+          payload: ""
+
+  10_lunz_logoff:
+    alias: "10-LUNZ - Logoff"
+    sequence:
+      - service: mqtt.publish
+        data:
+          topic: "iotlink/workgroup/10-lunz/commands/logoff"
+          payload: ""
+
+  10_lunz_vol_mute:
+    alias: "10-LUNZ - Toggle Mute"
+    sequence:
+      - service: mqtt.publish
+        data:
+          topic: "iotlink/workgroup/10-lunz/commands/volume/mute"
+          payload: ""
+
+  10_lunz_vol_max:
+    alias: "10-LUNZ - Vol Max"
+    sequence:
+      - service: mqtt.publish
+        data:
+          topic: "iotlink/workgroup/10-lunz/commands/volume/set"
+          payload: "100"
+
+  10_lunz_run_chrome:
+    alias: "10-LUNZ - Run Chrome"
+    sequence:
+      - service: mqtt.publish
+        data:
+          topic: "iotlink/workgroup/10-lunz/commands/run"
+          payload: '{ "command": "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe", "args": "https://iotlink.gitlab.io", "path": "C:\\Program Files (x86)\\Google\\Chrome\\Application", "user": "", "visible": true, "fallback": true }'

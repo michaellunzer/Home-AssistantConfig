@@ -21,7 +21,7 @@ homeassistant:
 
 sensor:
   - platform: pi_hole
-    host: 192.168.1.17
+    host: localhost:4865
     monitored_conditions:
       - ads_percentage_today
       - ads_blocked_today
@@ -34,14 +34,14 @@ sensor:
       - clients_ever_seen
 
 # Pi-Hole switch
-switch:
-  - platform: command_line
-    switches:
-      pihole_switch:
-        command_on: "curl -X GET 'http://192.168.1.17/admin/api.php?enable&auth='"
-        command_off: "curl -X GET 'http://192.168.1.17/admin/api.php?disable=3600&auth='"
-        command_state: "curl -X GET 'http://192.168.1.17/admin/api.php?status'"
-        value_template: "{{ value_json.status == 'enabled' }}"
+# switch:
+#   - platform: command_line
+#     switches:
+#       pihole_switch:
+#         command_on: "curl -X GET 'http://192.168.1.2:4865/admin/api.php?enable&auth='"
+#         command_off: "curl -X GET 'http://192.168.1.2:4865/admin/api.php?disable=3600&auth='"
+#         command_state: "curl -X GET 'http://192.168.1.2:4865/admin/api.php?status'"
+#         value_template: "{{ value_json.status == 'enabled' }}"
 
 
 # moved back from /config/groups/pihole.yaml

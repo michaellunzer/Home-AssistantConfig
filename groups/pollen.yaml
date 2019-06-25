@@ -7,4 +7,4 @@
     - sensor.allergy_index_today
     - sensor.allergy_index_tomorrow
     - sensor.allergy_index_yesterday
-    - sensor.cold__flu_forecasted_average
+    - sensor.cold_flu_forecasted_average

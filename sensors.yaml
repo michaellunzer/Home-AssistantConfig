@@ -1,25 +1,31 @@
 #moon sensor
   - platform: moon
   
-  
+  - platform: time_date
+    display_options:
+      - 'time'
+      - 'date'
+      - 'time_utc'
+    #   - 'date_time'
+    #   - 'date_time_iso'
+    #   - 'time_date'
+    #   - 'beat'
+
 # Season Sensor
   - platform: season
     type: astronomical
   
-# # international Space Station
-#   - platform: iss
-#     # show_on_map: True
-
-# pollen sensor  
-  - platform: pollen
-    zip_code: !secret pollen_zip_code
-    monitored_conditions:
-    - allergy_average_forecasted
-    - allergy_average_historical
-    - allergy_index_today
-    - allergy_index_tomorrow
-    - allergy_index_yesterday
-    - disease_average_forecasted
+# pollen sensor  -- this was replaced by iqvia platform in the main config
+#   - platform: pollen
+#     zip_code: !secret pollen_zip_code
+#     monitored_conditions:
+#     - allergy_average_forecasted
+#     - allergy_average_historical
+#     - allergy_index_today
+#     - allergy_index_tomorrow
+#     - allergy_index_yesterday
+#     - disease_average_forecasted
+    
 
 # Weather prediction
   - platform: yr
@@ -29,8 +35,6 @@
       - symbol
       - precipitation
       - windSpeed
-      # - pressure
-      # - windDirection
       - humidity
       - fog
       - cloudiness
@@ -38,36 +42,66 @@
       # - mediumClouds
       # - highClouds
       # - dewpointTemperature
+      # - pressure
+      # - windDirection
+      
+      
       
       
 ### Need to setup Darksky sensors first
 ### https://diyfuturism.com/index.php/2018/01/13/useful-sensor-wind-direction-home-assistant/
 
 # # Convert the Wind Direction from degrees to cardinal
-# - platform: template
-#   sensors:
-#     friendly_wind_direction:
-#       friendly_name: 'Wind Direction'
-#       value_template: >-
-#         {%if states.sensor.dark_sky_wind_bearing.state | float<=11 %}N
-#         {% elif states.sensor.dark_sky_wind_bearing.state | float>348 %}N
-#         {% elif states.sensor.dark_sky_wind_bearing.state | float<=34 | float>11 %}NNE
-#         {% elif states.sensor.dark_sky_wind_bearing.state | float<=56 | float>34 %}NE
-#         {% elif states.sensor.dark_sky_wind_bearing.state | float<=79 | float>56 %}ENE
-#         {% elif states.sensor.dark_sky_wind_bearing.state | float<=101 | float>79 %}E
-#         {% elif states.sensor.dark_sky_wind_bearing.state | float<=124 | float>101 %}ESE
-#         {% elif states.sensor.dark_sky_wind_bearing.state | float<=146 | float>124 %}SE
-#         {% elif states.sensor.dark_sky_wind_bearing.state | float<=169 | float>146 %}SSE
-#         {% elif states.sensor.dark_sky_wind_bearing.state | float<=191 | float>169 %}S
-#         {% elif states.sensor.dark_sky_wind_bearing.state | float<=214 | float>191 %}SSW
-#         {% elif states.sensor.dark_sky_wind_bearing.state | float<=236 | float>214 %}SW
-#         {% elif states.sensor.dark_sky_wind_bearing.state | float<=259 | float>236 %}WSW
-#         {% elif states.sensor.dark_sky_wind_bearing.state | float<=281 | float>259 %}W
-#         {% elif states.sensor.dark_sky_wind_bearing.state | float<=304 | float>281 %}WNW
-#         {% elif states.sensor.dark_sky_wind_bearing.state | float<=326 | float>304 %}NW
-#         {% elif states.sensor.dark_sky_wind_bearing.state | float<=348 | float>326 %}NNW
-#         {%- endif %}
-      
+  - platform: template
+    sensors:
+      friendly_wind_direction:
+        friendly_name: 'Wind Direction'
+        value_template: >-
+          {%if state_attr('weather.dark_sky', 'wind_bearing') | float<=11 %}N
+          {% elif state_attr('weather.dark_sky', 'wind_bearing') | float>348 %}N
+          {% elif state_attr('weather.dark_sky', 'wind_bearing') | float<=34 | float>11 %}NNE
+          {% elif state_attr('weather.dark_sky', 'wind_bearing') | float<=56 | float>34 %}NE
+          {% elif state_attr('weather.dark_sky', 'wind_bearing') | float<=79 | float>56 %}ENE
+          {% elif state_attr('weather.dark_sky', 'wind_bearing') | float<=101 | float>79 %}E
+          {% elif state_attr('weather.dark_sky', 'wind_bearing') | float<=124 | float>101 %}ESE
+          {% elif state_attr('weather.dark_sky', 'wind_bearing') | float<=146 | float>124 %}SE
+          {% elif state_attr('weather.dark_sky', 'wind_bearing') | float<=169 | float>146 %}SSE
+          {% elif state_attr('weather.dark_sky', 'wind_bearing') | float<=191 | float>169 %}S
+          {% elif state_attr('weather.dark_sky', 'wind_bearing') | float<=214 | float>191 %}SSW
+          {% elif state_attr('weather.dark_sky', 'wind_bearing') | float<=236 | float>214 %}SW
+          {% elif state_attr('weather.dark_sky', 'wind_bearing') | float<=259 | float>236 %}WSW
+          {% elif state_attr('weather.dark_sky', 'wind_bearing') | float<=281 | float>259 %}W
+          {% elif state_attr('weather.dark_sky', 'wind_bearing') | float<=304 | float>281 %}WNW
+          {% elif state_attr('weather.dark_sky', 'wind_bearing') | float<=326 | float>304 %}NW
+          {% elif state_attr('weather.dark_sky', 'wind_bearing') | float<=348 | float>326 %}NNW
+          {%- endif %}
+          
+      ###### Last Google Drive Backup ######
+      google_drive_snapshot_backup_date:
+        friendly_name: "Last Google Drive Backup Date"
+        value_template: "{{ state_attr('sensor.snapshot_backup', 'last_snapshot') }}"
+        # device_class: timestamp
+        # icon: mdi:google-drive
+        
+      google_drive_snapshots_backed_up:
+        friendly_name: "Snapshots in Google Drive"
+        value_template: "{{ state_attr('sensor.snapshot_backup', 'snapshots_in_google_drive') }}"
+        unit_of_measurement: 'snapshots'
+        # icon: mdi:folder-google-drive
+
+      spotify_song:
+        friendly_name: "Spotify Song"
+        value_template: "{{ state_attr('media_player.spotify', 'media_title') }}"
+
+      spotify_artist:
+        friendly_name: "Spotify Artist"
+        value_template: "{{ state_attr('media_player.spotify', 'media_artist') }}"
+
+
+###################################################################
+###### Depreciated -- replaced by Mobile App Integration ##########
+###### Leaving in as a template sensor example ####################
+###################################################################
 # # iPhone Battery Sensor
 #   - platform: template
 #     sensors:
@@ -115,8 +149,8 @@
   
   
 # Folder Sensor (monitors how much stuff is in the folder - in MB)
-  - platform: folder
-    folder: /config
+#   - platform: folder
+#     folder: /config
 #   - platform: folder
 #     folder: /backup
 #   - platform: folder
@@ -141,8 +175,12 @@
     - type: memory_use_percent
     - type: processor_use
     - type: last_boot
-    - type: since_last_boot
-    
+    # doesn't report any values
+    # - type: network_in
+    #   arg: eth0
+    # - type: network_out
+    #   arg: eth0
+
 ### Not sure if this will work with proxmox to report the host system battery state
 #   - platform: linux_battery
     
@@ -172,8 +210,13 @@
       - us
     latitude: !secret homeassistant_latitude
     longitude: !secret homeassistant_longitude
-    radius: 500
     show_on_map: false
+    
+# qbittorrent
+#   - platform: qbittorrent
+#     url: 'http://192.168.1.144:<port>'
+#     username: YOUR_USERNAME
+#     password: YOUR_PASSWORD
 
 #DuckDNS Certificate Expirary
   - platform: cert_expiry
@@ -183,63 +226,268 @@
 # BRUH MultiSensor
 # https://github.com/bruhautomation/ESP-MQTT-JSON-Multisensor
 
-  - platform: mqtt  
-    state_topic: "bruh/sensornode1"  
-    name: "SN1 Humidity"  
-    unit_of_measurement: "%"  
-    value_template: '{{ value_json.humidity | round(1) }}'  
+#   - platform: mqtt  
+#     state_topic: "bruh/sensornode1"  
+#     name: "SN1 Humidity"  
+#     unit_of_measurement: "%"  
+#     value_template: '{{ value_json.humidity | round(1) }}'  
   
-  - platform: mqtt  
-    state_topic: "bruh/sensornode1"  
-    name: "SN1 LDR"
-    ##This sensor is not calibrated to actual LUX. Rather, this a map of the input voltage ranging from 0 - 1023.
-    unit_of_measurement: "LUX"  
-    value_template: '{{ value_json.ldr }}'  
+#   - platform: mqtt  
+#     state_topic: "bruh/sensornode1"  
+#     name: "SN1 LDR"
+#     ##This sensor is not calibrated to actual LUX. Rather, this a map of the input voltage ranging from 0 - 1023.
+#     unit_of_measurement: "LUX"  
+#     value_template: '{{ value_json.ldr }}'  
   
-  - platform: mqtt  
-    state_topic: "bruh/sensornode1"  
-    name: "SN1 PIR"  
-    value_template: '{{ value_json.motion }}'  
+#   - platform: mqtt  
+#     state_topic: "bruh/sensornode1"  
+#     name: "SN1 PIR"  
+#     value_template: '{{ value_json.motion }}'  
   
-  - platform: mqtt  
-    state_topic: "bruh/sensornode1"  
-    name: "SN1 Temperature"  
-    unit_of_measurement: "°F"  
-    value_template: '{{ value_json.temperature | round(1) }}'  
+#   - platform: mqtt  
+#     state_topic: "bruh/sensornode1"  
+#     name: "SN1 Temperature"  
+#     unit_of_measurement: "°F"  
+#     value_template: '{{ value_json.temperature | round(1) }}'  
+    
+#   - platform: mqtt
+#     state_topic: "bruh/sensornode1"
+#     name: "SN1 Real Feel"
+#     unit_of_measurement: "°F"
+#     value_template: '{{ value_json.heatIndex | round(1) }}'
+    
+    
+    ######### Google Drive Backup Status ######### 
     
   - platform: mqtt
-    state_topic: "bruh/sensornode1"
-    name: "SN1 Real Feel"
-    unit_of_measurement: "°F"
-    value_template: '{{ value_json.heatIndex | round(1) }}'
+    name: "Google Backup Snapshots Count"
+    state_topic: "googlebackup/result"
+    json_attributes_topic: "googlebackup/result"
+    unit_of_measurement: 'Snapshots'
+    value_template: "{{ value_json.fileCount }}"
+  - platform: mqtt
+    name: "Last Snapshot Google Backup"
+    state_topic: "googlebackup/result"
+    json_attributes_topic: "googlebackup/result"
+    # unit_of_measurement: 'Timestamp'
+    value_template: "{{ value_json.backupTimestamp }}"
     
-
+    
+    ########## sonoff_amplifier running Tasmota ############
+    # not needed anyomre
+    
+#   - platform: mqtt  
+#     state_topic: "tele/sonoff_amplifier/SENSOR"  
+#     name: "Amp Humidity"  
+#     unit_of_measurement: "%"  
+#     value_template: '{{ value_json.Humidity | round(1) }}' 
+    
+#   - platform: mqtt  
+#     state_topic: "tele/sonoff_amplifier/SENSOR"  
+#     name: "Amp Temperature"  
+#     unit_of_measurement: "°C"  
+#     value_template: '{{ value_json.Temperature | round(1) }}'  
+    
+    
 ### Room-Assistant Bluetooth LE Presence Detection running on Raspberry Pi Zero W and sending updates over MQTT
+## broken in 0.88 
 
-  - platform: mqtt_room
-    device_id: e51c8f2fd74b
-    away_timeout: 30
-    name: 'Tile Keys R-A_BT'
+#   - platform: mqtt_room
+#     device_id: e51c8f2fd74b
+#     away_timeout: 30
+#     name: 'Tile Keys R-A_BT'
     
-  - platform: mqtt_room
-    device_id: 760e4e3e2f66
-    away_timeout: 30
-    name: 'Pebble 2 Watch R-A_BT'
+#   - platform: mqtt_room
+#     device_id: 760e4e3e2f66
+#     away_timeout: 30
+#     name: 'Pebble 2 Watch R-A_BT'
     
-  - platform: mqtt_room
-    device_id: 4a896f874cc0
-    away_timeout: 30
-    name: 'Pebble Time Round Watch R-A_BT'
+#   - platform: mqtt_room
+#     device_id: 4a896f874cc0
+#     away_timeout: 30
+#     name: 'Pebble Time Round Watch R-A_BT'
 
-  - platform: mqtt_room
-    device_id: d6234b09ace6
-    away_timeout: 30
-    name: 'Playbulb Bathroom Light R-A_BT'
+#   - platform: mqtt_room
+#     device_id: d6234b09ace6
+#     away_timeout: 30
+#     name: 'Playbulb Bathroom Light R-A_BT'
     
     
     ######## Volume Knob ########
     
-  - platform: mqtt
-    state_topic: "rotary/volume/state"
-    name: "Volume Knob"
-    retain: true
+#   - platform: mqtt
+#     state_topic: "rotary/volume/state"
+#     name: "Volume Knob"
+#     retain: true
+
+  - platform: flunearyou
+  
+##########################
+###### bart schedule #####
+##########################
+
+#   - platform: gtfs_realtime
+#     trip_update_url: 'https://data.texas.gov/download/rmk2-acnw/application%2foctet-stream'
+#     vehicle_position_url: 'https://data.texas.gov/download/eiei-9rpf/application%2Foctet-stream'
+#     departures:
+#     - name: Downtown to airport
+#       route: 100
+#       stopid: 514
+#   - platform: gtfs_realtime
+#     trip_update_url: 'http://api.bart.gov/gtfsrt/tripupdate.aspx'
+#     # vehicle_position_url: 'https://data.texas.gov/download/eiei-9rpf/application%2Foctet-stream'
+#     departures:
+#     - name: 24th to Millbrae
+#     #   route: 
+#       stopid: 24TH      
+      
+
+
+#   - platform: gtfs
+#     name: "24th to Millbrae"
+#     origin: 24TH
+#     destination: MLBR
+#     data: bart.zip
+#   - platform: gtfs
+#     name: Millbrae to 24th 
+#     origin: MLBR
+#     destination: 24TH
+#     data: bart.zip
+#   - platform: gtfs
+#     name: 24th to Montgomery
+#     origin: 24TH
+#     destination: MONT
+#     data: bart.zip
+#   - platform: gtfs
+#     name: Montgomery to 24th
+#     origin: MONT
+#     destination: 24TH
+#     data: bart.zip
+
+####################################
+#### Ford GoBikes | Citybikes ######
+####################################
+
+#   - platform: citybikes
+#     name: Home Bike Stations
+#     stations:
+#       - SF-Q23-3
+#       - SF-Q22-2
+#       - SF-Q22-1
+
+
+####################################
+######## apcupsd Power UPS #########
+####################################
+
+  - platform: apcupsd
+    resources:
+      - apc
+      - date
+      - hostname
+      - version
+      - upsname
+      - cable
+      - driver
+      - upsmode
+      - starttime
+      - model
+      - status
+      - linev
+      - loadpct
+      - bcharge
+      - timeleft
+      - mbattchg
+      - mintimel
+      - maxtime
+      - maxlinev
+      - minlinev
+      - outputv
+
+####################################
+######## Aftership #################
+####################################
+
+  - platform: aftership
+    api_key: !secret aftership_api_key
+    
+#   # Aftership
+#   - platform: template
+#     sensors: 
+#       aftership_pending:
+#         value_template: '{{ states.sensor.aftership.attributes.pending }}'  
+#         friendly_name: 'Pending'
+#       aftership_intransit:
+#         value_template: '{{ states.sensor.aftership.attributes.intransit }}'  
+#         friendly_name: 'In Transit'
+#       aftership_delivered:
+#         value_template: '{{ states.sensor.aftership.attributes.delivered }}'  
+#         friendly_name: 'Delivered'
+
+####################################
+######## History Stats #############
+####################################
+
+# https://www.home-assistant.io/components/sensor.history_stats/
+# History Statistics Sensor for how long I have been at home TODAY
+  - platform: history_stats
+    name: "Michael - Time At Home Today"
+    entity_id: device_tracker.michael_bayesian
+    state: 'home'
+    type: time
+    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    end: '{{ now() }}'
+
+## History Statistics Sensor for how long I have been at home THIS WEEK
+  - platform: history_stats
+    name: "Michael - Time At Home This Week"
+    entity_id: device_tracker.michael_bayesian
+    state: 'home'
+    type: time
+    start: '{{ as_timestamp( now().replace(hour=0).replace(minute=0).replace(second=0) ) - now().weekday() * 86400 }}'
+    end: '{{ now() }}'
+
+## History Statistics Sensor for how long I have been at home THIS MONTH
+  - platform: history_stats
+    name: "Michael - Time At Home This Month"
+    entity_id: device_tracker.michael_bayesian
+    state: 'home'
+    type: time
+    end: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    duration:
+      days: 30
+
+###### LAURA #######
+
+# History Statistics Sensor for how long Laura has been at my home TODAY
+  - platform: history_stats
+    name: "Laura - Time At Home Today"
+    entity_id: person.laura_logan #device_tracker.lauras_iphone_ios
+    state: 'home'
+    type: time
+    start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    end: '{{ now() }}'
+
+## History Statistics Sensor for how long Laura has been at my home THIS WEEK
+  - platform: history_stats
+    name: "Laura - Time At Home This Week"
+    entity_id: person.laura_logan #device_tracker.lauras_iphone_ios
+    state: 'home'
+    type: time
+    start: '{{ as_timestamp( now().replace(hour=0).replace(minute=0).replace(second=0) ) - now().weekday() * 86400 }}'
+    end: '{{ now() }}'
+
+## History Statistics Sensor for how long Laura has been at my home THIS MONTH
+  - platform: history_stats
+    name: "Laura - Time At Home This Month"
+    entity_id: person.laura_logan #device_tracker.lauras_iphone_ios
+    state: 'home'
+    type: time
+    end: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
+    duration:
+      days: 30
+
+
+
+
+

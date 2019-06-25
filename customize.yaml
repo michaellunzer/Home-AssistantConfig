@@ -56,8 +56,8 @@ device_tracker.accf856ba107:
   icon: mdi:android
 device_tracker.playbulb_colour:
   icon: mdi:lightbulb
-device_tracker.wills_iphone_:
-  hidden: true
+device_tracker.wills_iphone:
+  hidden: false
 device_tracker.matt_mahnkes_mac_pro:
   hidden: true
 device_tracker.lunziphone_2:
@@ -101,6 +101,7 @@ device_tracker.laundry:
   icon: mdi:cctv
 device_tracker.debian:
   hidden: true
+  icon: mdi:debian
 device_tracker.amazonb2554f27e:
   hidden: true
 device_tracker.amazonb2ccd5d93:
@@ -174,6 +175,7 @@ device_tracker.horacios_mouse_1:
   hidden: true
 device_tracker.iphone_2:
   friendly_name: Maddi's iPhone
+  icon: mdi:cellphone-iphone
 sensor.tile_keys_ra_bt:
   icon: mdi:key
 sensor.pebble_2_watch_ra_bt:
@@ -184,3 +186,37 @@ sensor.playbulb_bathroom_light_ra_bt:
   icon: mdi:shower
 light.group_for_wakeup_2:
   hidden: true
+device_tracker.svlesc0036_2:
+  icon: mdi:windows
+device_tracker.maddismbp:
+  icon: mdi:apple
+switch.012007682c3ae84b8282_1:
+  friendly_name: Stereo Amp
+device_tracker.maddi_iphone:
+  icon: mdi:cellphone-iphone
+person.maddi_fleming:
+  icon: mdi:account
+person.ahmad_danesh:
+  icon: mdi:account
+device_tracker.lunzipad_ios:
+  icon: mdi:tablet-ipad
+person.laura_logan:
+  icon: mdi:account
+device_tracker.lauras_iphone_ios:
+  icon: mdi:cellphone-iphone
+device_tracker.da69ede92a9740d3ba30bf09defad864:
+  friendly_name: LunziPhone_mobile
+  icon: mdi:cellphone-iphone
+device_tracker.michaelx2:
+  icon: mdi:windows
+device_tracker.michael_hue:
+  icon: mdi:z-wave
+switch.sonoff_fan:
+  emulated_hue: 'true'
+  icon: mdi:fan
+sensor.google_drive_snapshots_backed_up:
+  icon: mdi:folder-google-drive
+sensor.google_drive_snapshot_backup_date:
+  icon: mdi:google-drive
+light.cabinet_light:
+  emulated_hue: 'true'
