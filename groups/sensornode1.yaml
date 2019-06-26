@@ -1,9 +1,0 @@
-name: Sensor Node 1
-icon: mdi:video-input-antenna
-entities:  
-  - sensor.sn1_temperature  
-  - sensor.sn1_humidity  
-  - sensor.sn1_ldr  
-  - sensor.sn1_pir
-  - sensor.sn1_real_feel
-  - light.sn1_led

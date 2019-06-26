@@ -1,8 +1,0 @@
-# Roommates:
-     name: Roommates
-     icon: mdi:account-multiple
-     all: true
-     entities:
-    #   - device_tracker.lunziphone
-      - device_tracker.amod
-      - device_tracker.maddi_iphone

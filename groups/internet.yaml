@@ -1,7 +1,0 @@
-#   speed_test:
-    name: "Speed Test"
-    icon: mdi:internet-explorer
-    entities:
-      - sensor.speedtest_ping
-      - sensor.speedtest_download
-      - sensor.speedtest_upload
