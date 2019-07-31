@@ -136,3 +136,15 @@
       target:
       - channel/lunzhome
     service: notify.pushbullet
+- id: '1561585571378'
+  alias: Update Notification
+  trigger:
+  - entity_id: updater.updater
+    platform: state
+  condition: []
+  action:
+  - data:
+      data:
+        message: Home Assistant  {{ states.updater.updater.state }}  is now available.
+        target: channel/LunzHome
+    service: notify.pushbullet

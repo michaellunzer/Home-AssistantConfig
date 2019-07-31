@@ -14,13 +14,13 @@ homeassistant:
   # Customization file
   customize: !include customize.yaml
   packages: !include_dir_named packages
-  # whitelist_external_dirs:
-  # # - /backup
-  # - /config
-  # # - /addons
-  # # - /share
-  # # - /dev
-  # - /mnt/backups
+#   whitelist_external_dirs:
+#   # - /backup
+#   - /config
+#   # - /addons
+#   # - /share
+#   # - /dev
+#   - /mnt/backups
 
 # shell_command: !include_dir_named shell_command
 
@@ -42,9 +42,20 @@ system_health:
 
 person: 
 
+# recorder:
+#   db_url: mysql://admin:asdf@db.lunz.xyz/homeassistant
+#   purge_keep_days: 300    #default = 10
+#   purge_interval: 100      #default = 1
+#   exclude:
+#     entities:
+#      - light.michael_hue
+#      - sun.sun # Don't record sun data
+#      - sensor.date
+#     #   - sensor.last_boot # Comes from 'systemmonitor' sensor platform
+
 recorder:
   db_url: mysql://admin:asdf@core-mariadb/homeassistant
-  purge_keep_days: 10    #default = 10
+  purge_keep_days: 30    #default = 10
   purge_interval: 1      #default = 1
   exclude:
     entities:
@@ -170,7 +181,7 @@ http:
 # the developers to assist with development of Home Assistant.
 # For more information, please see:
 # https://home-assistant.io/blog/2016/10/25/explaining-the-updater/
-# updater:
+updater:
   # Optional, allows Home Assistant developers to focus on popular components.
   # include_used_components: true
 
@@ -239,16 +250,23 @@ automation: !include automations.yaml
 script: !include scripts.yaml
 sensor: !include sensors.yaml
 
+
+####################################
+######### Binary Sensors ###########
+####################################
+
+
 binary_sensor:
   - platform: iss
     # name: "International Space Station"
-    show_on_map: True
+    show_on_map: False
   - platform: workday
     country: US
     # state: 'CA'
     # workdays: [mon, tues, wed, thurs, fri]
-#   - platform: uptimerobot
-#     api_key: !secret uptimerobot_api_key
+#This works, but theres not really a point -- if the system is down then the dashboard is unavailable lol
+#  - platform: uptimerobot
+#    api_key: !secret uptimerobot_api_key
 ## Room-Assistant MQTT BTLE Sensor
 #   - platform: mqtt
 #     state_topic: 'room_presence/Michael-room'
@@ -343,7 +361,8 @@ camera:
 # # International Space Station Map
   - platform: generic
     name: ISS
-    still_image_url: http://staticmap.openstreetmap.de/staticmap.php?center={{ states.binary_sensor.iss.attributes.lat }},{{ states.binary_sensor.iss.attributes.long }}&zoom=4&size=865x512&maptype=mapnik&markers={{ states.binary_sensor.iss.attributes.lat }},{{ states.binary_sensor.iss.attributes.long }},lightblue
+    still_image_url: https://tyler-demo.herokuapp.com/?greyscale=False&lat={{ states.binary_sensor.iss.attributes.lat }}&lon={{ states.binary_sensor.iss.attributes.long }}&zoom=11&width=640&height=480&tile_url=http://%5Babcd%5D.tile.stamen.com/watercolor/%7Bzoom%7D/%7Bx%7D/%7By%7D.jpg 
+    ### old URL --> http://staticmap.openstreetmap.de/staticmap.php?center={{ states.binary_sensor.iss.attributes.lat }},{{ states.binary_sensor.iss.attributes.long }}&zoom=4&size=865x512&maptype=mapnik&markers={{ states.binary_sensor.iss.attributes.lat }},{{ states.binary_sensor.iss.attributes.long }},lightblue
     limit_refetch_to_url_change: true
 #   - platform: generic
 #     name: Heavenly
@@ -365,6 +384,11 @@ camera:
     still_image_url: 'https://radblast.wunderground.com/cgi-bin/radar/WUNIDS_map?station=RGX&brand=wui&num=6&delay=15&type=N0R&frame=0&scale=1.000&noclutter=0&showstorms=0&mapx=400&mapy=240&centerx=400&centery=240&transx=0&transy=0&showlabels=1&severe=0&rainsnow=1&lightning=0&smooth=0&rand=25766055&lat=0&lon=0&label=you'
     name: Doppler - Tahoe
     # limit_refetch_to_url_change: true
+  - platform: push
+    name: MotionEye Laundry
+    buffer: 3
+    timeout: 5
+    webhook_id: WH_motion_laundry01
 
 ### Depreciated MQTT config ###
 
@@ -428,10 +452,6 @@ panel_iframe:
     title: 'Google Drive Snapshots'
     icon: mdi:cloud-upload
     url: !secret google_drive_backup_url
-  motion:
-    title: Motion
-    icon: mdi:cctv
-    url: !secret motion_url
   jupyterlab:
     title: JupyterLab
     icon: mdi:notebook
@@ -482,6 +502,10 @@ panel_iframe:
 #     title: MQTT Explorer
 #     icon: mdi:map-marker-circle
 #     url: !secret mqtt_url
+#   motion:
+#     title: Motion
+#     icon: mdi:cctv
+#     url: !secret motion_url
 
 media_player:
 #   - platform: mpd                # I don't use this as a media player anymore, just cleaning things up.
@@ -492,9 +516,16 @@ media_player:
     client_id: !secret spotify_client_id
     client_secret: !secret spotify_client_secret
   - platform: androidtv
-    name: Fire TV
+    name: "Fire TV"
     host: 192.168.1.77
     adb_server_ip: 127.0.0.1
+    adb_server_port: 5037
+    apps:
+      "org.xbmc.kodi": "Kodi"
+      "com.netflix.ninja": "Netflix"
+      "com.spotify.tv.android": "Spotify"
+      "com.google.android.tvlauncher": "Homescreen"
+      "com.google.android.youtube.tv": "Youtube"
   # - platform: itunes
   #   host: !secret itunes_host
 
@@ -508,6 +539,12 @@ alexa_media:
       password: !secret amazon_password
       url: amazon.com
   
+##########################################
+### Custom Component: Breaking Changes ###
+##########################################
+
+breaking_changes:
+
   
 ####################################
 ############ Coinbase ##############
@@ -573,10 +610,10 @@ device_tracker:
     username: !secret tile_username
     password: !secret tile_password
   - platform: asuswrt
-#     # host: 192.168.1.1
-#     # username: !secret asus_username
-#     # password: !secret asus_password
-#     # protocol: telnet #ssh or telnet
+     # host: 192.168.1.1
+     # username: !secret asus_username
+     # password: !secret asus_password
+     # protocol: telnet #ssh or telnet
     interval_seconds: 15
     consider_home: 180
     new_device_defaults:
@@ -590,16 +627,33 @@ device_tracker:
 #   - platform: googlehome
 #     host: 192.167.1.228
 #   - platform: nmap_tracker
-#     hosts: 192.168.1.0/24
+#     hosts: 192.168.0.0/24
+#     scan_options: "--host-timeout 5s --privileged -sP "
 #     home_interval: 10
-    # exclude:
+#     # exclude:
     #  - 192.168.1.12
     #  - 192.168.1.13
 #   - platform: icloud
 #     username: !secret icloud_username
 #     password: !secret icloud_password
 #  - platform: bluetooth_tracker                       # Disabled bluetooth tracker on VM
-
+  - platform: ping
+    hosts:
+      lunziphone_ping: 192.168.1.8
+      lunzipad_ping: 192.168.1.239
+      10lunz_ping: 192.168.1.144
+      MadisongsiPhone_ping: 192.168.1.120
+    #   ahmads_iphone_ping: 192.168.1.46
+  - platform: iphonedetect
+    consider_home: 60
+    new_device_defaults:
+      track_new_devices: true
+      hide_if_away: false
+    hosts:
+      lunziphone_iphonedetect: 192.168.1.8
+      lunzipad_iphonedetect: 192.168.1.239
+    #   ahmads_iphone_iphonedetect: 192.168.1.46
+    #   MadisongsiPhone_iphonedetect: 192.168.1.120
 
 
 # duckDNS
@@ -689,20 +743,28 @@ switch:
 #         id: 5
   - platform: flux
     lights:
-      - light.flux_bedroom_light
+      - light.michael_hue
       - light.cabinet_light
+      - light.ring_light
+      - light.flux_bedroom_light
     name: Fluxer
     start_time: '7:00'
     stop_time: '23:00'
     start_colortemp: 4000
     sunset_colortemp: 3000
     stop_colortemp: 1900
-    brightness: 200
+    brightness: 255
     disable_brightness_adjust: false
-    mode: xy
-    transition: 30
+    mode: rgb
+    transition: 10
     interval: 60
-
+  - platform: qbittorrent_alternative_speed
+    host: 192.168.1.144
+    username: !secret qbt_username
+    password: !secret qbt_password
+    port: 8080
+    protocol: http
+    name: qbittorrent_alternative_speed
 
 ####################################
 ############# INPUT BOOLEAN ########
@@ -713,8 +775,8 @@ input_boolean:
     name: Adderall Reminder
   michael_home:
     name: michael_home
-    
-    
+
+
 
 ####################################
 ####### EARTHQUAKES & FIRES ########
@@ -800,26 +862,27 @@ iqvia:
 
 # migrated to HACS (see below)
 
-custom_updater:
-#   mode: storage
-  track:
-    - components
-    - cards
-    - python_scripts
-  card_urls:
-    - https://raw.githubusercontent.com/sgttrs/lovelace-weather-card-chart/master/custom-updater.json
-    - https://raw.githubusercontent.com/kalkih/mini-media-player/master/tracker.json
-    - https://raw.githubusercontent.com/thomasloven/lovelace-slider-entity-row/master/slider-entity-row.js
-    - https://raw.githubusercontent.com/ciotlosm/custom-lovelace/master/monster-card/monster-card.js
-    - https://raw.githubusercontent.com/custom-cards/button-card/0.0.6/button-card.js
-    - https://raw.githubusercontent.com/custom-cards/aftership-card/master/dist/aftership-card.js
-    - https://raw.githubusercontent.com/mishaaq/sun-card/master/tracker.json
-    - https://raw.githubusercontent.com/nervetattoo/simple-thermostat/master/tracker.json
-  component_urls:
-    - https://raw.githubusercontent.com/keatontaylor/alexa_media_player/master/custom_components.json
-    - https://raw.githubusercontent.com/pnbruckner/homeassistant-config/master/custom_components.json
-  python_script_urls:
-    - https://raw.githubusercontent.com/pnbruckner/homeassistant-config/master/python_scripts.json
+# custom_updater:
+# #   mode: storage
+#   track:
+#     - components
+#     - cards
+#     - python_scripts
+#   card_urls:
+#     - https://raw.githubusercontent.com/sgttrs/lovelace-weather-card-chart/master/custom-updater.json
+#     - https://raw.githubusercontent.com/kalkih/mini-media-player/master/tracker.json
+#     - https://raw.githubusercontent.com/thomasloven/lovelace-slider-entity-row/master/slider-entity-row.js
+#     - https://raw.githubusercontent.com/ciotlosm/custom-lovelace/master/monster-card/monster-card.js
+#     - https://raw.githubusercontent.com/custom-cards/button-card/0.0.6/button-card.js
+#     - https://raw.githubusercontent.com/custom-cards/aftership-card/master/dist/aftership-card.js
+#     - https://raw.githubusercontent.com/mishaaq/sun-card/master/tracker.json
+#     - https://raw.githubusercontent.com/nervetattoo/simple-thermostat/master/tracker.json
+#     - https://raw.githubusercontent.com/kalkih/mini-graph-card/master/tracker.json
+#   component_urls:
+#     - https://raw.githubusercontent.com/keatontaylor/alexa_media_player/master/custom_components.json
+#     - https://raw.githubusercontent.com/pnbruckner/homeassistant-config/master/custom_components.json
+#   python_script_urls:
+#     - https://raw.githubusercontent.com/pnbruckner/homeassistant-config/master/python_scripts.json
 
 
 
@@ -828,8 +891,11 @@ custom_updater:
 ####################################
 
 
-# hacs:
-#   token: !secret my_github_access_token
+hacs:
+  token: !secret my_github_access_token
+  appdaemon: true
+  python_script: true
+  theme: true
 
 
 
@@ -838,14 +904,14 @@ custom_updater:
 ####### Google Cloud Pub/Sub #######
 ####################################
 
-google_pubsub:
-  project_id: admin-project-234000
-  topic_name: hassio
-  credentials_json: Admin Project-5cb97eb3dde0.json
-  filter:
-    include_entities: 
-      - light.flux_bedroom_light
-      - person.michael_lunzer
+# google_pubsub:
+#   project_id: admin-project-234000
+#   topic_name: hassio
+#   credentials_json: Admin Project-5cb97eb3dde0.json
+#   filter:
+#     include_entities: 
+#       - light.flux_bedroom_light
+#       - person.michael_lunzer
     #   - light.michael_hue
 
 
@@ -857,44 +923,62 @@ apcupsd:
   host: a722577e-apcupsd
 
 
-wemo:
-  discovery: true
+####################################
+############ WeMo ##################
+####################################
+
+
+# wemo:
+#   discovery: true
+
+
+####################################
+############ Haaksa ################
+####################################
+
+api:
+
+alexa:
+  smart_home:
+
 
 ####################################
 ############ Emulated Hue ##########
 ####################################
 
-emulated_hue:
-  host_ip: 192.168.1.2
-#   listen_port: 8300 #8300
-#   advertise_ip: 10.0.0.10
-#   advertise_port: 8080
-#   off_maps_to_on_domains:
-#     - script
-#     - scene
-#   upnp_bind_multicast: true
-#   expose_by_default: true
-#   exposed_domains:
-#     - light
-#     - switch
-#     - input_boolean
-  entities:
-    # light.michael_hue:
-    #   name: "Ceiling Lights"
-    light.cabinet_light:
-      name: "Cabinet Lights"
-    light.flux_bedroom_light:
-      name: "Room Lights"
-    switch.sonoff_powerstrip_relay_lamp:
-      name: "Lamp"
-    switch.sonoff_powerstrip_relay_monitor:
-      name: "Monitor"
-    switch.sonoff_powerstrip_relay_fireplace:
-      name: "Fireplace"
-    switch.sonoff_powerstrip_relay_stereo:
-      name: "Stereo Switch"
-    switch.stereo_relay:
-      name: "Stereo"
-    switch.sonoff_fan:
-      name: "Fan"
+### replaced by Haaksa
+
+# emulated_hue:
+#   host_ip: 192.168.1.2
+# #   listen_port: 8300 #8300
+# #   advertise_ip: 10.0.0.10
+# #   advertise_port: 8080
+# #   off_maps_to_on_domains:
+# #     - script
+# #     - scene
+# #   upnp_bind_multicast: true
+# #   expose_by_default: true
+# #   exposed_domains:
+# #     - light
+# #     - switch
+# #     - input_boolean
+#   entities:
+#     # light.michael_hue:
+#     #   name: "Ceiling Lights"
+#     light.cabinet_light:
+#       name: "Cabinet Lights"
+#     light.flux_bedroom_light:
+#       name: "Room Lights"
+#     switch.sonoff_powerstrip_relay_lamp:
+#       name: "Lamp"
+#     switch.sonoff_powerstrip_relay_monitor:
+#       name: "Monitor"
+#     switch.sonoff_powerstrip_relay_fireplace:
+#       name: "Fireplace"
+#     switch.sonoff_powerstrip_relay_stereo:
+#       name: "Stereo Switch"
+#     switch.stereo_relay:
+#       name: "Stereo"
+#     switch.sonoff_fan:
+#       name: "Fan"
       

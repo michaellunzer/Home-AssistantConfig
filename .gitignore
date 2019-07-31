@@ -1,10 +1,10 @@
 *
 !*.yaml
 !scenes
-!groups
 !packages
 !homebridge
 !themes
+!esphome/*.yaml
 !.gitignore
 secrets.yaml
 known_devices.yaml
@@ -27,6 +27,12 @@ tts
 icloud
 deps
 Admin Project-5cb97eb3dde0.json
-groups/roommates.yaml
-/groups/roommates.yaml
-roommates.yaml
+/groups
+ui-lovelace.yaml
+groups.yaml
+customize.yaml
+zones.yaml
+packages/mclighting01.yaml
+haaska.txt
+/packages/monitor.yaml
+/packages/10_lunz.yaml

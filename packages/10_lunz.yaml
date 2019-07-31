@@ -133,6 +133,10 @@ sensor:
     payload_not_available: "OFF"
     qos: 1
 
+########################
+####### C Drive ########
+########################
+
   - platform: mqtt
     name: "10-LUNZ - HDD Usage (C)"
     state_topic: "iotlink/workgroup/10-lunz/windows-monitor/stats/hard-drive/c/drive-usage"
@@ -210,10 +214,102 @@ sensor:
     payload_not_available: "OFF"
     qos: 1
 
+
+########################
+####### E Drive ########
+########################
+
+
+  - platform: mqtt
+    name: "10-LUNZ - HDD Usage (E)"
+    state_topic: "iotlink/workgroup/10-lunz/windows-monitor/stats/hard-drive/e/drive-usage"
+    unit_of_measurement: '%'
+    icon: mdi:chart-donut
+    value_template: "{{ value }}"
+    availability_topic: "iotlink/workgroup/10-lunz/lwt"
+    payload_available: "ON"
+    payload_not_available: "OFF"
+    qos: 1
+
+  - platform: mqtt
+    name: "10-LUNZ - HDD Total Size (E)"
+    state_topic: "iotlink/workgroup/10-lunz/windows-monitor/stats/hard-drive/e/total-size"
+    unit_of_measurement: 'MB'
+    icon: mdi:harddisk
+    value_template: "{{ value }}"
+    availability_topic: "iotlink/workgroup/10-lunz/lwt"
+    payload_available: "ON"
+    payload_not_available: "OFF"
+    qos: 1
+
+  - platform: mqtt
+    name: "10-LUNZ - HDD Total Free Space (E)"
+    state_topic: "iotlink/workgroup/10-lunz/windows-monitor/stats/hard-drive/e/total-free-space"
+    unit_of_measurement: 'MB'
+    icon: mdi:harddisk
+    value_template: "{{ value }}"
+    availability_topic: "iotlink/workgroup/10-lunz/lwt"
+    payload_available: "ON"
+    payload_not_available: "OFF"
+    qos: 1
+
+  - platform: mqtt
+    name: "10-LUNZ - HDD Free Space (E)"
+    state_topic: "iotlink/workgroup/10-lunz/windows-monitor/stats/hard-drive/e/available-free-space"
+    unit_of_measurement: 'MB'
+    icon: mdi:harddisk
+    value_template: "{{ value }}"
+    availability_topic: "iotlink/workgroup/10-lunz/lwt"
+    payload_available: "ON"
+    payload_not_available: "OFF"
+    qos: 1
+
+  - platform: mqtt
+    name: "10-LUNZ - HDD Used Space (E)"
+    state_topic: "iotlink/workgroup/10-lunz/windows-monitor/stats/hard-drive/e/used-space"
+    unit_of_measurement: 'MB'
+    icon: mdi:harddisk
+    value_template: "{{ value }}"
+    availability_topic: "iotlink/workgroup/10-lunz/lwt"
+    payload_available: "ON"
+    payload_not_available: "OFF"
+    qos: 1
+
+  - platform: mqtt
+    name: "10-LUNZ - HDD Format (E)"
+    state_topic: "iotlink/workgroup/10-lunz/windows-monitor/stats/hard-drive/e/drive-format"
+    unit_of_measurement: ''
+    icon: mdi:harddisk
+    value_template: "{{ value }}"
+    availability_topic: "iotlink/workgroup/10-lunz/lwt"
+    payload_available: "ON"
+    payload_not_available: "OFF"
+    qos: 1
+
+  - platform: mqtt
+    name: "10-LUNZ - HDD Label (E)"
+    state_topic: "iotlink/workgroup/10-lunz/windows-monitor/stats/hard-drive/e/volume-label"
+    unit_of_measurement: ''
+    icon: mdi:harddisk
+    value_template: "{{ value }}"
+    availability_topic: "iotlink/workgroup/10-lunz/lwt"
+    payload_available: "ON"
+    payload_not_available: "OFF"
+    qos: 1
+
+
+########################
+####### Displays #######
+########################
+
+
 camera:
   - platform: mqtt
     name: "10-LUNZ - Screen 0"
     topic: "iotlink/workgroup/10-lunz/windows-monitor/stats/display/0/screen"
+  - platform: mqtt
+    name: "10-LUNZ - Screen 1"
+    topic: "iotlink/workgroup/10-lunz/windows-monitor/stats/display/1/screen"
 
 
 switch:
@@ -234,7 +330,7 @@ script:
     sequence:
       - service: wake_on_lan.send_magic_packet
         data:
-          mac: "XX:XX:XX:XX:XX:XX"
+          mac: "d8:cb:8a:70:e9:cb"
 
   10_lunz_shutdown:
     alias: "10-LUNZ - Shutdown"
@@ -292,6 +388,30 @@ script:
           topic: "iotlink/workgroup/10-lunz/commands/volume/mute"
           payload: ""
 
+  10_lunz_vol_25:
+    alias: "10-LUNZ - Vol 25%"
+    sequence:
+      - service: mqtt.publish
+        data:
+          topic: "iotlink/workgroup/10-lunz/commands/volume/set"
+          payload: "25"
+          
+  10_lunz_vol_50:
+    alias: "10-LUNZ - Vol 50%"
+    sequence:
+      - service: mqtt.publish
+        data:
+          topic: "iotlink/workgroup/10-lunz/commands/volume/set"
+          payload: "50"
+
+  10_lunz_vol_75:
+    alias: "10-LUNZ - Vol 75%"
+    sequence:
+      - service: mqtt.publish
+        data:
+          topic: "iotlink/workgroup/10-lunz/commands/volume/set"
+          payload: "75"
+
   10_lunz_vol_max:
     alias: "10-LUNZ - Vol Max"
     sequence:
@@ -307,3 +427,16 @@ script:
         data:
           topic: "iotlink/workgroup/10-lunz/commands/run"
           payload: '{ "command": "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe", "args": "https://iotlink.gitlab.io", "path": "C:\\Program Files (x86)\\Google\\Chrome\\Application", "user": "", "visible": true, "fallback": true }'
+
+  10_lunz_run_qbt:
+    alias: "10-LUNZ - Run QBT"
+    sequence:
+      - service: mqtt.publish
+        data:
+          topic: "iotlink/workgroup/10-lunz/commands/run"
+          payload: '{ "command": "C:\\Program Files (x86)\\Google\\qBittorrent\\qbittorrent.exe", "args": "", "path": "C:\\Program Files (x86)\\Google\\qBittorrent\\qbittorrent.exe", "user": "micha", "visible": true, "fallback": true }'
+
+
+
+
+

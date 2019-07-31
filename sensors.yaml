@@ -27,6 +27,15 @@
 #     - disease_average_forecasted
     
 
+### Weatheralerts Custom Component ###
+
+  - platform: weatheralerts
+    sameid: '006061'
+
+
+### Authenticated Custom Component ###
+  - platform: authenticated
+
 # Weather prediction
   - platform: yr
     name: weather
@@ -193,6 +202,8 @@
 #       - ping
 #       - download
 #       - upload
+
+# Uptime - does this work???
 #   - platform: uptime
 #     name: "Time Online"
 #     unit_of_measurement: hours
@@ -213,10 +224,10 @@
     show_on_map: false
     
 # qbittorrent
-#   - platform: qbittorrent
-#     url: 'http://192.168.1.144:<port>'
-#     username: YOUR_USERNAME
-#     password: YOUR_PASSWORD
+  - platform: qbittorrent
+    url: 'http://192.168.1.144:8080'
+    username: !secret qbt_username
+    password: !secret qbt_password
 
 #DuckDNS Certificate Expirary
   - platform: cert_expiry
@@ -311,8 +322,79 @@
 #     device_id: d6234b09ace6
 #     away_timeout: 30
 #     name: 'Playbulb Bathroom Light R-A_BT'
+
+
+##############################################
+#### Monitor Bluetooth Presence Detection ####
+##############################################
+
+
+  - platform: mqtt
+    state_topic: 'monitor/monitor-pi/lunziphone_bt'
+    value_template: '{{ value_json.confidence }}'
+    unit_of_measurement: '%'
+    name: 'monitor_lunziphone_bt'
     
+  - platform: mqtt
+    state_topic: 'monitor/monitor-pi/pebble2_btle'
+    value_template: '{{ value_json.confidence }}'
+    unit_of_measurement: '%'
+    name: 'monitor_pebble2_btle'
     
+  - platform: mqtt
+    state_topic: 'monitor/monitor-pi/LunzBulb_bt'
+    value_template: '{{ value_json.confidence }}'
+    unit_of_measurement: '%'
+    name: 'monitor_LunzBulb_bt'
+    
+  - platform: mqtt
+    state_topic: 'monitor/monitor-pi/lunzipad_bt'
+    value_template: '{{ value_json.confidence }}'
+    unit_of_measurement: '%'
+    name: 'monitor_lunzipad_bt'
+    
+  - platform: mqtt
+    state_topic: 'monitor/monitor-pi/pebble2_bt'
+    value_template: '{{ value_json.confidence }}'
+    unit_of_measurement: '%'
+    name: 'monitor_pebble2_bt'
+    
+  - platform: mqtt
+    state_topic: 'monitor/monitor-pi/pebbleblack_bt'
+    value_template: '{{ value_json.confidence }}'
+    unit_of_measurement: '%'
+    name: 'monitor_pebbleblack_bt'
+    
+  - platform: mqtt
+    state_topic: 'monitor/monitor-pi/pebblebrown_bt'
+    value_template: '{{ value_json.confidence }}'
+    unit_of_measurement: '%'
+    name: 'monitor_pebblebrown_bt'
+    
+  - platform: mqtt
+    state_topic: 'monitor/monitor-pi/tilekeys_bt'
+    value_template: '{{ value_json.confidence }}'
+    unit_of_measurement: '%'
+    name: 'monitor_tilekeys_bt'
+    
+  - platform: mqtt
+    state_topic: 'monitor/monitor-pi/airpods_bt'
+    value_template: '{{ value_json.confidence }}'
+    unit_of_measurement: '%'
+    name: 'monitor_airpods_bt'
+    
+  - platform: mqtt
+    state_topic: 'monitor/monitor-pi/boseqc35ii_bt'
+    value_template: '{{ value_json.confidence }}'
+    unit_of_measurement: '%'
+    name: 'monitor_boseqc35ii_bt'
+    
+  - platform: mqtt
+    state_topic: 'monitor/monitor-pi/tilekeys_btle'
+    value_template: '{{ value_json.confidence }}'
+    unit_of_measurement: '%'
+    name: 'monitor_tilekeys_btle'
+
     ######## Volume Knob ########
     
 #   - platform: mqtt
@@ -408,21 +490,21 @@
 ######## Aftership #################
 ####################################
 
-  - platform: aftership
-    api_key: !secret aftership_api_key
+#   - platform: aftership
+#     api_key: !secret aftership_api_key
     
-#   # Aftership
+# #   # Aftership
 #   - platform: template
 #     sensors: 
 #       aftership_pending:
-#         value_template: '{{ states.sensor.aftership.attributes.pending }}'  
-#         friendly_name: 'Pending'
+#          value_template: '{{ states.sensor.aftership.attributes.pending }}'  
+#          friendly_name: 'Pending'
 #       aftership_intransit:
-#         value_template: '{{ states.sensor.aftership.attributes.intransit }}'  
-#         friendly_name: 'In Transit'
+#          value_template: '{{ states.sensor.aftership.attributes.intransit }}'  
+#          friendly_name: 'In Transit'
 #       aftership_delivered:
-#         value_template: '{{ states.sensor.aftership.attributes.delivered }}'  
-#         friendly_name: 'Delivered'
+#          value_template: '{{ states.sensor.aftership.attributes.delivered }}'  
+#          friendly_name: 'Delivered'
 
 ####################################
 ######## History Stats #############
