@@ -1,12 +1,13 @@
-# Welcome!
+# Welcome! 👋
 
-This is my Home Assistant installation.
+This is my Home Assistant installation running on a Lenovo M93P "Tiny" server. They are typically around $120 on eBay and are very low powered. 
+With Proxmox as a hypervisor, you can also run other Virtual Machines to do other things, like be a NAS or a web server. 
 
 ## Some statistics about my installation:
 
 Description | Value
 -- | --
-Number of entities | 1119
+Number of entities | 1120
 Number of sensors | 504
 Hardware | Lenovo M93P Tiny Form Factor
 OS | Proxmox
@@ -15,6 +16,9 @@ RAM | 6GB of 8GB allocated to Home-Assistant
 Processor | Intel® Core™ i5-4570T Processor
 Connectivity | Ethernet
 
+
+I've installed Home-Assistant on Proxmox using the "one-line" installer script:
+https://github.com/whiskerz007/proxmox_hassos_install
 
 
 ## The custom_components that I use
