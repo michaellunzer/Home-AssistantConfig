@@ -6,6 +6,7 @@
 !themes
 !esphome/*.yaml
 !.gitignore
+!README.md
 secrets.yaml
 known_devices.yaml
 home-assistant.log

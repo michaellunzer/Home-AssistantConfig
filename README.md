@@ -1,16 +1,14 @@
-# Welcome !
+# Welcome!
 
 This is my Home Assistant installation.
 
 ## Some statistics about my installation:
 
-Description | value
+Description | Value
 -- | --
 Number of entities | 1119
 Number of sensors | 504
-
-Lenovo M93P Tiny Form Factor
--- | --
+Hardware | Lenovo M93P Tiny Form Factor
 OS | Proxmox
 SSD | 240GB
 RAM | 6GB of 8GB allocated to Home-Assistant
