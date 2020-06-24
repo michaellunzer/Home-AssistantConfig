@@ -27,11 +27,25 @@
 #     - disease_average_forecasted
     
 
+
+### Xfinity Custom Component ###
+
+  - platform: xfinity
+    username: !secret xfinity_email
+    password: !secret xfinity_password
+
+
 ### Weatheralerts Custom Component ###
 
   - platform: weatheralerts
-    sameid: '006061'
-
+    state: CA
+    zone: "006" #SF
+  - platform: weatheralerts
+    state: CA
+    zone: "072" #Truckee
+#   - platform: weatheralerts
+#     state: NV
+#     zone: "002" #Tahoe / Nevada
 
 ### Authenticated Custom Component ###
   - platform: authenticated
@@ -148,9 +162,11 @@
 
 
 # HaveIBeenPwned Sensor
-  - platform: haveibeenpwned
-    email: 
-    - !secret email
+### Removing this because they started charging $3.50/mo for API Access
+#   - platform: haveibeenpwned
+#     email: 
+#     - !secret email
+
 
 
 # Version Sensor to add to System Group
@@ -191,6 +207,7 @@
     #   arg: eth0
 
 ### Not sure if this will work with proxmox to report the host system battery state
+
 #   - platform: linux_battery
     
 # Speed Test Sensor
@@ -214,15 +231,6 @@
 #     users:
 #       - michaellunzer
       
-# AirVisual
-  - platform: airvisual
-    api_key: !secret airvisual_api_key
-    monitored_conditions:
-      - us
-    latitude: !secret homeassistant_latitude
-    longitude: !secret homeassistant_longitude
-    show_on_map: false
-    
 # qbittorrent
   - platform: qbittorrent
     url: 'http://192.168.1.144:8080'
@@ -232,7 +240,7 @@
 #DuckDNS Certificate Expirary
   - platform: cert_expiry
     host: !secret certificate_expiry_url
-    name: "Home Assistant DuckDNS SSL Certificate"
+    # name: "Home Assistant DuckDNS SSL Certificate"
     
 # BRUH MultiSensor
 # https://github.com/bruhautomation/ESP-MQTT-JSON-Multisensor
@@ -324,13 +332,63 @@
 #     name: 'Playbulb Bathroom Light R-A_BT'
 
 
+
+##########################################
+##### Withings Scale Template Sensor #####
+##### Converts kgs to lbs ################
+##########################################
+
+
+  - platform: template
+    sensors:
+      withings_weight_lbs_michael_lunzer:
+        friendly_name: "withings weight_lbs_michael_lunzer"
+        unit_of_measurement: 'lbs'
+        value_template: "{{ (states('sensor.withings_weight_kg_michael_lunzer') | float * 2.20462262185) | round(2) }}"
+        icon_template: mdi:weight-pound
+
+  - platform: template
+    sensors:
+      withings_bone_mass_lbs_michael_lunzer:
+        friendly_name: "withings bone_mass_lbs_michael_lunzer"
+        unit_of_measurement: 'lbs'
+        value_template: "{{ (states('sensor.withings_bone_mass_kg_michael_lunzer') | float * 2.20462262185) | round(2) }}"
+        icon_template: mdi:weight-pound
+        
+  - platform: template
+    sensors:
+      withings_fat_free_mass_lbs_michael_lunzer:
+        friendly_name: "withings fat_free_mass_lbs_michael_lunzer"
+        unit_of_measurement: 'lbs'
+        value_template: "{{ (states('sensor.withings_fat_free_mass_kg_michael_lunzer') | float * 2.20462262185) | round(2) }}"
+        icon_template: mdi:weight-pound
+        
+  - platform: template
+    sensors:
+      withings_fat_mass_lbs_michael_lunzer:
+        friendly_name: "withings fat_mass_lbs_michael_lunzer"
+        unit_of_measurement: 'lbs'
+        value_template: "{{ (states('sensor.withings_fat_mass_kg_michael_lunzer') | float * 2.20462262185) | round(2) }}"
+        icon_template: mdi:weight-pound
+        
+  - platform: template
+    sensors:
+      withings_muscle_mass_lbs_michael_lunzer:
+        friendly_name: "withings muscle_mass_lbs_michael_lunzer"
+        unit_of_measurement: 'lbs'
+        value_template: "{{ (states('sensor.withings_muscle_mass_kg_michael_lunzer') | float * 2.20462262185) | round(2) }}"
+        icon_template: mdi:weight-pound
+
+
+
+
 ##############################################
 #### Monitor Bluetooth Presence Detection ####
 ##############################################
 
 
   - platform: mqtt
-    state_topic: 'monitor/monitor-pi/lunziphone_bt'
+    state_topic: 'monitor/monitor-pi/lunziphone11_bt'
     value_template: '{{ value_json.confidence }}'
     unit_of_measurement: '%'
     name: 'monitor_lunziphone_bt'
@@ -402,7 +460,14 @@
 #     name: "Volume Knob"
 #     retain: true
 
-  - platform: flunearyou
+
+################################
+###### flu near you sensor #####
+################################
+# now configured via the frontend after 0.109
+
+
+#   - platform: flunearyou
   
 ##########################
 ###### bart schedule #####
@@ -450,12 +515,31 @@
 #### Ford GoBikes | Citybikes ######
 ####################################
 
-#   - platform: citybikes
-#     name: Home Bike Stations
-#     stations:
-#       - SF-Q23-3
-#       - SF-Q22-2
-#       - SF-Q22-1
+  - platform: citybikes
+    name: BayWheels
+    radius: 1000
+    # stations:
+    #   - SF-Q23-3
+    #   - SF-Q22-2
+    #   - SF-Q22-1
+
+####################################
+######## Spotcast Spotify ##########
+####################################
+
+  - platform: spotcast
+
+########################################################
+######## Plex Recently Added Custom Component ##########
+########################################################
+
+  - platform: plex_recently_added
+    token: !secret plex_secret_token
+    host: 192.168.1.144
+    port: 32400
+
+
+
 
 
 ####################################
@@ -490,21 +574,51 @@
 ######## Aftership #################
 ####################################
 
-#   - platform: aftership
-#     api_key: !secret aftership_api_key
+  - platform: aftership
+    api_key: !secret aftership_api_key
     
-# #   # Aftership
-#   - platform: template
-#     sensors: 
-#       aftership_pending:
-#          value_template: '{{ states.sensor.aftership.attributes.pending }}'  
-#          friendly_name: 'Pending'
-#       aftership_intransit:
-#          value_template: '{{ states.sensor.aftership.attributes.intransit }}'  
-#          friendly_name: 'In Transit'
-#       aftership_delivered:
-#          value_template: '{{ states.sensor.aftership.attributes.delivered }}'  
-#          friendly_name: 'Delivered'
+  # Aftership
+  - platform: template
+    sensors: 
+      aftership_pending:
+         value_template: '{{ states.sensor.aftership.attributes.pending }}'  
+         friendly_name: 'Pending'
+      aftership_intransit:
+         value_template: '{{ states.sensor.aftership.attributes.intransit }}'  
+         friendly_name: 'In Transit'
+      aftership_delivered:
+         value_template: '{{ states.sensor.aftership.attributes.delivered }}'  
+         friendly_name: 'Delivered'
+
+####################################
+######## NextBus ###################
+####################################
+
+#### https://www.nextbus.com/#!/<agency>/<route>/<direction>/<stop>
+##   https://www.nextbus.com/#!/sf-muni/49/     49___I_F00  /  5565  /    5561
+##   https://www.nextbus.com/#!/sf-muni/12/     12___I_F00 /   3476
+##   https://www.nextbus.com/#!/sf-muni/48/     48___I_N00  /  3477   /3484
+
+# https://www.nextbus.com/#!/sf-muni/49/49___I_C01/5565/5561
+
+  - platform: nextbus
+    agency: sf-muni
+    route: 49
+    stop: 5565
+    name: "49-Van Ness-Mission"
+    
+  - platform: nextbus
+    agency: sf-muni
+    route: 12
+    stop: 3476
+    name: "12-Folsom-Pacific"
+    
+  - platform: nextbus
+    agency: sf-muni
+    route: 48
+    stop: 3477
+    name: "48-Quintara-24th Mission"
+    
 
 ####################################
 ######## History Stats #############
@@ -514,7 +628,7 @@
 # History Statistics Sensor for how long I have been at home TODAY
   - platform: history_stats
     name: "Michael - Time At Home Today"
-    entity_id: device_tracker.michael_bayesian
+    entity_id: person.michael_lunzer
     state: 'home'
     type: time
     start: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
@@ -523,7 +637,7 @@
 ## History Statistics Sensor for how long I have been at home THIS WEEK
   - platform: history_stats
     name: "Michael - Time At Home This Week"
-    entity_id: device_tracker.michael_bayesian
+    entity_id: person.michael_lunzer
     state: 'home'
     type: time
     start: '{{ as_timestamp( now().replace(hour=0).replace(minute=0).replace(second=0) ) - now().weekday() * 86400 }}'
@@ -532,7 +646,7 @@
 ## History Statistics Sensor for how long I have been at home THIS MONTH
   - platform: history_stats
     name: "Michael - Time At Home This Month"
-    entity_id: device_tracker.michael_bayesian
+    entity_id: person.michael_lunzer
     state: 'home'
     type: time
     end: '{{ now().replace(hour=0).replace(minute=0).replace(second=0) }}'
@@ -569,7 +683,177 @@
     duration:
       days: 30
 
+  - platform: template
+    sensors:
+      #----- Count Automations
+        count_automations:
+          entity_id: sensor.date
+          value_template: >
+            {%- set domains = ['automation'] -%}
+            {%- for domain in domains -%}
+              {%- for item in states[domain] -%}
+                {% if loop.first %}
+                  {{loop.length}}
+                {% endif %}
+              {%- endfor -%}
+            {%- endfor -%}
+      #----- Count Device Trackers
+        count_device_trackers:
+          entity_id: sensor.date
+          value_template: >
+            {%- set domains = ['device_tracker'] -%}
+            {%- for domain in domains -%}
+              {%- for item in states[domain] -%}
+                {% if loop.first %}
+                  {{loop.length}}
+                {% endif %}
+              {%- endfor -%}
+            {%- endfor -%}        
+      #----- Count Lights
+        count_lights:
+          entity_id: sensor.date
+          value_template: >
+            {%- set domains = ['light'] -%}
+            {%- for domain in domains -%}
+              {%- for item in states[domain] -%}
+                {% if loop.first %}
+                  {{loop.length}}
+                {% endif %}
+              {%- endfor -%}
+            {%- endfor -%}
+      #----- Count Binary Sensors
+        count_binary_sensors:
+          entity_id: sensor.date
+          value_template: >
+            {%- set domains = ['binary_sensor'] -%}
+            {%- for domain in domains -%}
+              {%- for item in states[domain] -%}
+                {% if loop.first %}
+                  {{loop.length}}
+                {% endif %}
+              {%- endfor -%}
+            {%- endfor -%}
+      #----- Count Sensors
+        count_sensors:
+          entity_id: sensor.date
+          value_template: >
+            {%- set domains = ['sensor'] -%}
+            {%- for domain in domains -%}
+              {%- for item in states[domain] -%}
+                {% if loop.first %}
+                  {{loop.length}}
+                {% endif %}
+              {%- endfor -%}
+            {%- endfor -%}
+      #----- Count Switches
+        count_switches:
+          entity_id: sensor.date
+          value_template: >
+            {%- set domains = ['switch'] -%}
+            {%- for domain in domains -%}
+              {%- for item in states[domain] -%}
+                {% if loop.first %}
+                  {{loop.length}}
+                {% endif %}
+              {%- endfor -%}
+            {%- endfor -%}
+      #----- Count Zones
+        count_zones:
+          entity_id: sensor.date
+          value_template: >
+            {%- set domains = ['zone'] -%}
+            {%- for domain in domains -%}
+              {%- for item in states[domain] -%}
+                {% if loop.first %}
+                  {{loop.length}}
+                {% endif %}
+              {%- endfor -%}
+            {%- endfor -%}
+    
+#############################################################
+######## SN1_motion sensor last seen template sensor ########
+#############################################################
 
+  - platform: template
+    sensors:
+      template_last_motion:
+        friendly_name: 'sn1_motion_last_seen'
+        value_template: >
+          {%- set pirs = [states.binary_sensor.sn1_motion] %}
+          {% for pir in pirs %}
+            {% if as_timestamp(pir.last_changed) == as_timestamp(pirs | map(attribute='last_changed') | max) %}
+              {{ pir.name }} {{pir.last_changed.astimezone(now().tzinfo).strftime('%d-%m %X')}}
+            {% endif %}
+          {% endfor %}
 
+#############################################
+### Corona Virus Figures Comma Separated ####
+#############################################
 
+# Worldwide
 
+  - platform: template
+    sensors:
+      worldwide_coronavirus_confirmed_comma_separated:
+        friendly_name: Worldwide Coronavirus Cases Confirmed
+        value_template: "{{ '{0:,}'.format(states.sensor.worldwide_coronavirus_confirmed.state | int) }}"
+        unit_of_measurement: ""
+
+  - platform: template
+    sensors:
+      worldwide_coronavirus_infected_comma_separated:
+        friendly_name: Worldwide Coronavirus Cases Infected
+        value_template: "{{ '{0:,}'.format(states.sensor.worldwide_coronavirus_current.state | int) }}"
+        unit_of_measurement: ""
+
+  - platform: template
+    sensors:
+      worldwide_coronavirus_recovered_comma_separated:
+        friendly_name: Worldwide Coronavirus Cases Recovered
+        value_template: "{{ '{0:,}'.format(states.sensor.worldwide_coronavirus_recovered.state | int) }}"
+        unit_of_measurement: ""
+
+  - platform: template
+    sensors:
+      worldwide_coronavirus_deceased_comma_separated:
+        friendly_name: Worldwide Coronavirus Cases Deceased
+        value_template: "{{ '{0:,}'.format(states.sensor.worldwide_coronavirus_deaths.state | int) }}"
+        unit_of_measurement: ""
+
+# USA
+
+  - platform: template
+    sensors:
+      us_coronavirus_confirmed_comma_separated:
+        friendly_name: USA Coronavirus Cases Confirmed
+        value_template: "{{ '{0:,}'.format(states.sensor.us_coronavirus_confirmed.state | int) }}"
+        unit_of_measurement: ""
+
+  - platform: template
+    sensors:
+      us_coronavirus_infected_comma_separated:
+        friendly_name: USA Coronavirus Cases Infected
+        value_template: "{{ '{0:,}'.format(states.sensor.us_coronavirus_current.state | int) }}"
+        unit_of_measurement: ""
+
+  - platform: template
+    sensors:
+      us_coronavirus_recovered_comma_separated:
+        friendly_name: USA Coronavirus Cases Recovered
+        value_template: "{{ '{0:,}'.format(states.sensor.us_coronavirus_recovered.state | int) }}"
+        unit_of_measurement: ""
+
+  - platform: template
+    sensors:
+      us_coronavirus_deceased_comma_separated:
+        friendly_name: USA Coronavirus Cases Deceased
+        value_template: "{{ '{0:,}'.format(states.sensor.us_coronavirus_deaths.state | int) }}"
+        unit_of_measurement: ""
+        
+        
+        
+        
+        
+        
+        
+        

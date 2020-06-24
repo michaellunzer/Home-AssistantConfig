@@ -23,6 +23,7 @@ hassio_configs.txt
 .uuid
 .spotify-token-cache
 .HA_VERSION
+.ip_authenticated.yaml
 tts
 icloud
 deps

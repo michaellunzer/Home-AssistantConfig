@@ -2,28 +2,34 @@ scene:
   - name: Bedtime
     entities:
       group.lights_michael2: off
-      switch.sonoff_fan: off
+    #   switch.sonoff_fan: off
+      switch.sonoff_kmc_02: on # white noise
+      switch.sonoff_basic01_relay: off
+      switch.sonoff_basic02_relay: off
   - name: Romantic
     entities:
-      light.flux_bedroom_light: on
-      light.cabinet_light:
-        state: on
-        rgb_color: [244, 2, 127]
-        brightness: 200
+    #   light.flux_bedroom_light: 
+    #     state: on
+    #     rgb_color: [244, 2, 127]
+    #     brightness: 100
+    #   light.cabinet_light:
+    #     state: on
+    #     rgb_color: [244, 2, 127]
+    #     brightness: 200
       light.michael_hue:
         state: on
         rgb_color: [244, 2, 127]
         brightness: 200
   - name: Movies
     entities:
-      light.living_room:
-        state: on
-        brightness: 50
-      light.theatre:
-        state: on
-        brightness: 75
+    #   light.living_room:
+    #     state: on
+    #     brightness: 50
+    #   light.theatre:
+    #     state: on
+    #     brightness: 75
       light.hallway:
         state: on
-        brightness: 100
+        brightness: 50
     #   media_player.sony_bravia_tv:
     #     source: HDMI 1

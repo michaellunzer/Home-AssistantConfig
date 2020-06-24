@@ -1,4 +1,5 @@
-#testing sharedfolders
+## VM Config
+
 homeassistant:
   # Name of the location where Home Assistant is running
   name: Home
@@ -14,6 +15,12 @@ homeassistant:
   # Customization file
   customize: !include customize.yaml
   packages: !include_dir_named packages
+#   auth_providers:
+#   - type: trusted_networks
+#     trusted_networks:
+#       - 192.168.1.0/24   #anyone on the home network
+#       - 172.30.32.0/24
+#       - 127.0.0.0/24
 #   whitelist_external_dirs:
 #   # - /backup
 #   - /config
@@ -24,7 +31,7 @@ homeassistant:
 
 # shell_command: !include_dir_named shell_command
 
-zone: !include zones.yaml
+# zone: !include zones.yaml
 #I hope this is the right spot for the zone config.
 
 #testing to see if git works again!
@@ -42,8 +49,33 @@ system_health:
 
 person: 
 
+## AWS
 # recorder:
-#   db_url: mysql://admin:asdf@db.lunz.xyz/homeassistant
+#   db_url: mysql://admin:HiXF77p4aEC!0@hassiodb.cvnhhyf7wvga.us-west-2.rds.amazonaws.com/homeassistant
+#   purge_keep_days: 300    #default = 10
+#   purge_interval: 100      #default = 1
+#   exclude:
+#     entities:
+#      - light.michael_hue
+#      - sun.sun # Don't record sun data
+#      - sensor.date
+#     #   - sensor.last_boot # Comes from 'systemmonitor' sensor platform
+
+## OCI CLASSIC
+# recorder:
+#   db_url: mysql://root:CLn4P8CjtT!1@150.136.226.239/mydatabase?charset=utf8
+#   purge_keep_days: 300    #default = 10
+#   purge_interval: 100      #default = 1
+#   exclude:
+#     entities:
+#      - light.michael_hue
+#      - sun.sun # Don't record sun data
+#      - sensor.date
+#     #   - sensor.last_boot # Comes from 'systemmonitor' sensor platform
+
+# OCI Docker MySQL DB
+# recorder:
+#   db_url: mysql://root:CLn4P8CjtT!1@db.lunz.xyz/homeassistant?charset=utf8
 #   purge_keep_days: 300    #default = 10
 #   purge_interval: 100      #default = 1
 #   exclude:
@@ -55,14 +87,29 @@ person:
 
 recorder:
   db_url: mysql://admin:asdf@core-mariadb/homeassistant
-  purge_keep_days: 30    #default = 10
-  purge_interval: 1      #default = 1
+  purge_keep_days: 1     #default = 10
+  #purge_interval: 1      #default = 1  ### depreciated in 0.109
   exclude:
     entities:
      - light.michael_hue
      - sun.sun # Don't record sun data
      - sensor.date
+     - light.powermonitor_plug01_blue_led
+     - light.powermonitor_plug01_red_led
     #   - sensor.last_boot # Comes from 'systemmonitor' sensor platform
+
+# recorder:
+#   db_url: oracle+cx_oracle://admin:CLn4P8CjtT!1@adb.us-ashburn-1.oraclecloud.com:1522/ag7yhvhltqz2qif_db201909161722_high.atp.oraclecloud.com/?service_name=DB201909161722
+#   purge_keep_days: 30    #default = 10
+#   purge_interval: 1      #default = 1
+#   exclude:
+#     entities:
+#      - light.michael_hue
+#      - sun.sun # Don't record sun data
+#      - sensor.date
+#     #   - sensor.last_boot # Comes from 'systemmonitor' sensor platform
+
+###  oracle+zxjdbc://admin:CLn4P8CjtT!1@adb.us-ashburn-1.oraclecloud.com:1522/ag7yhvhltqz2qif_db201909161722_high.atp.oraclecloud.com/DB201909161722
 
 
 influxdb:
@@ -82,6 +129,8 @@ frontend:
 config:
 
 zeroconf:
+
+default_config:
 
 ssdp:
 
@@ -159,11 +208,13 @@ ios:
 
 http:
 # use this below for a reverse proxy
-#   use_x_forwarded_for: True
+#   use_x_forwarded_for: true
 #   trusted_proxies:
 #     - 127.0.0.1
+#     - ::1
 #   trusted_networks:
 #     - 192.168.1.0/24
+#     - 172.30.32.0/24
       
   # Secrets are defined in the file secrets.yaml
 #   api_password: !secret http_api_password                           #### API Password was depreciated in ~0.72
@@ -213,6 +264,9 @@ map:
 # Track the sun
 sun:
 
+## World Wide Lightning Location Network (WWLLN)
+wwlln:
+
 hassio:
 
 # Text to speech
@@ -249,6 +303,7 @@ group: !include_dir_named groups
 automation: !include automations.yaml
 script: !include scripts.yaml
 sensor: !include sensors.yaml
+
 
 
 ####################################
@@ -306,7 +361,7 @@ binary_sensor:
     name: 'Michael Presence'
     probability_threshold: 0.95
     observations:
-    # - entity_id: 'device_tracker.lunziphone_wifi'
+    # - entity_id: 'device_tracker.lunziphone11_wifi'
     #   prob_given_true: 0.8
     #   prob_given_false: 0.6
     #   platform: 'state'
@@ -316,7 +371,7 @@ binary_sensor:
     #   prob_given_false: 0.1
     #   platform: 'state'
     #   to_state: 'home'
-    - entity_id: 'device_tracker.lunziphone_mobile' #### old device_tracker.0a8fb53497b2433297bd346d3aaffb24
+    - entity_id: 'device_tracker.lunziphone11_mobile' #### old device_tracker.0a8fb53497b2433297bd346d3aaffb24
       prob_given_true: 0.92
       prob_given_false: 0.1
       platform: 'state'
@@ -428,34 +483,38 @@ panel_iframe:
     title: TasmoAdmin
     icon: mdi:lightbulb-on
     url: !secret tasmoadmin_url
-#   nextcloud:
-#     title: NextCloud
-#     icon: mdi:cloud-sync
-#     url: !secret nextcloud_url
   router:
     title: Asus Router
     icon: mdi:router-wireless
     url: !secret router_url
+#   magicmirror:
+#     title: MagicMirror²
+#     icon: mdi:auto-fix
+#     url: !secret magicmirror_url
+
+
+#Don't use these anymore - was getting crowded
+
+#   nextcloud:
+#     title: NextCloud
+#     icon: mdi:cloud-sync
+#     url: !secret nextcloud_url
 #   plex:
 #     title: Plex
 #     icon: mdi:plex
 #     url: !secret plex_url
-  pihole:
-    title: Pi Hole
-    icon: mdi:spider-web
-    url: !secret pihole_url
 #   lunzpi:
 #     title: LunzPi
 #     icon: mdi:music-box
 #     url: !secret lunzpi_url
-  backup:
-    title: 'Google Drive Snapshots'
-    icon: mdi:cloud-upload
-    url: !secret google_drive_backup_url
-  jupyterlab:
-    title: JupyterLab
-    icon: mdi:notebook
-    url: !secret jupyter_url
+#   backup:
+#     title: 'Google Drive Snapshots'
+#     icon: mdi:cloud-upload
+#     url: !secret google_drive_backup_url
+#   jupyterlab:
+#     title: JupyterLab
+#     icon: mdi:notebook
+#     url: !secret jupyter_url
     
 # not needed anymore, they have toggle switches on the containers now
 #   vs:
@@ -506,38 +565,116 @@ panel_iframe:
 #     title: Motion
 #     icon: mdi:cctv
 #     url: !secret motion_url
+#   pihole:
+#     title: Pi Hole
+#     icon: mdi:spider-web
+#     url: !secret pihole_url
 
 media_player:
 #   - platform: mpd                # I don't use this as a media player anymore, just cleaning things up.
 #     host: !secret mpd_host_lunzpi
 #     port: !secret mpd_port_lunzpi
 #     name: LunzPi
-  - platform: spotify
-    client_id: !secret spotify_client_id
-    client_secret: !secret spotify_client_secret
+### Spotify was moved to it's own platform
+#   - platform: spotify
+#     client_id: !secret spotify_client_id
+#     client_secret: !secret spotify_client_secret
+# Pioneer Amplifier
+  - platform: pioneer      # try this later: onkyo
+    host: 192.168.1.3
+    name: Receiver
   - platform: androidtv
     name: "Fire TV"
     host: 192.168.1.77
     adb_server_ip: 127.0.0.1
     adb_server_port: 5037
-    apps:
-      "org.xbmc.kodi": "Kodi"
-      "com.netflix.ninja": "Netflix"
-      "com.spotify.tv.android": "Spotify"
-      "com.google.android.tvlauncher": "Homescreen"
-      "com.google.android.youtube.tv": "Youtube"
+    # apps:
+    #   "org.xbmc.kodi": "Kodi"
+    #   "com.netflix.ninja": "Netflix"
+    #   "com.spotify.tv.android": "Spotify"
+    #   "com.google.android.tvlauncher": "Homescreen"
+    #   "com.google.android.youtube.tv": "Youtube"
   # - platform: itunes
   #   host: !secret itunes_host
+  #
+  
+############################################
+###### Spotify Integration #################
+############################################
+# Moved from Media Player in 0.105
+  
+spotify:
+  client_id: !secret spotify_client_id
+  client_secret: !secret spotify_client_secret
+  
+############################################
+###### WebOStv LG TV Living Room ###########
+############################################
+  
+webostv:
+    name: Living Room TV
+    host: 192.168.1.112
+    #other settings
+    turn_on_action:
+        service: wake_on_lan.send_magic_packet
+        data:
+          mac: "60:AB:14:62:F1:E0"
+    # standby_connection: true #### not needed after 0.105.x
+  
+    
+# remote:
+#   - platform: webostv
+#     host: 192.168.1.112
+#     name: lgr
+    
+# # LG TV WebOS
+#   - platform: webostv
+#     host: 192.168.1.112
+#     name: Living Room TV
+#     filename: webostv.conf
+#     timeout: 5
+#     # turn_on_action:
+#     #   service: persistent_notification.create
+#     #   data:
+#     #     message: "Turn on action"
+#     turn_on_action:
+#       service: wake_on_lan.send_magic_packet
+#       data:
+#         mac: "60:AB:14:62:F1:EE"
+#     customize:
+#       sources:
+#         - livetv
+#         - youtube
+#         # - makotv
+#         - netflix
+
+####################################
+###### Plex Media Player ###########
+####################################
+
+### now configured via Integrations Page and depreciated in 0.111
+
+# plex:
+#   host: 192.168.1.144
+#   port: 32400
+#   token: !secret plex_secret_token
+#   ssl: false
+#   verify_ssl: false
+#   media_player:
+#     use_episode_art: true
+#     show_all_controls: false
 
 ####################################
 ###### Alexa Media Player ##########
 ####################################
 
-alexa_media:
-  accounts:
-    - email: !secret amazon_email
-      password: !secret amazon_password
-      url: amazon.com
+### migrated to integrations GUI page
+
+# alexa_media:
+#   accounts:
+#     - email: !secret amazon_email
+#       password: !secret amazon_password
+#       url: amazon.com
   
 ##########################################
 ### Custom Component: Breaking Changes ###
@@ -590,6 +727,7 @@ asuswrt:
     host: 192.168.1.1
     username: !secret asus_username
     password: !secret asus_password
+    # ssh_key: /config/ssh/ssh_asus_private_key
     protocol: ssh ### or telnet
     mode: router
     sensors:
@@ -640,20 +778,26 @@ device_tracker:
   - platform: ping
     hosts:
       lunziphone_ping: 192.168.1.8
+      lunziphone11_ping: 192.168.1.9
       lunzipad_ping: 192.168.1.239
       10lunz_ping: 192.168.1.144
-      MadisongsiPhone_ping: 192.168.1.120
+    #   MadisongsiPhone_ping: 192.168.1.120
     #   ahmads_iphone_ping: 192.168.1.46
   - platform: iphonedetect
     consider_home: 60
     new_device_defaults:
       track_new_devices: true
-      hide_if_away: false
+    #   hide_if_away: false
     hosts:
       lunziphone_iphonedetect: 192.168.1.8
+      lunziphone11_iphonedetect: 192.168.1.9
       lunzipad_iphonedetect: 192.168.1.239
-    #   ahmads_iphone_iphonedetect: 192.168.1.46
-    #   MadisongsiPhone_iphonedetect: 192.168.1.120
+      ahmads_iphone_iphonedetect: 192.168.1.46
+      MadisongsiPhone_iphonedetect: 192.168.1.120
+      KatieFodsiPhone: 192.168.1.91
+      LaurenBdsiPhone_iphonedetect: 192.168.1.125
+      AD-iPhone-6_iphonedetect: 192.168.1.162
+      laura_iphonedetect: 192.168.1.118
 
 
 # duckDNS
@@ -662,7 +806,17 @@ device_tracker:
 #   domain: !secret duckdns_domain
 #   access_token: !secret duckdns_access_token
 
+####################################
+###### Image Processing ############
+####################################
 
+
+image_processing:
+  - platform: doods
+    url: "http://192.168.1.2:8080"
+    detector: default
+    source:
+      - entity_id: camera.laundry_camera
 
 
 ####################################
@@ -702,16 +856,21 @@ light:
 
 # not needed anymore. delete in 0.93
 # this is for the "new/official" Tuya component -- however it relies on 3rd party external servers.
-# tuya:
-#   username: !secret tuya_username
-#   password: !secret tuya_password
-#   country_code: 1
-#   platform: jinvoo_smart
+tuya:
+  username: !secret tuya_username
+  password: !secret tuya_password
+  country_code: 1
+  platform: tuya #jinvoo_smart
+
+sonoff:
+  username: !secret tuya_username
+  password: !secret tuya_password
+  reload: always
 
 
 switch:
   - platform: wake_on_lan
-    mac_address: "D8-CB-8A-70-E9-CB"
+    mac: "D8-CB-8A-70-E9-CB"  #change it to this after 0.103+ --> mac: "D8-CB-8A-70-E9-CB"
     name: "10-LUNZ PC"
     host: 192.168.1.144
     turn_off:
@@ -744,9 +903,9 @@ switch:
   - platform: flux
     lights:
       - light.michael_hue
-      - light.cabinet_light
+    #   - light.cabinet_light
       - light.ring_light
-      - light.flux_bedroom_light
+    #   - light.flux_bedroom_light
     name: Fluxer
     start_time: '7:00'
     stop_time: '23:00'
@@ -758,6 +917,12 @@ switch:
     mode: rgb
     transition: 10
     interval: 60
+### Circadian Lighting
+  - platform: circadian_lighting
+    lights_ct:
+      - light.michael_hue
+      - light.ring_light
+### qBittorrent alternative speed custom compoent
   - platform: qbittorrent_alternative_speed
     host: 192.168.1.144
     username: !secret qbt_username
@@ -765,6 +930,21 @@ switch:
     port: 8080
     protocol: http
     name: qbittorrent_alternative_speed
+### template switch to reverse the oled_display01 switch
+  - platform: template
+    switches:
+      oled_display01_inverted:
+        friendly_name: "OLED Display"
+        value_template: "{{ is_state('switch.oled_display01_screen', 'off') }}"
+        turn_on:
+          service: switch.turn_off
+          data:
+            entity_id: switch.oled_display01_screen
+        turn_off:
+          service: switch.turn_on
+          data:
+            entity_id: switch.oled_display01_screen
+        icon_template: "{% if is_state('switch.oled_display01_screen', 'on') %}mdi:flash-outline{% else %}mdi:flash{% endif %}"
 
 ####################################
 ############# INPUT BOOLEAN ########
@@ -772,9 +952,27 @@ switch:
 
 input_boolean:
   medicine_reminder:
-    name: Adderall Reminder
+    name: "Medicine Reminder"
   michael_home:
     name: michael_home
+  michael_morning_alarm:
+    name: "Michael Morning Alarm"
+
+
+####################################
+############# INPUT Select ########
+####################################
+
+
+input_select:
+  dishwasher_status:
+    name: Dishwasher Status
+    options:
+      - Dirty
+      - Running
+      - Drying
+      - Clean
+    initial: Dirty
 
 
 
@@ -808,21 +1006,38 @@ weather:
 
 iqvia:
   zip_code: !secret pollen_zip_code
-  monitored_conditions:
-    - allergy_average_forecasted
-    - allergy_index_today
-    - allergy_index_tomorrow
-    # - allergy_index_yesterday
-    - asthma_average_forecasted
-    - asthma_index_today
-    - asthma_index_tomorrow
-    # - asthma_index_yesterday
-    - disease_average_forecasted
-    - disease_index_today
-    # - disease_index_yesterday
+## ALL Monitored Conditions are displayed by default now
+#   monitored_conditions:
+#     - allergy_average_forecasted
+#     - allergy_index_today
+#     - allergy_index_tomorrow
+#     # - allergy_index_yesterday
+#     - asthma_average_forecasted
+#     - asthma_index_today
+#     - asthma_index_tomorrow
+#     # - asthma_index_yesterday
+#     - disease_average_forecasted
+#     - disease_index_today
+#     # - disease_index_yesterday
 
 # "yesterday" doesn't work anymore!
     
+    
+    
+####################################
+####### AirVisual ##################
+####################################
+
+airvisual:
+    api_key: !secret airvisual_api_key
+    # monitored_conditions:      ## This is depreciated 
+    #   - us
+    geographies:
+        latitude: !secret homeassistant_latitude
+        longitude: !secret homeassistant_longitude
+    # show_on_map: false.        ## This is depreciated
+
+
 ####################################################
 ############# Custom Lovelace Card #################
 ####################################################
@@ -894,8 +1109,8 @@ iqvia:
 hacs:
   token: !secret my_github_access_token
   appdaemon: true
-  python_script: true
-  theme: true
+#   python_script: true ### depreciated
+#   theme: true ### depreciated
 
 
 
@@ -912,7 +1127,7 @@ hacs:
 #     include_entities: 
 #       - light.flux_bedroom_light
 #       - person.michael_lunzer
-    #   - light.michael_hue
+      # - light.michael_hue
 
 
 ####################################
@@ -982,3 +1197,97 @@ alexa:
 #     switch.sonoff_fan:
 #       name: "Fan"
       
+      
+      
+####################################
+######## Spotcast ##################
+####################################
+      
+spotcast:
+  sp_dc: !secret spotcast_sp_dc
+  sp_key: !secret spotcast_sp_key
+
+### old
+#   username: !secret spotify_username
+#   password: !secret spotify_password
+  
+####################################
+######## Google Calendar ###########
+####################################
+  
+google:
+  client_id: !secret gcal_client_id
+  client_secret: !secret gcal_client_secret
+  
+  
+####################################
+######## Anniversary ###############
+####################################
+
+anniversaries:
+  sensors:
+  - name: Christmas
+    date: '2020-12-25'
+  - name: "ski_lease_ends_anniversary"
+    date: '2020-4-27'
+  - name: "Laura_birthday_anniversary"
+    date: '2020-3-5'
+  - name: "Michael_birthday_anniversary"
+    date: '2020-4-2'
+  - name: "laura_michael_anniversary"
+    date: '2020-7-7'
+    
+############################################################
+######## Circadian Lighting Custom Component ###############
+############################################################
+
+circadian_lighting:
+
+
+
+############################################################
+######## Withings Health - Scale ###########################
+############################################################
+
+
+withings:
+  client_id: !secret withings_client_id
+  client_secret: !secret withings_consumer_secret
+  profiles:
+    - Michael Lunzer
+
+############################################################
+######## Vaccuum ###########################################
+############################################################
+
+### I don't have this vacuum anymore
+
+
+# vacuum:
+#   - platform: roomba
+#     host: 192.168.1.232
+#     username: 34DA3DE30DFD4AA59A4084A400044EE2
+#     password: :1:1579484417:CfaWlcuNEwdc5FGY
+
+
+
+############################################################
+######## Utility Meter #####################################
+############################################################
+
+# utility_meter:
+#   energy:
+#     source: sensor.kmc01_total_daily_energy
+#     cycle: daily
+
+
+#   - entity: sensor.kmc01_current
+#   - entity: 
+#   - entity: sensor.kmc01_voltage
+
+############################################################
+######## Generate GitHub Readme Custom Component ###########
+############################################################
+
+readme:
+

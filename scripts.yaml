@@ -1,0 +1,33 @@
+'1581755794299':
+  alias: Play on LunzDot
+  sequence:
+  - data: {}
+    entity_id: media_player.receiver
+    service: media_player.turn_on
+  - delay: 00:00:05
+  - data:
+      source: ALEXA
+    entity_id: media_player.receiver
+    service: media_player.select_source
+  - data:
+      source: LunzDot
+    entity_id: media_player.spotify
+    service: media_player.select_source
+  - data:
+      entity_id: media_player.lunzdot
+      media_content_id: shuffle Your Summer Rewind
+      media_content_type: SPOTIFY
+    entity_id: media_player.lunzdot
+    service: media_player.media_play
+'1585294984586':
+  alias: Play on Living Room Stereo
+  sequence:
+  - device_id: 6d1b7cec790240ff93aa82d46e856858
+    domain: switch
+    entity_id: switch.stereo_relay
+    type: turn_on
+  - data:
+      entity_id: media_player.chromecastaudio9394
+      transfer_playback: true
+    entity_id: media_player.chromecastaudio9394
+    service: spotcast.start

@@ -18,20 +18,32 @@ homeassistant:
       friendly_name: Unique Domains
       icon: mdi:approval
 
+pi_hole:
+#   - host: 'localhost:4865' # 4865 is the port on the container
+#     # name: 'pihole_docker'
+#     ssl: false
+#     verify_ssl: false
+#     # api: !secret pihole_docker_api
+  - host: '192.168.1.17' # 4865 is the port on the container
+    name: 'pihole_pogoplug'
+    # api: !secret pihole_pogoplug_api
+    ssl: false
+    verify_ssl: false
 
-sensor:
-  - platform: pi_hole
-    host: localhost:4865
-    monitored_conditions:
-      - ads_percentage_today
-      - ads_blocked_today
-      - queries_cached
-      - queries_forwarded
-      - unique_domains
-      - dns_queries_today
-      - domains_being_blocked
-      - unique_clients
-      - clients_ever_seen
+# This config is depreciated! 
+# sensor:
+#   - platform: pi_hole
+#     host: localhost:4865
+#     monitored_conditions:
+#       - ads_percentage_today
+#       - ads_blocked_today
+#       - queries_cached
+#       - queries_forwarded
+#       - unique_domains
+#       - dns_queries_today
+#       - domains_being_blocked
+#       - unique_clients
+#       - clients_ever_seen
 
 # Pi-Hole switch
 # switch:
@@ -43,6 +55,30 @@ sensor:
 #         command_state: "curl -X GET 'http://192.168.1.2:4865/admin/api.php?status'"
 #         value_template: "{{ value_json.status == 'enabled' }}"
 
+# Pi-Hole switch
+# switch:
+#   - platform: command_line
+#     scan_interval: 5
+#     switches:
+#       pihole_switch:
+#         friendly_name: "Ad Blocking"
+#         command_on: "curl -X GET 'http://localhost:4865/admin/api.php?enable&auth='"
+#         command_off: "curl -X GET 'http://localhost:4865/admin/api.php?disable=600&auth='"
+#         command_state: "curl -X GET 'http://localhost:4865/admin/api.php?status&auth='"
+#         value_template: "{{ value_json.status == 'enabled' }}"
+
+
+# Pi-Hole switch on PogoPlug
+switch:
+  - platform: command_line
+    scan_interval: 5
+    switches:
+      pihole_switch:
+        friendly_name: "Ad Blocking"       ###### Full explanation on auth found here: https://discourse.pi-hole.net/t/is-there-an-api-command-to-disable-ad-blocking/7693/10
+        command_on: "curl -X GET 'http://192.168.1.17/admin/api.php?enable&auth=7624e1f89ce009f8ec7e6e39781a42c0a27fa38f94db4f05f78b0f301007e06a'"
+        command_off: "curl -X GET 'http://192.168.1.17/admin/api.php?disable=600&auth=7624e1f89ce009f8ec7e6e39781a42c0a27fa38f94db4f05f78b0f301007e06a'"
+        command_state: "curl -X GET 'http://192.168.1.17/admin/api.php?status&auth=7624e1f89ce009f8ec7e6e39781a42c0a27fa38f94db4f05f78b0f301007e06a'"
+        value_template: "{{ value_json.status == 'enabled' }}"
 
 # moved back from /config/groups/pihole.yaml
 # group:

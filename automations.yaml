@@ -48,7 +48,7 @@
   condition: []
   action:
   - data:
-      name: dark
+      name: dark_mint
     service: frontend.set_theme
 - id: '1543992499281'
   alias: SFTP Daily Backup at 4am
@@ -139,12 +139,233 @@
 - id: '1561585571378'
   alias: Update Notification
   trigger:
-  - entity_id: updater.updater
+  - entity_id: binary_sensor.updater
+    from: '''off'''
     platform: state
+    to: '''on'''
   condition: []
   action:
   - data:
-      data:
-        message: Home Assistant  {{ states.updater.updater.state }}  is now available.
+      data_template:
+        message: Home Assistant  {{ state_attr('binary_sensor.updater', 'newest_version')
+          }}  is now available.
         target: channel/LunzHome
+        title: New Home Assistant Release
     service: notify.pushbullet
+- id: '1569409841150'
+  alias: iOS_Toggle_Fan
+  trigger:
+  - event_data:
+      actionName: Fan_Toggle
+    event_type: ios.action_fired
+    platform: event
+  condition: []
+  action:
+  - data:
+      entity_id: switch.sonoff_amplifier
+    service: switch.toggle
+- id: '1569410375070'
+  alias: iOS_Michael_Lights_Toggle
+  trigger:
+  - event_data:
+      actionName: Michael_Lights_Toggle
+    event_type: ios.action_fired
+    platform: event
+  condition: []
+  action:
+  - data:
+      entity_id: group.lights_michael2
+    service: switch.toggle
+- id: '1571872974980'
+  alias: Zerver Low Disk Space
+  trigger:
+  - above: '90'
+    entity_id: sensor.disk_use_percent_home
+    platform: numeric_state
+  condition:
+  - after: sunrise
+    after_offset: '2'
+    condition: sun
+  action:
+  - data:
+      data:
+        message: Oh wow you are out of space
+    service: notify.mobile_app_lunziphone11
+- id: '1579081800469'
+  alias: Turn off bright lights at 09:30pm
+  description: ''
+  trigger:
+  - at: '21:30:00'
+    platform: time
+  condition: []
+  action:
+  - condition: state
+    entity_id: switch.sonoff_basic01_relay
+    state: 'off'
+  - condition: state
+    entity_id: switch.sonoff_basic02_relay
+    state: 'off'
+- id: '1584426003321'
+  alias: Dishwasher - Send Alert When Clean
+  description: ''
+  trigger:
+  - entity_id: input_select.dishwasher_status
+    platform: state
+    to: Clean
+  condition:
+  - after: 08:29:00
+    before: '22:30:00'
+    condition: time
+  - condition: and
+    conditions:
+    - condition: state
+      entity_id: group.roommates
+      state: home
+    - condition: and
+      conditions:
+      - condition: state
+        entity_id: input_select.dishwasher_status
+        state: Clear
+  action:
+  - data:
+      message: Dishwasher is Clean
+    service: notify.mobile_app_lunziphone11
+  - data:
+      message: Dishwasher is Clean!
+      target:
+      - channel/lunzhome
+    service: notify.pushbullet
+- id: '1588181685264'
+  alias: iOS_Michael_Lights_Off
+  description: ''
+  trigger:
+  - event_data:
+      actionName: Michael_Lights_Off
+    event_type: ios.action_fired
+    platform: event
+  condition: []
+  action:
+  - data: {}
+    entity_id: group.lights_michael2
+    service: switch.turn_off
+- id: '1588182302527'
+  alias: iOS_Michael_Lights_On
+  description: ''
+  trigger:
+  - event_data:
+      actionName: Michael_Lights_On
+    event_type: ios.action_fired
+    platform: event
+  condition: []
+  action:
+  - data: {}
+    entity_id: group.lights_michael2
+    service: switch.turn_on
+- id: '1583913595577'
+  alias: Hugo Remote CF4AFC Button 1 - Turn Everything On
+  description: ''
+  trigger:
+  - entity_id: sensor.hugo_cf4afc
+    platform: state
+    to: '1'
+  condition: []
+  action:
+  - entity_id: group.lights_michael2
+    service: homeassistant.turn_on
+- id: '1587769458708'
+  alias: Hugo Remote CF4AFC Button 2 - Toggle Fluorescent Lights
+  description: ''
+  trigger:
+  - entity_id: sensor.hugo_cf4afc
+    platform: state
+    to: '2'
+  condition: []
+  action:
+  - entity_id: switch.sonoff_basic01_relay
+    service: homeassistant.toggle
+- id: '1583913339883'
+  alias: Hugo Remote CF4AFC Button 4 - Turn Everything Off
+  description: ''
+  trigger:
+  - entity_id: sensor.hugo_cf4afc
+    platform: state
+    to: '4'
+  condition:
+  - condition: state
+    entity_id: group.lights_michael2
+    state: 'on'
+  action:
+  - entity_id: group.lights_michael2
+    service: homeassistant.turn_off
+- id: '1583913595578'
+  alias: Hugo Remote CF41A4 Button 1 - Turn Everything On
+  description: ''
+  trigger:
+  - entity_id: sensor.hugo_cf41a4
+    platform: state
+    to: '1'
+  condition: []
+  action:
+  - entity_id: group.lights_michael2
+    service: homeassistant.turn_on
+- id: '1587769458709'
+  alias: Hugo Remote CF41A4 Button 2 - Toggle Fluorescent Lights
+  description: ''
+  trigger:
+  - entity_id: sensor.hugo_cf41a4
+    platform: state
+    to: '2'
+  condition: []
+  action:
+  - entity_id: switch.sonoff_basic01_relay
+    service: homeassistant.toggle
+- id: '1583913339884'
+  alias: Hugo Remote CF41A4 Button 4 - Turn Everything Off
+  description: ''
+  trigger:
+  - entity_id: sensor.hugo_cf41a4
+    platform: state
+    to: '4'
+  condition:
+  - condition: state
+    entity_id: group.lights_michael2
+    state: 'on'
+  action:
+  - entity_id: group.lights_michael2
+    service: homeassistant.turn_off
+- id: '1583913595579'
+  alias: Hugo Remote CF3AB8 Button 1 - Turn Everything On
+  description: ''
+  trigger:
+  - entity_id: sensor.hugo_cf4ab8
+    platform: state
+    to: '1'
+  condition: []
+  action:
+  - entity_id: group.lights_michael2
+    service: homeassistant.turn_on
+- id: '1587769458700'
+  alias: Hugo Remote CF3AB8 Button 2 - Toggle Fluorescent Lights
+  description: ''
+  trigger:
+  - entity_id: sensor.hugo_cf4ab8
+    platform: state
+    to: '2'
+  condition: []
+  action:
+  - entity_id: switch.sonoff_basic01_relay
+    service: homeassistant.toggle
+- id: '1583913339885'
+  alias: Hugo Remote CF3AB8 Button 4 - Turn Everything Off
+  description: ''
+  trigger:
+  - entity_id: sensor.hugo_cf4ab8
+    platform: state
+    to: '4'
+  condition:
+  - condition: state
+    entity_id: group.lights_michael2
+    state: 'on'
+  action:
+  - entity_id: group.lights_michael2
+    service: homeassistant.turn_off
