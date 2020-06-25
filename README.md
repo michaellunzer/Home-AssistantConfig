@@ -9,8 +9,8 @@ With Proxmox as a hypervisor, you can also run other Virtual Machines to do othe
 
 Description | Value
 -- | --
-Number of entities | 1113
-Number of sensors | 503
+Number of entities | 1117
+Number of sensors | 505
 Hardware | Lenovo M93P Tiny Form Factor
 OS | Proxmox
 SSD | 240GB
