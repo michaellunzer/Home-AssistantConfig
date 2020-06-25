@@ -851,8 +851,21 @@
         unit_of_measurement: ""
         
         
-        
-        
+################################################
+### Jinja2 Template Long Lived Access Token ####
+################################################
+
+#   - platform: version     ##already in the config
+  - platform: rest
+    name: Addons
+    resource: 'https://home.michaellunzer.com/api/hassio/supervisor/info'
+    headers:
+      Authorization: !secret github_readme_token 
+      json_attributes_path: "$.data"
+    json_attributes:
+      - addons
+      - addons_repositories
+    value_template: '{{ value_json.data.addons | count}}'
         
         
         
