@@ -265,7 +265,8 @@ map:
 sun:
 
 ## World Wide Lightning Location Network (WWLLN)
-wwlln:
+### depreciated in 0.111
+# wwlln:
 
 hassio:
 
@@ -361,16 +362,21 @@ binary_sensor:
     name: 'Michael Presence'
     probability_threshold: 0.95
     observations:
-    # - entity_id: 'device_tracker.lunziphone11_wifi'
-    #   prob_given_true: 0.8
-    #   prob_given_false: 0.6
-    #   platform: 'state'
-    #   to_state: 'home'
-    # - entity_id: 'device_tracker.lunziphone_ios'
-    #   prob_given_true: 0.9
-    #   prob_given_false: 0.1
-    #   platform: 'state'
-    #   to_state: 'home'
+    - entity_id: 'device_tracker.lunziphone11_wifi'
+      prob_given_true: 0.9
+      prob_given_false: 0.6
+      platform: 'state'
+      to_state: 'home'
+    - entity_id: 'sensor.monitor_lunziphone_bt'
+      prob_given_true: 0.9
+      prob_given_false: 0.2
+      platform: 'state'
+      to_state: 'home'
+    - entity_id: 'device_tracker.lunziphone11_iphonedetect'
+      prob_given_true: 0.9
+      prob_given_false: 0.1
+      platform: 'state'
+      to_state: 'home'
     - entity_id: 'device_tracker.lunziphone11_mobile' #### old device_tracker.0a8fb53497b2433297bd346d3aaffb24
       prob_given_true: 0.92
       prob_given_false: 0.1
@@ -618,7 +624,7 @@ webostv:
     turn_on_action:
         service: wake_on_lan.send_magic_packet
         data:
-          mac: "60:AB:14:62:F1:E0"
+          mac: "60:AB:14:62:F1:EE"
     # standby_connection: true #### not needed after 0.105.x
   
     
