@@ -5,12 +5,12 @@ With Proxmox as a hypervisor, you can also run other Virtual Machines to do othe
 
 ## Some statistics about my installation:
 
-[![HA Version](https://img.shields.io/badge/Home%20Assistant-0.110.7-brightgreen)](https://github.com/home-assistant/home-assistant/releases/0.110.7)
+[![HA Version](https://img.shields.io/badge/Home%20Assistant-0.114.4-brightgreen)](https://github.com/home-assistant/home-assistant/releases/0.114.4)
 
 Description | Value
 -- | --
-Number of entities | 1117
-Number of sensors | 505
+Number of entities | 1186
+Number of sensors | 541
 Hardware | Lenovo M93P Tiny Form Factor
 OS | Proxmox
 SSD | 240GB
@@ -29,11 +29,17 @@ https://github.com/whiskerz007/proxmox_hassos_install
 
 ### [Sonoff](https://github.com/AlexxIT/SonoffLAN)
 
+### [Zoom](https://github.com/raman325/ha-zoom-automation)
+
 ### [Entity Contoller](https://github.com/danobot/entity-controller/blob/master/README.md)
+
+### [Nespresso BLE coffee machine](https://github.com/tikismoke/home-assistant-nespressoble)
 
 ### [Breaking Changes](https://github.com/custom-components/breaking_changes)
 
 ### [Start Spotify on chromecast](https://github.com/fondberg/spotcast)
+
+### [Fortnite Stats](https://github.com/michaellunzer/Home-Assistant-Custom-Component-Fortnite)
 
 ### [HACS](https://hacs.xyz/docs/configuration/start)
 
@@ -41,13 +47,19 @@ https://github.com/whiskerz007/proxmox_hassos_install
 
 ### [Garbage Collection](https://github.com/bruxy70/Garbage-Collection/)
 
+### [Remote Home-Assistant](https://github.com/lukas-hetzenecker/home-assistant-remote)
+
 ### [qBittorrent alternative speed switch](https://github.com/JurajNyiri/HomeAssistant-qBitTorrentAlternativeSpeed)
+
+### [Slack User](https://github.com/GeorgeSG/ha-slack-user)
 
 ### [Google Geocode](https://github.com/gregoryduckworth/GoogleGeocode-HASS)
 
 ### [Anniversaries](https://github.com/pinkywafer/Anniversaries)
 
 ### [NWS Alerts](https://github.com/finity69x2/nws_alerts/)
+
+### [Zoom](https://github.com/raman325/ha-zoom-automation)
 
 ### [Xfinity Usage](https://github.com/robert-alfaro/xfinity-usage)
 
