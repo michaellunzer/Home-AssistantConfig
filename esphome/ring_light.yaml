@@ -5,8 +5,10 @@ esphome:
   board: esp01_1m
 
 wifi:
-  ssid: "PewPewPew2"
-  password: "usetheforks"
+  ssid: !secret wifissid
+  password: !secret wifipass
+  
+  
 
 # Enable logging
 logger:
