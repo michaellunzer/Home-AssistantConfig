@@ -1,0 +1,387 @@
+esphome:
+  name: ring_light
+  platform: ESP8266
+  # board: nodemcuv2     # Old LED Strip config on the linksprite nodemcu
+  board: esp01_1m
+
+wifi:
+  ssid: "PewPewPew2"
+  password: "usetheforks"
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+
+ota:
+
+
+# doesn't work!! there's a green light on the LED ring when the ring is "off"
+# status_led:
+#   pin:
+#     number: GPIO2
+#     inverted: True
+
+
+
+### home assistant sensor:
+### on entity "active" set light to green, else "red"
+
+text_sensor:
+  - platform: homeassistant
+    id: slack_frigaholics_michael_lunzer
+    entity_id: sensor.slack_frigaholics_michael_lunzer
+    internal: true
+    on_value:
+      - if:
+          condition:
+            # Checks if "my_text_sensor" has state "Hello World"
+            text_sensor.state:
+              id: slack_frigaholics_michael_lunzer
+              state: 'active'
+          then:
+            # - light.turn_off: ring_light
+            - light.addressable_set:
+                id: ring_light
+                range_from: 0
+                range_to: 1
+                red: 0%
+                green: 100%
+                blue: 0%
+            - logger.log: "slack_frigaholics_michael_lunzer is active"
+            # - light.turn_on: ring_light
+          else:
+            # - light.turn_off: ring_light
+            - light.addressable_set:
+                id: ring_light
+                range_from: 0
+                range_to: 1
+                red: 100%
+                green: 0%
+                blue: 0%
+            - logger.log: "slack_frigaholics_michael_lunzer is away"
+            # - light.turn_on: ring_light
+  - platform: homeassistant
+    id: slack_frigaholics_chevail_alexander
+    entity_id: sensor.slack_frigaholics_chevail_alexander
+    internal: true
+    on_value:
+      - if:
+          condition:
+            # Checks if "my_text_sensor" has state "Hello World"
+            text_sensor.state:
+              id: slack_frigaholics_chevail_alexander
+              state: 'active'
+          then:
+            # - light.turn_off: ring_light
+            - light.addressable_set:
+                id: ring_light
+                range_from: 2
+                range_to: 3
+                red: 0%
+                green: 100%
+                blue: 0%
+            - logger.log: "slack_frigaholics_chevail_alexander is active"
+            # - light.turn_on: ring_light
+          else:
+            # - light.turn_off: ring_light
+            - light.addressable_set:
+                id: ring_light
+                range_from: 2
+                range_to: 3
+                red: 100%
+                green: 0%
+                blue: 0%
+            - logger.log: "slack_frigaholics_chevail_alexander is away"
+            # - light.turn_on: ring_light
+  - platform: homeassistant
+    id: slack_frigaholics_esteban_leon
+    entity_id: sensor.slack_frigaholics_esteban_leon
+    internal: true
+    on_value:
+      - if:
+          condition:
+            # Checks if "my_text_sensor" has state "Hello World"
+            text_sensor.state:
+              id: slack_frigaholics_esteban_leon
+              state: 'active'
+          then:
+            # - light.turn_off: ring_light
+            - light.addressable_set:
+                id: ring_light
+                range_from: 4
+                range_to: 5
+                red: 0%
+                green: 100%
+                blue: 0%
+            - logger.log: "slack_frigaholics_esteban_leon is active"
+            # - light.turn_on: ring_light
+          else:
+            # - light.turn_off: ring_light
+            - light.addressable_set:
+                id: ring_light
+                range_from: 4
+                range_to: 5
+                red: 100%
+                green: 0%
+                blue: 0%
+            - logger.log: "slack_frigaholics_esteban_leon is away"
+            # - light.turn_on: ring_light
+  - platform: homeassistant
+    id: slack_frigaholics_hayley_ortner
+    entity_id: sensor.slack_frigaholics_hayley_ortner
+    internal: true
+    on_value:
+      - if:
+          condition:
+            # Checks if "my_text_sensor" has state "Hello World"
+            text_sensor.state:
+              id: slack_frigaholics_hayley_ortner
+              state: 'active'
+          then:
+            # - light.turn_off: ring_light
+            - light.addressable_set:
+                id: ring_light
+                range_from: 6
+                range_to: 7
+                red: 0%
+                green: 100%
+                blue: 0%
+            - logger.log: "slack_frigaholics_hayley_ortner is active"
+            # - light.turn_on: ring_light
+          else:
+            # - light.turn_off: ring_light
+            - light.addressable_set:
+                id: ring_light
+                range_from: 6
+                range_to: 7
+                red: 100%
+                green: 0%
+                blue: 0%
+            - logger.log: "slack_frigaholics_hayley_ortner is away"
+            # - light.turn_on: ring_light
+  - platform: homeassistant
+    id: slack_frigaholics_huli_curry
+    entity_id: sensor.slack_frigaholics_huli_curry
+    internal: true
+    on_value:
+      - if:
+          condition:
+            # Checks if "my_text_sensor" has state "Hello World"
+            text_sensor.state:
+              id: slack_frigaholics_huli_curry
+              state: 'active'
+          then:
+            # - light.turn_off: ring_light
+            - light.addressable_set:
+                id: ring_light
+                range_from: 8
+                range_to: 9
+                red: 0%
+                green: 100%
+                blue: 0%
+            - logger.log: "slack_frigaholics_huli_curry is active"
+            # - light.turn_on: ring_light
+          else:
+            # - light.turn_off: ring_light
+            - light.addressable_set:
+                id: ring_light
+                range_from: 8
+                range_to: 9
+                red: 100%
+                green: 0%
+                blue: 0%
+            - logger.log: "slack_frigaholics_huli_curry is away"
+            # - light.turn_on: ring_light
+  - platform: homeassistant
+    id: slack_frigaholics_kelly_lo
+    entity_id: sensor.slack_frigaholics_kelly_lo
+    internal: true
+    on_value:
+      - if:
+          condition:
+            # Checks if "my_text_sensor" has state "Hello World"
+            text_sensor.state:
+              id: slack_frigaholics_kelly_lo
+              state: 'active'
+          then:
+            # - light.turn_off: ring_light
+            - light.addressable_set:
+                id: ring_light
+                range_from: 10
+                range_to: 11
+                red: 0%
+                green: 100%
+                blue: 0%
+            - logger.log: "slack_frigaholics_kelly_lo is active"
+            # - light.turn_on: ring_light
+          else:
+            # - light.turn_off: ring_light
+            - light.addressable_set:
+                id: ring_light
+                range_from: 10
+                range_to: 11
+                red: 100%
+                green: 0%
+                blue: 0%
+            - logger.log: "slack_frigaholics_huli_curry is away"
+            # - light.turn_on: ring_light
+  - platform: homeassistant
+    id: slack_frigaholics_lauren_schaumann
+    entity_id: sensor.slack_frigaholics_lauren_schaumann
+    internal: true
+    on_value:
+      - if:
+          condition:
+            # Checks if "my_text_sensor" has state "Hello World"
+            text_sensor.state:
+              id: slack_frigaholics_lauren_schaumann
+              state: 'active'
+          then:
+            # - light.turn_off: ring_light
+            - light.addressable_set:
+                id: ring_light
+                range_from: 12
+                range_to: 13
+                red: 0%
+                green: 100%
+                blue: 0%
+            - logger.log: "slack_frigaholics_lauren_schaumann is active"
+            # - light.turn_on: ring_light
+          else:
+            # - light.turn_off: ring_light
+            - light.addressable_set:
+                id: ring_light
+                range_from: 12
+                range_to: 13
+                red: 100%
+                green: 0%
+                blue: 0%
+            - logger.log: "slack_frigaholics_lauren_schaumann is away"
+            # - light.turn_on: ring_light
+  - platform: homeassistant
+    id: slack_frigaholics_megan_mcgowan
+    entity_id: sensor.slack_frigaholics_megan_mcgowan
+    internal: true
+    on_value:
+      - if:
+          condition:
+            # Checks if "my_text_sensor" has state "Hello World"
+            text_sensor.state:
+              id: slack_frigaholics_megan_mcgowan
+              state: 'active'
+          then:
+            # - light.turn_off: ring_light
+            - light.addressable_set:
+                id: ring_light
+                range_from: 14
+                range_to: 15
+                red: 0%
+                green: 100%
+                blue: 0%
+            - logger.log: "slack_frigaholics_megan_mcgowan is active"
+            # - light.turn_on: ring_light
+          else:
+            # - light.turn_off: ring_light
+            - light.addressable_set:
+                id: ring_light
+                range_from: 14
+                range_to: 15
+                red: 100%
+                green: 0%
+                blue: 0%
+            - logger.log: "slack_frigaholics_megan_mcgowan is away"
+            # - light.turn_on: ring_light
+
+
+light:
+  - platform: fastled_clockless
+    chipset: WS2812
+    pin: GPIO2
+    num_leds: 16
+    rgb_order: GRB
+    # name: "Ring Light"
+    id: ring_light
+    internal: true
+    # effects:
+    #   # Use default parameters:
+    #   - random:
+    #       name: "Random"
+    #   # Customize parameters
+    #   - random:
+    #       name: "Slow Random Effect"
+    #       transition_length: 30s
+    #       update_interval: 30s
+    #   - random:
+    #       name: "Fast Random Effect"
+    #       transition_length: 4s
+    #       update_interval: 5s
+    #   # - strobe:
+    #   - strobe:
+    #       name: Strobe Effect With Custom Values
+    #       colors:
+    #         - state: True
+    #           brightness: 100%
+    #           red: 100%
+    #           green: 90%
+    #           blue: 0%
+    #           duration: 500ms
+    #         - state: False
+    #           duration: 250ms
+    #         - state: True
+    #           brightness: 100%
+    #           red: 0%
+    #           green: 100%
+    #           blue: 0%
+    #           duration: 500ms
+    #   - flicker:
+    #   - flicker:
+    #       name: Flicker Effect With Custom Values
+    #       alpha: 95%
+    #       intensity: 1.5%
+    #   - addressable_rainbow:
+    #   - addressable_rainbow:
+    #       name: Rainbow Effect With Custom Values
+    #       speed: 10
+    #       width: 50
+    #   - addressable_color_wipe:
+    #   - addressable_color_wipe:
+    #       name: Color Wipe Effect With Custom Values
+    #       colors:
+    #         - red: 100%
+    #           green: 100%
+    #           blue: 100%
+    #           num_leds: 1
+    #         - red: 0%
+    #           green: 0%
+    #           blue: 0%
+    #           num_leds: 1
+    #       add_led_interval: 100ms
+    #       reverse: False
+    #   - addressable_scan:
+    #   - addressable_scan:
+    #       name: Scan Effect With Custom Values
+    #       move_interval: 100ms
+    #   - addressable_twinkle:
+    #   - addressable_twinkle:
+    #       name: Twinkle Effect With Custom Values
+    #       twinkle_probability: 5%
+    #       progress_interval: 4ms
+    #   - addressable_random_twinkle:
+    #   - addressable_random_twinkle:
+    #       name: Random Twinkle Effect With Custom Values
+    #       twinkle_probability: 5%
+    #       progress_interval: 32ms
+    #   - addressable_fireworks:
+    #   - addressable_fireworks:
+    #       name: Fireworks Effect With Custom Values
+    #       update_interval: 32ms
+    #       spark_probability: 10%
+    #       use_random_color: false
+    #       fade_out_rate: 120
+    #   - addressable_flicker:
+    #   - addressable_flicker:
+    #       name: Addressable Flicker Effect With Custom Values
+    #       update_interval: 16ms
+    #       intensity: 5%

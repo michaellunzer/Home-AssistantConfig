@@ -362,21 +362,21 @@ binary_sensor:
     name: 'Michael Presence'
     probability_threshold: 0.95
     observations:
-    - entity_id: 'device_tracker.lunziphone11_wifi'
-      prob_given_true: 0.9
-      prob_given_false: 0.6
-      platform: 'state'
-      to_state: 'home'
-    - entity_id: 'sensor.monitor_lunziphone_bt'
-      prob_given_true: 0.9
-      prob_given_false: 0.2
-      platform: 'state'
-      to_state: 'home'
-    - entity_id: 'device_tracker.lunziphone11_iphonedetect'
-      prob_given_true: 0.9
-      prob_given_false: 0.1
-      platform: 'state'
-      to_state: 'home'
+    # - entity_id: 'device_tracker.lunziphone11_wifi'
+    #   prob_given_true: 0.9
+    #   prob_given_false: 0.6
+    #   platform: 'state'
+    #   to_state: 'home'
+    # - entity_id: 'sensor.monitor_lunziphone_bt'
+    #   prob_given_true: 0.9
+    #   prob_given_false: 0.2
+    #   platform: 'state'
+    #   to_state: 'home'
+    # - entity_id: 'device_tracker.lunziphone11_iphonedetect'
+    #   prob_given_true: 0.9
+    #   prob_given_false: 0.1
+    #   platform: 'state'
+    #   to_state: 'home'
     - entity_id: 'device_tracker.lunziphone11_mobile' #### old device_tracker.0a8fb53497b2433297bd346d3aaffb24
       prob_given_true: 0.92
       prob_given_false: 0.1
@@ -517,10 +517,10 @@ panel_iframe:
 #     title: 'Google Drive Snapshots'
 #     icon: mdi:cloud-upload
 #     url: !secret google_drive_backup_url
-#   jupyterlab:
-#     title: JupyterLab
-#     icon: mdi:notebook
-#     url: !secret jupyter_url
+  jupyterlab:
+    title: JupyterLab
+    icon: mdi:notebook
+    url: !secret jupyter_url
     
 # not needed anymore, they have toggle switches on the containers now
 #   vs:
@@ -750,9 +750,10 @@ asuswrt:
 ####################################
 
 device_tracker:
-  - platform: tile
-    username: !secret tile_username
-    password: !secret tile_password
+# configured using Integrations page in 0.112
+#   - platform: tile
+#     username: !secret tile_username
+#     password: !secret tile_password
   - platform: asuswrt
      # host: 192.168.1.1
      # username: !secret asus_username
@@ -804,6 +805,12 @@ device_tracker:
       LaurenBdsiPhone_iphonedetect: 192.168.1.125
       AD-iPhone-6_iphonedetect: 192.168.1.162
       laura_iphonedetect: 192.168.1.118
+  ### traccar
+  - platform: traccar
+    host: 192.168.1.2
+    port: 18782
+    username: admin
+    password: admin
 
 
 # duckDNS
@@ -1255,13 +1262,13 @@ circadian_lighting:
 ############################################################
 ######## Withings Health - Scale ###########################
 ############################################################
+## configured via UI in 0.112
 
-
-withings:
-  client_id: !secret withings_client_id
-  client_secret: !secret withings_consumer_secret
-  profiles:
-    - Michael Lunzer
+# withings:
+#   client_id: !secret withings_client_id
+#   client_secret: !secret withings_consumer_secret
+#   profiles:
+#     - Michael Lunzer
 
 ############################################################
 ######## Vaccuum ###########################################
@@ -1298,3 +1305,18 @@ withings:
 
 readme:
 
+
+############################################################
+######## NextCloud  ########################################
+############################################################
+
+
+nextcloud:
+  url: http://omv5.local:8080/
+  username: !secret nextcloud_username
+  password: !secret nextcloud_password
+  
+  
+  
+  
+  

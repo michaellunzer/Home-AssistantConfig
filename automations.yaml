@@ -283,6 +283,17 @@
   action:
   - entity_id: switch.sonoff_basic01_relay
     service: homeassistant.toggle
+- id: '1587769458103'
+  alias: Hugo Remote CF4AFC Button 3 - Toggle Chess Lamp
+  description: ''
+  trigger:
+  - entity_id: sensor.hugo_cf4afc
+    platform: state
+    to: '3'
+  condition: []
+  action:
+  - entity_id: switch.sonoff_basic02_relay
+    service: homeassistant.toggle
 - id: '1583913339883'
   alias: Hugo Remote CF4AFC Button 4 - Turn Everything Off
   description: ''
@@ -319,6 +330,17 @@
   action:
   - entity_id: switch.sonoff_basic01_relay
     service: homeassistant.toggle
+- id: '1587769458101'
+  alias: Hugo Remote CF41A4 Button 3 - Toggle Chess Lamp
+  description: ''
+  trigger:
+  - entity_id: sensor.hugo_cf41a4
+    platform: state
+    to: '3'
+  condition: []
+  action:
+  - entity_id: switch.sonoff_basic02_relay
+    service: homeassistant.toggle
 - id: '1583913339884'
   alias: Hugo Remote CF41A4 Button 4 - Turn Everything Off
   description: ''
@@ -354,6 +376,17 @@
   condition: []
   action:
   - entity_id: switch.sonoff_basic01_relay
+    service: homeassistant.toggle
+- id: '1587769458100'
+  alias: Hugo Remote CF3AB8 Button 3 - Toggle Chess Lamp
+  description: ''
+  trigger:
+  - entity_id: sensor.hugo_cf4ab8
+    platform: state
+    to: '3'
+  condition: []
+  action:
+  - entity_id: switch.sonoff_basic02_relay
     service: homeassistant.toggle
 - id: '1583913339885'
   alias: Hugo Remote CF3AB8 Button 4 - Turn Everything Off

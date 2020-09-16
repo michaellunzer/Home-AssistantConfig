@@ -868,5 +868,28 @@
     value_template: '{{ value_json.data.addons | count}}'
         
         
-        
+####################################################
+### Fortnite Stats Sensor - my Custom Component ####
+####################################################
+
+  - platform: fortnite
+    name: Fortnite Solo Stats
+    api_key: ea1b5a95-662b-4fce-be79-eb7f46344e55
+    player_id: Captain_Crunch88
+    game_platform: "GAMEPAD"
+    game_mode: "SOLO"
+  - platform: fortnite
+    name: Fortnite Duo Stats
+    api_key: ea1b5a95-662b-4fce-be79-eb7f46344e55
+    player_id: Captain_Crunch88
+    game_platform: "GAMEPAD"
+    game_mode: "DUO"
+  - platform: fortnite
+    name: Fortnite Squads Stats
+    api_key: ea1b5a95-662b-4fce-be79-eb7f46344e55
+    player_id: Captain_Crunch88
+    game_platform: "GAMEPAD"
+    game_mode: "SQUAD"
+
+
         
