@@ -15,6 +15,8 @@ homeassistant:
   # Customization file
   customize: !include customize.yaml
   packages: !include_dir_named packages
+#   scene: !include scenes.yaml
+#   scene old: !include_dir_merge_list scenes
 #   auth_providers:
 #   - type: trusted_networks
 #     trusted_networks:
@@ -28,6 +30,10 @@ homeassistant:
 #   # - /share
 #   # - /dev
 #   - /mnt/backups
+# Not sure if I need this
+  external_url: "https://home.michaellunzer.com"
+  internal_url: "http://192.168.1.2:8123"
+
 
 # shell_command: !include_dir_named shell_command
 
@@ -46,6 +52,8 @@ homeassistant:
 # device_tracker: !include device_tracker.yaml
 
 system_health:
+
+dhcp:
 
 person: 
 
@@ -215,6 +223,9 @@ http:
 #   trusted_networks:
 #     - 192.168.1.0/24
 #     - 172.30.32.0/24
+#     - 172.30.33.0/24
+  cors_allowed_origins: 
+    - '*'
       
   # Secrets are defined in the file secrets.yaml
 #   api_password: !secret http_api_password                           #### API Password was depreciated in ~0.72
@@ -290,20 +301,69 @@ rest_command:
   google_backup:
     url: 'http://localhost:8055/gb/doBackup'
     timeout: '300'
+  twilio_alarm:
+    url: "https://studio.twilio.com/v2/Flows/FW79cc6cc54bddc17e431f9e3d27fe8da1/Executions"
+    method: POST
+    headers:
+    #   authorization: "Basic QUM3MTUwZGEwMTU2OTkxOGU5NzhiZGI2MGNhNmE5MGY1YzpiNmFmYzVlOGFmNGFmNWNjM2Q2NTVkNWZlZjVjZjE1Yg=="
+      Content-Type: "application/x-www-form-urlencoded"
+    username: AC7150da01569918e978bdb60ca6a90f5c
+    password: b6afc5e8af4af5cc3d655d5fef5cf15b
+    payload: "To=+14157077908&From=+14153586870"
+    # to: '+15558675310', from: '+15017122661'.   14158740125
+## SF Landline: +14157951905
+## +16508610474
+## twilio sip: +14157077908
 
+
+# # rest_command:
+#   my_request:
+#     url: https://slack.com/api/users.profile.set
+#     method: POST
+#     headers:
+#       authorization: !secret rest_headers_secret
+#       accept: "application/json, text/html"
+#       user-agent: 'Mozilla/5.0 {{ useragent }}'
+#     payload: '{"profile":{"status_text": "{{ status }}","status_emoji": "{{ emoji }}"}}'
+#     content_type:  'application/json; charset=utf-8'
+#     verify_ssl: true
+
+
+############################################
+###### Twilio ##############################
+############################################
+
+twilio:
+  account_sid: !secret ACCOUNT_SID_FROM_TWILIO
+  auth_token: !secret AUTH_TOKEN_FROM_TWILIO
+
+
+
+
+
+
+############################################
+################# Notifications ############
+############################################
 
 # PushBullet Notifications
 notify:
   - name: PushBullet
     platform: pushbullet
     api_key: !secret pushbullet_api_key
-
+# Twilio Call
+  - name: twilio_call_alarm
+    platform: twilio_call
+    from_number: +14153586870
 
 
 group: !include_dir_named groups
 automation: !include automations.yaml
 script: !include scripts.yaml
 sensor: !include sensors.yaml
+scene: !include scenes.yaml
+# scene old: !include_dir_merge_list scenes
+
 
 
 
@@ -346,6 +406,18 @@ binary_sensor:
 #     device_class: 'motion'
 ## apcupsd binary sensor -- returns ON/OFF
   - platform: apcupsd
+  - platform: ffmpeg_motion
+    input: -rtsp_transport http -i rtsp://lunz:asdf@192.168.1.203/live
+    name: wyzecam_office_motion
+    extra_arguments: -pred 1 -q:v 2
+    changes: 10
+    reset: 10
+  - platform: ffmpeg_motion
+    input: -rtsp_transport http -i rtsp://lunz:asdf@192.168.1.204/live
+    name: wyzecam_front_door_motion
+    extra_arguments: -pred 1 -q:v 2
+    changes: 5
+    reset: 10
     
     
 #
@@ -410,10 +482,18 @@ binary_sensor:
 
 #D-Link Camera
 camera:
-  - platform: mjpeg
+  - platform: mjpeg #mjpeg doesn't work anymore
     name: Laundry Camera
     still_image_url: !secret camera_front_door_still_image_url
     mjpeg_url: !secret camera_front_door_mjpeg_url
+    # username: admin
+    # password: hoytst
+    # authentication: basic
+    verify_ssl: false
+#   - platform: generic
+#     name: Office Camera
+#     still_image_url: local/wyze-logo.jpg
+#     stream_source: rtsp://lunz:asdf@192.168.1.203/live
 # Shows device_tracker.tile_kia on a map.
 #   - platform: generic
 #     name: Kia Tile Map
@@ -423,6 +503,11 @@ camera:
   - platform: generic
     name: ISS
     still_image_url: https://tyler-demo.herokuapp.com/?greyscale=False&lat={{ states.binary_sensor.iss.attributes.lat }}&lon={{ states.binary_sensor.iss.attributes.long }}&zoom=11&width=640&height=480&tile_url=http://%5Babcd%5D.tile.stamen.com/watercolor/%7Bzoom%7D/%7Bx%7D/%7By%7D.jpg 
+    ### old URL --> http://staticmap.openstreetmap.de/staticmap.php?center={{ states.binary_sensor.iss.attributes.lat }},{{ states.binary_sensor.iss.attributes.long }}&zoom=4&size=865x512&maptype=mapnik&markers={{ states.binary_sensor.iss.attributes.lat }},{{ states.binary_sensor.iss.attributes.long }},lightblue
+    limit_refetch_to_url_change: true
+  - platform: generic
+    name: LunziPhone11_painting
+    still_image_url: https://tyler-demo.herokuapp.com/?greyscale=False&lat={{ states.device_tracker.lunziphone11_mobile.attributes.latitude }}&lon={{ states.device_tracker.lunziphone11_mobile.attributes.longitude }}&zoom=11&width=640&height=480&tile_url=http://%5Babcd%5D.tile.stamen.com/watercolor/%7Bzoom%7D/%7Bx%7D/%7By%7D.jpg 
     ### old URL --> http://staticmap.openstreetmap.de/staticmap.php?center={{ states.binary_sensor.iss.attributes.lat }},{{ states.binary_sensor.iss.attributes.long }}&zoom=4&size=865x512&maptype=mapnik&markers={{ states.binary_sensor.iss.attributes.lat }},{{ states.binary_sensor.iss.attributes.long }},lightblue
     limit_refetch_to_url_change: true
 #   - platform: generic
@@ -445,11 +530,27 @@ camera:
     still_image_url: 'https://radblast.wunderground.com/cgi-bin/radar/WUNIDS_map?station=RGX&brand=wui&num=6&delay=15&type=N0R&frame=0&scale=1.000&noclutter=0&showstorms=0&mapx=400&mapy=240&centerx=400&centery=240&transx=0&transy=0&showlabels=1&severe=0&rainsnow=1&lightning=0&smooth=0&rand=25766055&lat=0&lon=0&label=you'
     name: Doppler - Tahoe
     # limit_refetch_to_url_change: true
+  - platform: generic
+    still_image_url: https://home.michaellunzer.com/lovelace/2
+    name: camera - lovelace
   - platform: push
     name: MotionEye Laundry
     buffer: 3
     timeout: 5
     webhook_id: WH_motion_laundry01
+  - platform: ffmpeg
+    name: wyzecam_office_motion
+    input: -rtsp_transport http -i rtsp://lunz:asdf@192.168.1.203/live
+    extra_arguments: -pred 1 -q:v 2
+    ## front door camera
+  - platform: ffmpeg
+    name: wyzecam_front_door_motion
+    input: -rtsp_transport http -i rtsp://lunz:asdf@192.168.1.204/live
+    extra_arguments: -pred 1 -q:v 2
+
+
+
+
 
 ### Depreciated MQTT config ###
 
@@ -490,9 +591,13 @@ panel_iframe:
     icon: mdi:lightbulb-on
     url: !secret tasmoadmin_url
   router:
-    title: Asus Router
+    title: Unifi Router
     icon: mdi:router-wireless
     url: !secret router_url
+  foldingathome:
+    title: Folding@home
+    icon: mdi:bacteria-outline
+    url: !secret folding_url
 #   magicmirror:
 #     title: MagicMirror²
 #     icon: mdi:auto-fix
@@ -587,7 +692,7 @@ media_player:
 #     client_secret: !secret spotify_client_secret
 # Pioneer Amplifier
   - platform: pioneer      # try this later: onkyo
-    host: 192.168.1.3
+    host: 192.168.1.20
     name: Receiver
   - platform: androidtv
     name: "Fire TV"
@@ -603,6 +708,22 @@ media_player:
   # - platform: itunes
   #   host: !secret itunes_host
   #
+
+
+
+############################################
+###### Shell Command #######################
+############################################
+
+
+# shell_command:
+# ### unifi LED controller
+#   living_room_unifi_led_blue: >-
+#     ssh lunz@192.168.1.14 "echo '1' >/proc/gpio/led_pattern
+#     && sed -i '/mgmt.led_pattern_override/d' /var/etc/persistent/cfg/mgmt 
+#     && echo 'mgmt.led_pattern_override=0' >> /var/etc/persistent/cfg/mgmt"
+  
+  
   
 ############################################
 ###### Spotify Integration #################
@@ -728,19 +849,20 @@ breaking_changes:
 ####################################
 
 
-# enable in 0.83 or greater
-asuswrt:
-    host: 192.168.1.1
-    username: !secret asus_username
-    password: !secret asus_password
-    # ssh_key: /config/ssh/ssh_asus_private_key
-    protocol: ssh ### or telnet
-    mode: router
-    sensors:
-      - upload
-      - download
-      - upload_speed
-      - download_speed
+# enable in v0.83 or greater
+# replaced with Unifi Router in v2021.1.3
+# asuswrt:
+#     host: 192.168.1.1
+#     username: !secret asus_username
+#     password: !secret asus_password
+#     # ssh_key: /config/ssh/ssh_asus_private_key
+#     protocol: ssh ### or telnet
+#     mode: router
+#     sensors:
+#       - upload
+#       - download
+#       - upload_speed
+#       - download_speed
 #or
     # ssh_key: '/config/ssh/asuswrt'  #The path to your SSH private key file associated with your given admin account
 
@@ -754,15 +876,16 @@ device_tracker:
 #   - platform: tile
 #     username: !secret tile_username
 #     password: !secret tile_password
-  - platform: asuswrt
-     # host: 192.168.1.1
-     # username: !secret asus_username
-     # password: !secret asus_password
-     # protocol: telnet #ssh or telnet
-    interval_seconds: 15
-    consider_home: 180
-    new_device_defaults:
-      track_new_devices: True
+## moved away from asus router in v2021.1.3
+#   - platform: asuswrt
+#      # host: 192.168.1.1
+#      # username: !secret asus_username
+#      # password: !secret asus_password
+#      # protocol: telnet #ssh or telnet
+#     interval_seconds: 15
+#     consider_home: 180
+#     new_device_defaults:
+#       track_new_devices: True
     #### Google Home moved to it's own Platform in 0.88 -- delete this after update.
 #   - platform: googlehome
 #     host: 192.168.1.237
@@ -798,12 +921,24 @@ device_tracker:
     hosts:
       lunziphone_iphonedetect: 192.168.1.8
       lunziphone11_iphonedetect: 192.168.1.9
+        # icon:
+        # mac:
+        # name: hostname1
+        # picture:
+        # track: true
+        # icon: cellphone-arrow-down
+# hostname1:
+#   icon:
+#   mac:
+#   name: hostname1
+#   picture:
+#   track: true
       lunzipad_iphonedetect: 192.168.1.239
-      ahmads_iphone_iphonedetect: 192.168.1.46
-      MadisongsiPhone_iphonedetect: 192.168.1.120
-      KatieFodsiPhone: 192.168.1.91
+    #   ahmads_iphone_iphonedetect: 192.168.1.46
+    #   MadisongsiPhone_iphonedetect: 192.168.1.120
+    #   KatieFodsiPhone: 192.168.1.91
       LaurenBdsiPhone_iphonedetect: 192.168.1.125
-      AD-iPhone-6_iphonedetect: 192.168.1.162
+    #   AD-iPhone-6_iphonedetect: 192.168.1.162
       laura_iphonedetect: 192.168.1.118
   ### traccar
   - platform: traccar
@@ -830,6 +965,8 @@ image_processing:
     detector: default
     source:
       - entity_id: camera.laundry_camera
+      - entity_id: camera.wyzecam_front_door_camera
+      - entity_id: camera.wyzecam_office_camera
 
 
 ####################################
@@ -873,7 +1010,7 @@ tuya:
   username: !secret tuya_username
   password: !secret tuya_password
   country_code: 1
-  platform: tuya #jinvoo_smart
+#   platform: tuya #jinvoo_smart
 
 sonoff:
   username: !secret tuya_username
@@ -915,7 +1052,7 @@ switch:
 #         id: 5
   - platform: flux
     lights:
-      - light.michael_hue
+      - light.bedroom
     #   - light.cabinet_light
       - light.ring_light
     #   - light.flux_bedroom_light
@@ -933,9 +1070,12 @@ switch:
 ### Circadian Lighting
   - platform: circadian_lighting
     lights_ct:
-      - light.michael_hue
-      - light.ring_light
+      - light.bedroom
+      - light.bedroom_accent_lights
+    #   - light.ring_light
       - light.headboard_light
+    #   - light.hallway
+    min_brightness: 20
 ### qBittorrent alternative speed custom compoent
   - platform: qbittorrent_alternative_speed
     host: 192.168.1.144
@@ -1041,15 +1181,16 @@ iqvia:
 ####################################
 ####### AirVisual ##################
 ####################################
+### setup in GUI 
 
-airvisual:
-    api_key: !secret airvisual_api_key
-    # monitored_conditions:      ## This is depreciated 
-    #   - us
-    geographies:
-        latitude: !secret homeassistant_latitude
-        longitude: !secret homeassistant_longitude
-    # show_on_map: false.        ## This is depreciated
+# airvisual:
+#     api_key: !secret airvisual_api_key
+#     # monitored_conditions:      ## This is depreciated 
+#     #   - us
+#     geographies:
+#         latitude: !secret homeassistant_latitude
+#         longitude: !secret homeassistant_longitude
+#     # show_on_map: false.        ## This is depreciated
 
 
 ####################################################
@@ -1118,11 +1259,11 @@ airvisual:
 ####################################
 ###### HACS | Custom Updater #######
 ####################################
+## migrated to configuration via the UI
 
-
-hacs:
-  token: !secret my_github_access_token
-  appdaemon: true
+# hacs:
+#   token: !secret my_github_access_token
+#   appdaemon: true
 #   python_script: true ### depreciated
 #   theme: true ### depreciated
 
@@ -1242,14 +1383,20 @@ anniversaries:
   sensors:
   - name: Christmas
     date: '2020-12-25'
+  - name: "ski_lease_starts_anniversary"
+    date: '2020-12-1'
   - name: "ski_lease_ends_anniversary"
-    date: '2020-4-27'
+    date: '2021-5-1'
   - name: "Laura_birthday_anniversary"
     date: '2020-3-5'
   - name: "Michael_birthday_anniversary"
     date: '2020-4-2'
   - name: "laura_michael_anniversary"
-    date: '2020-7-7'
+    date: '2018-7-7'
+  - name: "twilio_work_anniversary"
+    date: '2020-9-20'
+  - name: "Pandemic Started"
+    date: '2020-3-9'
     
 ############################################################
 ######## Circadian Lighting Custom Component ###############
@@ -1317,6 +1464,30 @@ nextcloud:
   password: !secret nextcloud_password
   
   
+ 
+ 
+############################################################
+### Zodiac Sign ############################################
+############################################################
+zodiac:
   
   
-  
+############################################################
+######## Zoom - Custom Component ###########################
+############################################################
+
+
+zoom:
+  - client_id: !secret zoom_client_id_twilio
+    client_secret: !secret zoom_client_secret_twilio
+    verification_token: !secret zoom_verification_token_twilio
+    name: mlunzer@twilio.com
+  - client_id: !secret zoom_client_id
+    client_secret: !secret zoom_client_secret
+    verification_token: !secret zoom_verification_token
+    name: michaellunzer@gmail.com
+
+
+
+
+

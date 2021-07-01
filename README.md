@@ -5,12 +5,12 @@ With Proxmox as a hypervisor, you can also run other Virtual Machines to do othe
 
 ## Some statistics about my installation:
 
-[![HA Version](https://img.shields.io/badge/Home%20Assistant-0.114.4-brightgreen)](https://github.com/home-assistant/home-assistant/releases/0.114.4)
+[![HA Version](https://img.shields.io/badge/Home%20Assistant-2021.5.5-brightgreen)](https://github.com/home-assistant/home-assistant/releases/2021.5.5)
 
 Description | Value
 -- | --
-Number of entities | 1186
-Number of sensors | 541
+Number of entities | 2024
+Number of sensors | 1117
 Hardware | Lenovo M93P Tiny Form Factor
 OS | Proxmox
 SSD | 240GB
@@ -25,59 +25,46 @@ https://github.com/whiskerz007/proxmox_hassos_install
 
 ## The custom_components that I use
 
-### [Authenticated](https://github.com/custom-components/authenticated)
-
-### [Sonoff](https://github.com/AlexxIT/SonoffLAN)
-
-### [Zoom](https://github.com/raman325/ha-zoom-automation)
-
-### [Entity Contoller](https://github.com/danobot/entity-controller/blob/master/README.md)
-
-### [Nespresso BLE coffee machine](https://github.com/tikismoke/home-assistant-nespressoble)
-
-### [Breaking Changes](https://github.com/custom-components/breaking_changes)
-
-### [Start Spotify on chromecast](https://github.com/fondberg/spotcast)
-
-### [Fortnite Stats](https://github.com/michaellunzer/Home-Assistant-Custom-Component-Fortnite)
-
-### [HACS](https://hacs.xyz/docs/configuration/start)
+### [Weatheralerts](https://github.com/custom-components/weatheralerts)
 
 ### [iPhone Device Tracker](https://github.com/mudape/iphonedetect)
 
-### [Garbage Collection](https://github.com/bruxy70/Garbage-Collection/)
-
-### [Remote Home-Assistant](https://github.com/lukas-hetzenecker/home-assistant-remote)
-
-### [qBittorrent alternative speed switch](https://github.com/JurajNyiri/HomeAssistant-qBitTorrentAlternativeSpeed)
-
-### [Slack User](https://github.com/GeorgeSG/ha-slack-user)
-
-### [Google Geocode](https://github.com/gregoryduckworth/GoogleGeocode-HASS)
+### [Breaking Changes](https://github.com/custom-components/breaking_changes)
 
 ### [Anniversaries](https://github.com/pinkywafer/Anniversaries)
 
-### [NWS Alerts](https://github.com/finity69x2/nws_alerts/)
-
-### [Zoom](https://github.com/raman325/ha-zoom-automation)
-
-### [Xfinity Usage](https://github.com/robert-alfaro/xfinity-usage)
-
-### [Fontawesome icons]()
-
-### [Node-RED](https://github.com/zachowj/node-red)
+### [Slack User](https://github.com/GeorgeSG/ha-slack-user)
 
 ### [Alexa Media Player](https://github.com/custom-components/alexa_media_player/wiki)
+
+### [Start Spotify on chromecast](https://github.com/fondberg/spotcast)
+
+### [Garbage Collection](https://github.com/bruxy70/Garbage-Collection/)
+
+### [Node-RED Companion](https://zachowj.github.io/node-red-contrib-home-assistant-websocket/guide/custom_integration/)
+
+### [Sonoff](https://github.com/AlexxIT/SonoffLAN)
+
+### [Circadian Lighting](https://github.com/claytonjn/hass-circadian_lighting)
+
+### [Plex Recently Added](https://github.com/custom-components/sensor.plex_recently_added)
+
+### [HACS](https://hacs.xyz/docs/configuration/start)
+
+### [Scheduler integration](https://github.com/nielsfaber/scheduler-component)
+
+### [Fortnite Stats](https://github.com/michaellunzer/Home-Assistant-Custom-Component-Fortnite)
+
+### [Xfinity Usage](https://github.com/robert-alfaro/xfinity-usage)
 
 ### [Generate readme](https://github.com/custom-components/readme)
 
 _Generates this awesome readme file._
 
-### [Plex Recently Added](https://github.com/custom-components/sensor.plex_recently_added)
+### [Zoom](https://github.com/raman325/ha-zoom-automation)
 
-### [Weatheralerts](https://github.com/custom-components/weatheralerts)
+### [Authenticated](https://github.com/custom-components/authenticated)
 
-### [Circadian Lighting](https://github.com/claytonjn/hass-circadian_lighting)
 
 
 ## Add-on Repositories Used

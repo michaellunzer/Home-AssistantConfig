@@ -1,5 +1,5 @@
 #moon sensor
-  - platform: moon
+#   - platform: moon
   
   - platform: time_date
     display_options:
@@ -50,17 +50,17 @@
 ### Authenticated Custom Component ###
   - platform: authenticated
 
-# Weather prediction
-  - platform: yr
-    name: weather
-    monitored_conditions:
-      - temperature
-      - symbol
-      - precipitation
-      - windSpeed
-      - humidity
-      - fog
-      - cloudiness
+# Weather prediction     yr.no was depreciated in v0.115
+#   - platform: yr
+#     name: weather
+#     monitored_conditions:
+#      - temperature
+#      - symbol
+#      - precipitation
+#      - windSpeed
+#      - humidity
+#      - fog
+#      - cloudiness
       # - lowClouds
       # - mediumClouds
       # - highClouds
@@ -490,26 +490,26 @@
       
 
 
-#   - platform: gtfs
-#     name: "24th to Millbrae"
-#     origin: 24TH
-#     destination: MLBR
-#     data: bart.zip
-#   - platform: gtfs
-#     name: Millbrae to 24th 
-#     origin: MLBR
-#     destination: 24TH
-#     data: bart.zip
-#   - platform: gtfs
-#     name: 24th to Montgomery
-#     origin: 24TH
-#     destination: MONT
-#     data: bart.zip
-#   - platform: gtfs
-#     name: Montgomery to 24th
-#     origin: MONT
-#     destination: 24TH
-#     data: bart.zip
+  - platform: gtfs
+    name: "24th to Millbrae"
+    origin: 24TH
+    destination: MLBR
+    data: bart.zip
+  - platform: gtfs
+    name: "Millbrae to 24th"
+    origin: MLBR
+    destination: 24TH
+    data: bart.zip
+  - platform: gtfs
+    name: "24th to Montgomery"
+    origin: 24TH
+    destination: MONT
+    data: bart.zip
+  - platform: gtfs
+    name: "Montgomery to 24th"
+    origin: MONT
+    destination: 24TH
+    data: bart.zip
 
 ####################################
 #### Ford GoBikes | Citybikes ######
@@ -598,13 +598,15 @@
 ##   https://www.nextbus.com/#!/sf-muni/49/     49___I_F00  /  5565  /    5561
 ##   https://www.nextbus.com/#!/sf-muni/12/     12___I_F00 /   3476
 ##   https://www.nextbus.com/#!/sf-muni/48/     48___I_N00  /  3477   /3484
+##.  https://www.nextbus.com/#!/sf-muni/48/.    48___I_F00.   /3470
+##   https://www.nextbus.com/#!/sf-muni/49/.    49___I_C01. /6473
 
 # https://www.nextbus.com/#!/sf-muni/49/49___I_C01/5565/5561
 
   - platform: nextbus
     agency: sf-muni
     route: 49
-    stop: 5565
+    stop: 6473 ## 5565 was the old stop outside of 3340
     name: "49-Van Ness-Mission"
     
   - platform: nextbus
@@ -616,7 +618,7 @@
   - platform: nextbus
     agency: sf-muni
     route: 48
-    stop: 3477
+    stop: 3470    #3477 was the old stop outside of 3340
     name: "48-Quintara-24th Mission"
     
 
@@ -866,6 +868,22 @@
       - addons
       - addons_repositories
     value_template: '{{ value_json.data.addons | count}}'
+    
+    
+################################################
+### REST Sensor Quote of the Day OOTD ##########
+################################################
+
+  - platform: rest
+    resource: https://quotes.rest/qod?language=en
+    name: Quote of the Day
+    scan_interval: 43200
+    json_attributes_path: '$.contents.quotes[0]'
+    json_attributes:
+      - quote
+      - author
+      - category
+    value_template: 'OK'
         
         
 ####################################################
@@ -874,22 +892,95 @@
 
   - platform: fortnite
     name: Fortnite Solo Stats
-    api_key: ea1b5a95-662b-4fce-be79-eb7f46344e55
+    api_key: !secret fortnite_api_key
     player_id: Captain_Crunch88
     game_platform: "GAMEPAD"
     game_mode: "SOLO"
   - platform: fortnite
     name: Fortnite Duo Stats
-    api_key: ea1b5a95-662b-4fce-be79-eb7f46344e55
+    api_key: !secret fortnite_api_key
     player_id: Captain_Crunch88
     game_platform: "GAMEPAD"
     game_mode: "DUO"
   - platform: fortnite
     name: Fortnite Squads Stats
-    api_key: ea1b5a95-662b-4fce-be79-eb7f46344e55
+    api_key: !secret fortnite_api_key
     player_id: Captain_Crunch88
     game_platform: "GAMEPAD"
     game_mode: "SQUAD"
 
 
+####################################################
+### Darksky Sensor (not weather platform)  #########
+####################################################
+
+
+#   - platform: darksky
+#     api_key: !secret darksky_api_key
+#     forecast:
+#       - 0
+#     hourly_forecast:
+#       - 0
+#       - 1
+#     monitored_conditions:
+#       - summary
+#       - icon
+#       - temperature
+
+
+####################################################
+############ CUPS Print Server  ####################
+####################################################
+
+  - platform: cups
+    host: 192.168.1.41
+    printers:
+      - Brother_HL-L2300D_series_print_server
+        
+        
+
+####################################################
+############ Wireguard Sensor ######################
+####################################################
+
+  - platform: rest
+    resource: http://a0d7b954-wireguard
+    
+    
+    
+####################################################
+############ Bitcoin Sensor ########################
+####################################################
+  - platform: bitcoin
+    display_options:
+        - exchangerate
+        - trade_volume_btc
+        - miners_revenue_usd
+        - btc_mined
+        - difficulty
+        - minutes_between_blocks
+        - number_of_transactions
+        - hash_rate
+        - mined_blocks
+        - blocks_size
+        - total_fees_btc
+        - total_btc_sent
+        - estimated_btc_sent
+        - total_btc
+        - total_blocks
+        - next_retarget
+        - estimated_transaction_volume_usd
+        - market_price_usd
+       
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
         

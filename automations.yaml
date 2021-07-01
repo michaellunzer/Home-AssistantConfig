@@ -187,10 +187,11 @@
     after_offset: '2'
     condition: sun
   action:
-  - data:
-      data:
-        message: Oh wow you are out of space
-    service: notify.mobile_app_lunziphone11
+  - service: notify.mobile_app_lunziphone11
+    data:
+      title: Out of Space!
+      message: Oh wow, you are out of space on Home Assistant!
+  mode: single
 - id: '1579081800469'
   alias: Turn off bright lights at 09:30pm
   description: ''
@@ -281,8 +282,9 @@
     to: '2'
   condition: []
   action:
-  - entity_id: switch.sonoff_basic01_relay
+  - entity_id: switch.kmc01_relay_1
     service: homeassistant.toggle
+  mode: single
 - id: '1587769458103'
   alias: Hugo Remote CF4AFC Button 3 - Toggle Chess Lamp
   description: ''
@@ -328,8 +330,9 @@
     to: '2'
   condition: []
   action:
-  - entity_id: switch.sonoff_basic01_relay
+  - entity_id: switch.kmc01_relay_1
     service: homeassistant.toggle
+  mode: single
 - id: '1587769458101'
   alias: Hugo Remote CF41A4 Button 3 - Toggle Chess Lamp
   description: ''
@@ -341,6 +344,10 @@
   action:
   - entity_id: switch.sonoff_basic02_relay
     service: homeassistant.toggle
+  - service: homeassistant.toggle
+    data: {}
+    entity_id: switch.kmc01_relay_3
+  mode: single
 - id: '1583913339884'
   alias: Hugo Remote CF41A4 Button 4 - Turn Everything Off
   description: ''
@@ -402,3 +409,61 @@
   action:
   - entity_id: group.lights_michael2
     service: homeassistant.turn_off
+- id: '1603308289689'
+  alias: Twilio Mac Microphone Status Light - On
+  description: ''
+  trigger:
+  - platform: state
+    from: 'off'
+    to: 'on'
+    entity_id: binary_sensor.mlunzer_twilio_mac_lunzpodz
+  condition: []
+  action:
+  - type: turn_on
+    device_id: af8d2dbaf5174136b70cd9c5cc5c1b6d
+    entity_id: light.sn1_light
+    domain: light
+    brightness_pct: 100
+  mode: single
+- id: '1603308763473'
+  alias: Twilio Mac Microphone Status Light - Off
+  description: ''
+  trigger:
+  - platform: state
+    from: 'on'
+    to: 'off'
+    entity_id: binary_sensor.mlunzer_twilio_mac_lunzpodz
+  condition: []
+  action:
+  - type: turn_off
+    device_id: af8d2dbaf5174136b70cd9c5cc5c1b6d
+    entity_id: light.sn1_light
+    domain: light
+  mode: single
+- id: '1603772607768'
+  alias: Handrail Christmas Lights Automation
+  description: ''
+  trigger:
+  - platform: time
+    at: '17:00:00'
+  condition: []
+  action:
+  - condition: state
+    entity_id: switch.sonoff_basic01_relay
+    state: 'on'
+  mode: single
+- id: '1621920723607'
+  alias: Garbage Reminder
+  description: ''
+  use_blueprint:
+    path: westenberg/garbage-reminder.yaml
+    input:
+      reminder_title: Garbage Reminder
+      notifier: notify.notify
+      garbage_sensor_1: sensor.garbage_collection
+      reminder_time: '18:45:00'
+      garbage_sensor_2: sensor.10_lunz_hdd_label_c
+      garbage_sensor_3: sensor.10_lunz_hdd_free_space_c
+      garbage_sensor_4: sensor.10_lunz_hdd_total_free_space_e
+      reminder_message: The garbage will be picked up tomorrow!
+      day_offset: '1'

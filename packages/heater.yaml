@@ -1,4 +1,4 @@
-# Home Assistant configuration
+# Home Assistant Configuration
 input_number:
   stepper_control:
     name: Stepper Control
@@ -8,6 +8,7 @@ input_number:
     step: 1
     # mode: box
 
+# Home Assistant Automation
 automation:
   - alias: Write Stepper Value to ESP
     trigger:
