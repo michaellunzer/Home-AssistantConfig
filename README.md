@@ -5,16 +5,18 @@ With Proxmox as a hypervisor, you can also run other Virtual Machines to do othe
 
 ## Some statistics about my installation:
 
-[![HA Version](https://img.shields.io/badge/Home%20Assistant-2021.5.5-brightgreen)](https://github.com/home-assistant/home-assistant/releases/2021.5.5)
+[![HA Version](https://img.shields.io/badge/Home%20Assistant-2022.8.7-brightgreen)](https://github.com/home-assistant/home-assistant/releases/2022.8.7)
 
 Description | Value
 -- | --
-Number of entities | 2024
-Number of sensors | 1117
+Number of entities | 3702
+Number of sensors | 2241
 Hardware | Lenovo M93P Tiny Form Factor
 OS | Proxmox
-SSD | 240GB
-RAM | 6GB of 8GB allocated to Home-Assistant
+SSD | 1TB
+Total RAM | 16GB
+VM Disk Size | 60GB
+VM RAM | 6GB
 Processor | Intel® Core™ i5-4570T Processor
 Connectivity | Ethernet
 
@@ -23,55 +25,184 @@ I've installed Home-Assistant on Proxmox using the "one-line" installer script:
 https://github.com/whiskerz007/proxmox_hassos_install
 
 
-## The custom_components that I use
+### Integrations
+- [Alexa Media Player](https://github.com/custom-components/alexa_media_player)
+- [Anniversaries](https://github.com/pinkywafer/Anniversaries)
+- [Authenticated](https://github.com/custom-components/authenticated)
+- [Auto Backup](https://github.com/jcwillox/hass-auto-backup)
+- [Battery Consumption](https://github.com/jugla/battery_consumption)
+- [Breaking Changes](https://github.com/custom-components/breaking_changes)
+- [Circadian Lighting](https://github.com/claytonjn/hass-circadian_lighting)
+- [Crypto Tracker](https://github.com/BigNocciolino/CryptoTracker)
+- [Edgeos (Ubiquiti)](https://github.com/elad-bar/ha-edgeos)
+- [Email Sensor](https://github.com/ljmerza/ha-email-sensor)
+- [Emporia Vue](https://github.com/magico13/ha-emporia-vue)
+- [Entity Controller](https://github.com/danobot/entity-controller)
+- [Folding@Homecontrol](https://github.com/eifinger/hass-foldingathomecontrol)
+- [Fontawesome](https://github.com/thomasloven/hass-fontawesome)
+- [Fortnite Stats](https://github.com/michaellunzer/Home-Assistant-Custom-Component-Fortnite)
+- [Frigate](https://github.com/blakeblackshear/frigate-hass-integration)
+- [Garbage Collection](https://github.com/bruxy70/Garbage-Collection)
+- [Generate Readme](https://github.com/custom-components/readme)
+- [Googlegeocode Hass](https://github.com/gregoryduckworth/GoogleGeocode-HASS)
+- [Gtfs Realtime](https://github.com/zacs/ha-gtfs-rt)
+- [HACS](https://github.com/hacs/integration)
+- [Hass Deepstack Face](https://github.com/robmarkcole/HASS-Deepstack-face)
+- [Hass.Agent Notifier](https://github.com/LAB02-Research/HASS.Agent-Notifier)
+- [Helium Blockchain](https://github.com/rsnodgrass/hass-helium)
+- [Homeassistant Qbittorrentalternativespeed](https://github.com/JurajNyiri/HomeAssistant-qBitTorrentAlternativeSpeed)
+- [Instagram](https://github.com/hudsonbrendon/sensor.instagram)
+- [Iphone Device Tracker](https://github.com/mudape/iphonedetect)
+- [Local Tuya](https://github.com/rospogrigio/localtuya)
+- [Mail And Packages](https://github.com/moralmunky/Home-Assistant-Mail-And-Packages)
+- [Mjpeg Timelapse](https://github.com/evilmarty/mjpeg-timelapse)
+- [Music Assistant](https://github.com/music-assistant/hass-music-assistant)
+- [Nespresso Ble Coffee Machine](https://github.com/tikismoke/home-assistant-nespressoble)
+- [Next Holiday Sensor](https://github.com/partofthething/next-holiday-sensor)
+- [NHL API](https://github.com/JayBlackedOut/hass-nhlapi)
+- [Node Red Companion](https://github.com/zachowj/hass-node-red)
+- [Nws Alerts](https://github.com/finity69x2/nws_alerts)
+- [Open Source Routing Machine](https://github.com/edekeijzer/osrm_travel_time)
+- [Openmediavault](https://github.com/tomaae/homeassistant-openmediavault)
+- [Remote Home Assistant](https://github.com/custom-components/remote_homeassistant)
+- [Scheduler Component](https://github.com/nielsfaber/scheduler-component)
+- [Sensor.Plex Recently Added](https://github.com/custom-components/sensor.plex_recently_added)
+- [Sensor.Unifigateway](https://github.com/custom-components/sensor.unifigateway)
+- [Simple Wyze Vacuum](https://github.com/romedtino/simple-wyze-vac)
+- [Slack User](https://github.com/GeorgeSG/ha-slack-user)
+- [Sonoff Lan](https://github.com/AlexxIT/SonoffLAN)
+- [Sp110E Rgb Led Ble Controller Integration](https://github.com/roslovets/SP110E-HASS)
+- [Spacex Next Launch And Starman](https://github.com/djtimca/HASpaceX)
+- [Spotcast](https://github.com/fondberg/spotcast)
+- [Strava Ha 2.0](https://github.com/craibo/ha_strava)
+- [Watchman](https://github.com/dummylabs/thewatchman)
+- [Weatheralerts](https://github.com/custom-components/weatheralerts)
+- [Webrtc Camera](https://github.com/AlexxIT/WebRTC)
+- [Worldtidesinfocustom](https://github.com/jugla/worldtidesinfocustom)
+- [Wyze](https://github.com/JoshuaMulliken/ha-wyzeapi)
+- [Yahoo Finance](https://github.com/iprak/yahoofinance)
+- [Zoom](https://github.com/raman325/ha-zoom-automation)
+- [Zwift Sensors](https://github.com/snicker/zwift_hass)
 
-### [Weatheralerts](https://github.com/custom-components/weatheralerts)
+### Lovelace
+- [Aftership Card](https://github.com/iantrich/aftership-card)
+- [Air Visual Card](https://github.com/dnguyen800/air-visual-card)
+- [Analog Clock](https://github.com/tomasrudh/analogclock)
+- [Atomic Calendar](https://github.com/atomic7777/atomic_calendar)
+- [Atomic Calendar Revive](https://github.com/totaldebug/atomic-calendar-revive)
+- [Auto Entities](https://github.com/thomasloven/lovelace-auto-entities)
+- [Bar Card](https://github.com/custom-cards/bar-card)
+- [Battery Entity Row](https://github.com/benct/lovelace-battery-entity-row)
+- [Bignumber Card](https://github.com/custom-cards/bignumber-card)
+- [Button Card](https://github.com/custom-cards/button-card)
+- [Canvas Gauge Card](https://github.com/custom-cards/canvas-gauge-card)
+- [Card Mod](https://github.com/thomasloven/lovelace-card-mod)
+- [Card Tools](https://github.com/thomasloven/lovelace-card-tools)
+- [Check Button Card](https://github.com/custom-cards/check-button-card)
+- [Config Template Card](https://github.com/iantrich/config-template-card)
+- [Custom Ui](https://github.com/Mariusthvdb/custom-ui)
+- [Dark Thermostat](https://github.com/ciotlosm/lovelace-thermostat-dark-card)
+- [Dual Gauge Card](https://github.com/custom-cards/dual-gauge-card)
+- [Fan Control Entity Row](https://github.com/finity69x2/fan-control-entity-row)
+- [Flexible Horseshoe Card For Lovelace](https://github.com/AmoebeLabs/flex-horseshoe-card)
+- [Flipdown Timer Card](https://github.com/pmongloid/flipdown-timer-card)
+- [Fold Entity Row](https://github.com/thomasloven/lovelace-fold-entity-row)
+- [Frigate Card](https://github.com/dermotduffy/frigate-hass-card)
+- [Garbage Collection Card](https://github.com/amaximus/garbage-collection-card)
+- [Ha Floorplan](https://github.com/ExperienceLovelace/ha-floorplan)
+- [Hass Hue Icons](https://github.com/arallsopp/hass-hue-icons)
+- [Kiosk Mode](https://github.com/maykar/kiosk-mode)
+- [Last Changed Element](https://github.com/queimadus/last-changed-element)
+- [Layout Card](https://github.com/thomasloven/lovelace-layout-card)
+- [Light Entity Row](https://github.com/custom-cards/light-entity-row)
+- [Lightalarm Card](https://github.com/chaptergy/lightalarm-card)
+- [Lightning Detector Card](https://github.com/ironsheep/lovelace-lightning-detector-card)
+- [Lovelace Clock Card](https://github.com/Villhellm/lovelace-clock-card)
+- [Lovelace Grocy Chores Card](https://github.com/isabellaalstrom/lovelace-grocy-chores-card)
+- [Mini Climate Card](https://github.com/artem-sedykh/mini-climate-card)
+- [Mini Graph Card](https://github.com/kalkih/mini-graph-card)
+- [Mini Media Player](https://github.com/kalkih/mini-media-player)
+- [Nextbus Card](https://github.com/dcramer/lovelace-nextbus-card)
+- [Nintendo Wishlist Card](https://github.com/custom-cards/nintendo-wishlist-card)
+- [Person](https://github.com/gerardag/person-entity-card)
+- [Plant Picture Card](https://github.com/badguy99/PlantPictureCard)
+- [Roomba Vacuum Card](https://github.com/jeremywillans/lovelace-roomba-vacuum-card)
+- [Scheduler Card](https://github.com/nielsfaber/scheduler-card)
+- [Simple Thermostat](https://github.com/nervetattoo/simple-thermostat)
+- [Slider Entity Row](https://github.com/thomasloven/lovelace-slider-entity-row)
+- [Spotify Lovelace Card](https://github.com/custom-cards/spotify-card)
+- [State Switch](https://github.com/thomasloven/lovelace-state-switch)
+- [Steam Card](https://github.com/Kibibit/kb-steam-card)
+- [Sun Card](https://github.com/AitorDB/home-assistant-sun-card)
+- [Text Divider Row](https://github.com/iantrich/text-divider-row)
+- [Transmission Card](https://github.com/amaximus/transmission-card)
+- [Unused Card](https://github.com/custom-cards/unused-card)
+- [Upcoming Media Card](https://github.com/custom-cards/upcoming-media-card)
+- [Update Time Card](https://github.com/itobey/update-time-card)
+- [Uptime Card](https://github.com/dylandoamaral/uptime-card)
+- [Weather Card](https://github.com/bramkragten/weather-card)
+- [Weather Radar Card](https://github.com/Makin-Things/weather-radar-card)
 
-### [iPhone Device Tracker](https://github.com/mudape/iphonedetect)
-
-### [Breaking Changes](https://github.com/custom-components/breaking_changes)
-
-### [Anniversaries](https://github.com/pinkywafer/Anniversaries)
-
-### [Slack User](https://github.com/GeorgeSG/ha-slack-user)
-
-### [Alexa Media Player](https://github.com/custom-components/alexa_media_player/wiki)
-
-### [Start Spotify on chromecast](https://github.com/fondberg/spotcast)
-
-### [Garbage Collection](https://github.com/bruxy70/Garbage-Collection/)
-
-### [Node-RED Companion](https://zachowj.github.io/node-red-contrib-home-assistant-websocket/guide/custom_integration/)
-
-### [Sonoff](https://github.com/AlexxIT/SonoffLAN)
-
-### [Circadian Lighting](https://github.com/claytonjn/hass-circadian_lighting)
-
-### [Plex Recently Added](https://github.com/custom-components/sensor.plex_recently_added)
-
-### [HACS](https://hacs.xyz/docs/configuration/start)
-
-### [Scheduler integration](https://github.com/nielsfaber/scheduler-component)
-
-### [Fortnite Stats](https://github.com/michaellunzer/Home-Assistant-Custom-Component-Fortnite)
-
-### [Xfinity Usage](https://github.com/robert-alfaro/xfinity-usage)
-
-### [Generate readme](https://github.com/custom-components/readme)
-
-_Generates this awesome readme file._
-
-### [Zoom](https://github.com/raman325/ha-zoom-automation)
-
-### [Authenticated](https://github.com/custom-components/authenticated)
+### Themes
+- [Animated Weather Card](https://github.com/wowgamr/animated-weather-card)
+- [Caule Themes Pack 1   By Caule.Studio](https://github.com/orickcorreia/caule-themes-pack-1)
+- [Dark Mint Theme](https://github.com/home-assistant-community-themes/dark-mint)
+- [Dark Theme Pack For Home Assistant](https://github.com/awolkers/home-assistant-themes)
+- [Google Light Theme](https://github.com/JuanMTech/google_light_theme)
+- [Green And Dark Theme: Simple, Clean, And Green](https://github.com/Matt-PMCT/Green-and-Dark-HA-Theme)
+- [Homeassistant Google Home Theme   Light & Dark](https://github.com/liri/lovelace-themes)
+- [Ios Dark Mode Theme](https://github.com/basnijholt/lovelace-ios-dark-mode-theme)
+- [Ios Theme   Based On The System Wide Light And Dark Mode Ui](https://github.com/JuanMTech/ios-theme)
+- [Macos Theme   Based On The System Wide Light And Dark Mode Ui](https://github.com/JuanMTech/macOS-Theme)
+- [Nord Theme](https://github.com/home-assistant-community-themes/nord)
+- [Slate Theme](https://github.com/seangreen2/slate_theme)
 
 
 
-## Add-on Repositories Used
 
-
-
-## Listing Add-ons
+## Add-ons
+- AdGuard Home - (4.7.3) 
+- AirCast - (3.4.1) 
+- APC UPS Daemon - (1.9) 
+- Backup Hassio to Google Drive - (1.7.2) 
+- Caddy - (1.6) 
+- Caddy 2 - (1.2.2) 
+- Check Home Assistant configuration - (3.11.0) 
+- Configurator (latest) - (0.4.0) 
+- Docker Wyze Bridge - (1.8.6) 
+- DOODS - (2) 
+- DOODS2-amd64 - (1) 
+- Duck DNS - (1.15.0) 
+- ESPHome - (2022.8.0) 
+- FlexTV - (1.2.0) 
+- Folding@home - (0.6.0) 
+- Frigate NVR - (3.1) 
+- Genie - (3.0.0) 
+- Glances - (0.16.0) 
+- Grafana - (7.6.0) 
+- Home Assistant Google Drive Backup - (0.108.4) 
+- InfluxDB - (4.5.0) 
+- Log Viewer - (0.14.0) 
+- MagicMirror² - (e5fd24d) 
+- MariaDB - (2.5.1) 
+- Mosquitto broker - (6.1.2) 
+- motionEye - (0.18.0) 
+- Node-RED - (13.3.2) 
+- room-assistant - (2.7.1) 
+- RPC Shutdown - (2.2) 
+- Samba Backup - (5.1.2) 
+- Samba share - (10.0.0) 
+- Spotify Connect - (0.12.2) 
+- SSH & Web Terminal - (12.0.2) 
+- Studio Code Server - (5.3.0) 
+- TasmoAdmin - (0.20.0) 
+- Tautulli - (3.1.2) 
+- Telegraf - (0.4.4) 
+- Traccar - (0.17.0) 
+- UniFi Network Application - (2.3.1) 
+- USPS Package Tracker - (0.0.4) 
+- WireGuard - (0.7.0) 
+- ZeroTier One - (0.15.1) 
 
 
 ***

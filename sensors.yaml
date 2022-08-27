@@ -7,7 +7,7 @@
       - 'date'
       - 'time_utc'
     #   - 'date_time'
-    #   - 'date_time_iso'
+      - 'date_time_iso' ## needed for sunrise automation 
     #   - 'time_date'
     #   - 'beat'
 
@@ -27,12 +27,14 @@
 #     - disease_average_forecasted
     
 
+###########################################
+### Xfinity Custom Component ##############
+##### don't have comcast anymore!!!! ######
+###########################################
 
-### Xfinity Custom Component ###
-
-  - platform: xfinity
-    username: !secret xfinity_email
-    password: !secret xfinity_password
+#   - platform: xfinity
+#     username: !secret xfinity_email
+#     password: !secret xfinity_password
 
 
 ### Weatheralerts Custom Component ###
@@ -231,7 +233,7 @@
 #     users:
 #       - michaellunzer
       
-# qbittorrent
+# qbittorrent ##### this takes a really long time to load and I don't use it that much
   - platform: qbittorrent
     url: 'http://192.168.1.144:8080'
     username: !secret qbt_username
@@ -484,32 +486,39 @@
 #     trip_update_url: 'http://api.bart.gov/gtfsrt/tripupdate.aspx'
 #     # vehicle_position_url: 'https://data.texas.gov/download/eiei-9rpf/application%2Foctet-stream'
 #     departures:
-#     - name: 24th to Millbrae
+#     - name: 24th Street Station
 #     #   route: 
 #       stopid: 24TH      
-      
+#   - platform: gtfs_realtime
+#     trip_update_url: 'http://api.bart.gov/api/etd.aspx?cmd=etd&orig=24TH&key=MW9S-E7SL-26DU-VV8V&json=y'
+#     # vehicle_position_url: 'https://data.texas.gov/download/eiei-9rpf/application%2Foctet-stream'
+#     departures:
+#     - name: 24th Street Station TEST
+#     #   route: 
+#       stopid: 24TH    
 
 
-  - platform: gtfs
-    name: "24th to Millbrae"
-    origin: 24TH
-    destination: MLBR
-    data: bart.zip
-  - platform: gtfs
-    name: "Millbrae to 24th"
-    origin: MLBR
-    destination: 24TH
-    data: bart.zip
-  - platform: gtfs
-    name: "24th to Montgomery"
-    origin: 24TH
-    destination: MONT
-    data: bart.zip
-  - platform: gtfs
-    name: "Montgomery to 24th"
-    origin: MONT
-    destination: 24TH
-    data: bart.zip
+
+#   - platform: gtfs
+#     name: "24th to Millbrae"
+#     origin: 24TH
+#     destination: MLBR
+#     data: bart.zip
+#   - platform: gtfs
+#     name: "Millbrae to 24th"
+#     origin: MLBR
+#     destination: 24TH
+#     data: bart.zip
+#   - platform: gtfs
+#     name: "24th to Montgomery"
+#     origin: 24TH
+#     destination: MONT
+#     data: bart.zip
+#   - platform: gtfs
+#     name: "Montgomery to 24th"
+#     origin: MONT
+#     destination: 24TH
+#     data: bart.zip
 
 ####################################
 #### Ford GoBikes | Citybikes ######
@@ -528,6 +537,9 @@
 ####################################
 
   - platform: spotcast
+    country: US
+
+
 
 ########################################################
 ######## Plex Recently Added Custom Component ##########
@@ -546,29 +558,31 @@
 ######## apcupsd Power UPS #########
 ####################################
 
-  - platform: apcupsd
-    resources:
-      - apc
-      - date
-      - hostname
-      - version
-      - upsname
-      - cable
-      - driver
-      - upsmode
-      - starttime
-      - model
-      - status
-      - linev
-      - loadpct
-      - bcharge
-      - timeleft
-      - mbattchg
-      - mintimel
-      - maxtime
-      - maxlinev
-      - minlinev
-      - outputv
+# this UPS is not currently being used
+
+#   - platform: apcupsd
+#     resources:
+#       - apc
+#       - date
+#       - hostname
+#       - version
+#       - upsname
+#       - cable
+#       - driver
+#       - upsmode
+#       - starttime
+#       - model
+#       - status
+#       - linev
+#       - loadpct
+#       - bcharge
+#       - timeleft
+#       - mbattchg
+#       - mintimel
+#       - maxtime
+#       - maxlinev
+#       - minlinev
+#       - outputv
 
 ####################################
 ######## Aftership #################
@@ -612,7 +626,7 @@
   - platform: nextbus
     agency: sf-muni
     route: 12
-    stop: 3476
+    stop: 4677 #3476 invalid stop ID
     name: "12-Folsom-Pacific"
     
   - platform: nextbus
@@ -685,11 +699,13 @@
     duration:
       days: 30
 
+### commented out entity_id: sensor.date to avoid errors. might undo it
+
   - platform: template
     sensors:
       #----- Count Automations
         count_automations:
-          entity_id: sensor.date
+        #   entity_id: sensor.date
           value_template: >
             {%- set domains = ['automation'] -%}
             {%- for domain in domains -%}
@@ -701,7 +717,7 @@
             {%- endfor -%}
       #----- Count Device Trackers
         count_device_trackers:
-          entity_id: sensor.date
+        #   entity_id: sensor.date
           value_template: >
             {%- set domains = ['device_tracker'] -%}
             {%- for domain in domains -%}
@@ -713,7 +729,7 @@
             {%- endfor -%}        
       #----- Count Lights
         count_lights:
-          entity_id: sensor.date
+        #   entity_id: sensor.date
           value_template: >
             {%- set domains = ['light'] -%}
             {%- for domain in domains -%}
@@ -725,7 +741,7 @@
             {%- endfor -%}
       #----- Count Binary Sensors
         count_binary_sensors:
-          entity_id: sensor.date
+        #   entity_id: sensor.date
           value_template: >
             {%- set domains = ['binary_sensor'] -%}
             {%- for domain in domains -%}
@@ -737,7 +753,7 @@
             {%- endfor -%}
       #----- Count Sensors
         count_sensors:
-          entity_id: sensor.date
+        #   entity_id: sensor.date
           value_template: >
             {%- set domains = ['sensor'] -%}
             {%- for domain in domains -%}
@@ -749,7 +765,7 @@
             {%- endfor -%}
       #----- Count Switches
         count_switches:
-          entity_id: sensor.date
+        #   entity_id: sensor.date
           value_template: >
             {%- set domains = ['switch'] -%}
             {%- for domain in domains -%}
@@ -761,7 +777,7 @@
             {%- endfor -%}
       #----- Count Zones
         count_zones:
-          entity_id: sensor.date
+        #   entity_id: sensor.date
           value_template: >
             {%- set domains = ['zone'] -%}
             {%- for domain in domains -%}
@@ -976,11 +992,256 @@
       
       
       
+####################################################################
+############ Custom Compoent: Crypto Tracker #######################
+####################################################################
       
-      
-      
-      
-      
-      
-      
+  - platform: cryptostate
+    resources:
+    #Example of the first formula
+      - compare: doge-usd
+        name: crypto_dogecoin_price
+
+      - compare: btc-usd
+        name: crypto_bitcoin_price
+
+      - compare: eth-usd
+        name: crpyto_ethereum_price
         
+      - compare: hnt-usd
+        name: crypto_helium_price
+
+    # #Example of the alternative formula
+    #   - compare: -doge
+    #     name: dogecoin
+
+    #   - compare: eur-btc
+    #     name: bitcoin
+
+    #   - compare: eur-eth
+    #     name: ethereum
+      
+      
+####################################################################
+############ Custom Compoent: Helium ###############################
+####################################################################
+      
+    
+  - platform: helium
+    wallets:
+      - 131DzR51J16QetvhKpp55xgoZskFaZRpmPa45eUQPvAXTbSumCo
+    hotspots:
+      - 112s28HjPqChmFrx37jipEwzULvRnFsH8yXC1McS4u5apF1XtgBw
+        
+        
+  - platform: template
+    sensors:
+      helium_wallet_value:
+        value_template:
+          "{{ sensor.helium_hnt_oracle_price * sensor.helium_wallet_131dzr51j16qetvhkpp55xgozskfazrpmpa45euqpvaxtbsumco }}"  
+
+
+        
+#####################################################################
+############ Custom Component: Instagram ############################
+#####################################################################
+        ## working!!! 
+  - platform: instagram
+    username: itsallgravy.cat
+    password: !secret gravy_instagram_password
+  - platform: instagram
+    username: itsallgravy.cat
+    password: !secret michaellunzer_instagram_password
+    
+    
+#####################################################################
+############ Custom Component: Next Holiday #########################
+#####################################################################
+
+  - platform: next_holiday
+    sources: 
+     - country: "USA"
+       state: "CA"
+    
+
+#####################################################################
+############ Addon: USPS Informed Delivery $#########################
+#####################################################################
+
+  - platform: mqtt
+    name: Delivered Packages
+    unit_of_measurement: 'packages'
+    state_topic: "home/delivered_packages"
+
+  - platform: mqtt
+    name: Enroute Packages
+    unit_of_measurement: 'packages'
+    state_topic: "home/enroute_packages"
+
+  - platform: mqtt
+    name: Enroute Today Packages
+    unit_of_measurement: 'packages'
+    state_topic: "home/enroute_today_packages"
+    
+    
+    
+    
+############################################################################
+############ Custom Component: NHL SJ Sharks Score #########################
+############################################################################
+
+  - platform: nhl_api
+    team_id: 28
+    name: San Jose Sharks
+
+
+############################################################################
+############ Custom Component: Zwift #######################################
+############################################################################
+
+
+  - platform: zwift
+    username: !secret my_zwift_username
+    password: !secret my_zwift_password
+    # players:
+    #   - !secret my_friends_zwift_player_id
+
+
+
+############################################################################
+############ SF BART REST API TEMPLATE SENSOR ##############################
+############################################################################
+
+
+
+#   - platform: rest
+#     resource: https://api.bart.gov/api/etd.aspx?orig=24TH&cmd=etd&key=MW9S-E7SL-26DU-VV8V&dir=s&json=y
+
+  - platform: rest
+    name: BART_24th_street_station_northbound
+    json_attributes_path: "$.root.station[0].etd[0].estimate[0]"
+    json_attributes:
+      - minutes
+      - platform
+      - direction
+      - length
+      - color
+      - delay
+      - hexcolor
+      - bikeflag
+    value_template: "OK"
+    ### "{{ value_json['root']['station'][0]['etd'][0]['estimate'][0]['minutes'].title() }}"
+    unit_of_measurement: "minutes"
+    icon: mdi:train
+    resource: https://api.bart.gov/api/etd.aspx?orig=24TH&cmd=etd&key=MW9S-E7SL-26DU-VV8V&dir=n&json=y
+
+
+
+
+
+#   - platform: template
+  
+  
+  
+#   - platform: rest
+#     name: BART_24th_street_station_southbound
+#     json_attributes_path: "$.root.station[0].etd[0].estimate[0]"
+#     json_attributes:
+#       - minutes
+#       - platform
+#       - direction
+#       - length
+#       - color
+#       - delay
+#       - hexcolor
+#       - bikeflag
+#     value_template: "{{ value_json['root']['station'][0]['etd'][0]['estimate'][0]['minutes'].title() }}"
+#     unit_of_measurement: "minutes"
+#     icon: mdi:train
+#     resource: https://api.bart.gov/api/etd.aspx?orig=24TH&cmd=etd&key=MW9S-E7SL-26DU-VV8V&dir=s&json=y
+
+
+#   - platform: rest
+#     name: BART_24th_street_station_northbound
+#     resource: https://api.bart.gov/api/etd.aspx?orig=24TH&cmd=etd&key=MW9S-E7SL-26DU-VV8V&dir=n&json=y
+#     json_attributes:
+#       - bedroom1
+#       - bedroom2
+#       - bedroom3
+#     value_template: "OK"
+#   - platform: template
+#     sensors:
+#       bedroom1_temperature:
+#         value_template: "{{ state_attr('sensor.bart_24th_street_station_northbound', 'bedroom1')['temperature'] }}"
+#         unit_of_measurement: "minutes"
+#       bedroom1_humidity:
+#         value_template: "{{ state_attr('sensor.bart_24th_street_station_northbound', 'bedroom1')['humidity'] }}"
+#         unit_of_measurement: "minutes"
+#       bedroom1_battery:
+#         value_template: "{{ state_attr('sensor.bart_24th_street_station_northbound', 'bedroom1')['battery'] }}"
+#         unit_of_measurement: "minutes"
+#       bedroom2_temperature:
+#         value_template: "{{ state_attr('sensor.bart_24th_street_station_northbound', 'bedroom2')['temperature'] }}"
+#         unit_of_measurement: "minutes"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#   - platform: rest
+#     name: BART_24th_street_station_northbound
+#     json_attributes_path: "$.root.station[0].etd[0].estimate[0]"
+#     json_attributes:
+#       - minutes
+#       - platform
+#       - direction
+#       - length
+#       - color
+#       - delay
+#       - hexcolor
+#       - bikeflag
+#     value_template: "{{ value_json['root']['station'][0]['etd'][0]['estimate'][0]['minutes'].title() }}"
+#     unit_of_measurement: "minutes"
+#     icon: mdi:train
+#     resource: https://api.bart.gov/api/etd.aspx?orig=24TH&cmd=etd&key=MW9S-E7SL-26DU-VV8V&dir=n&json=y
+#   - platform: rest
+#     name: BART_24th_street_station_southbound
+#     json_attributes_path: "$.root.station[0].etd[0].estimate[0]"
+#     json_attributes:
+#       - minutes
+#       - platform
+#       - direction
+#       - length
+#       - color
+#       - delay
+#       - hexcolor
+#       - bikeflag
+#     value_template: "{{ value_json['root']['station'][0]['etd'][0]['estimate'][0]['minutes'].title() }}"
+#     unit_of_measurement: "minutes"
+#     icon: mdi:train
+#     resource: https://api.bart.gov/api/etd.aspx?orig=24TH&cmd=etd&key=MW9S-E7SL-26DU-VV8V&dir=s&json=y
+
+
+
+############################################################################
+############ OhmConnect API  ###############################################
+############################################################################
+
+
+  - platform: ohmconnect
+    id: 6znEGqry
+    
+    ### ohmconnect ID is found from here: https://login.ohmconnect.com/api/v2/settings
+    #### look at end of this: "verify_ohm_hour_url":"https://login.ohmconnect.com/verify-ohm-hour/6znEGqry"}
+
+
+

@@ -105,6 +105,10 @@ recorder:
      - light.powermonitor_plug01_blue_led
      - light.powermonitor_plug01_red_led
     #   - sensor.last_boot # Comes from 'systemmonitor' sensor platform
+     - sensor.next_launch_countdown #SpaceX sensor
+     - sensor.48_quintara_24th_mission
+     - sensor.49_van_ness_mission
+     - sensor.12_folsom_pacific
 
 # recorder:
 #   db_url: oracle+cx_oracle://admin:CLn4P8CjtT!1@adb.us-ashburn-1.oraclecloud.com:1522/ag7yhvhltqz2qif_db201909161722_high.atp.oraclecloud.com/?service_name=DB201909161722
@@ -147,65 +151,65 @@ mobile_app:
 
 # # Enables iOS
 ios:
-  push:
-    categories:
-      - name: Medicine
-        identifier: 'medicine'
-        actions:
-          - identifier: 'ALREADY_TAKEN'
-            title: 'Already Taken'
-            activationMode: 'background'
-            authenticationRequired: no
-            destructive: yes
-            behavior: 'default'
-          - identifier: 'SNOOZE'
-            title: 'Snooze 5 Minutes'
-            activationMode: 'background'
-            authenticationRequired: no
-            destructive: yes
-            behavior: 'default'
-          - identifier: 'REMIND_HOME'
-            title: 'Remind Me at Home'
-            activationMode: 'background'
-            authenticationRequired: no
-            destructive: yes
-            behavior: 'default'
-      - name: Alarm
-        identifier: 'alarm'
-        actions:
-          - identifier: 'SILENCE_ALARM'
-            title: 'Silence Alarm'
-            activationMode: 'background'
-            authenticationRequired: no
-            destructive: yes
-            behavior: 'default'
-      - name: Siren
-        identifier: 'siren'
-        actions:
-          - identifier: 'ACTIVATE_SIRENS'
-            title: 'Activate Sirens'
-            activationMode: 'background'
-            authenticationRequired: no
-            destructive: yes
-            behavior: 'default'
-      - name: Snooze
-        identifier: 'Snooze'
-        actions:
-          - identifier: 'SNOOZE'
-            title: 'Snooze'
-            activationMode: 'background'
-            authenticationRequired: no
-            destructive: yes
-            behavior: 'default'
-      - name: Test
-        identifier: 'test'
-        actions:
-          - identifier: 'TEST'
-            title: 'Testbutton 1'
-            activationMode: 'background'
-            authenticationRequired: no
-            destructive: yes
-            behavior: 'default'
+#   push:        ### depreciated in 2022.4.5
+#     categories:
+#       - name: Medicine
+#         identifier: 'medicine'
+#         actions:
+#           - identifier: 'ALREADY_TAKEN'
+#             title: 'Already Taken'
+#             activationMode: 'background'
+#             authenticationRequired: no
+#             destructive: yes
+#             behavior: 'default'
+#           - identifier: 'SNOOZE'
+#             title: 'Snooze 5 Minutes'
+#             activationMode: 'background'
+#             authenticationRequired: no
+#             destructive: yes
+#             behavior: 'default'
+#           - identifier: 'REMIND_HOME'
+#             title: 'Remind Me at Home'
+#             activationMode: 'background'
+#             authenticationRequired: no
+#             destructive: yes
+#             behavior: 'default'
+#       - name: Alarm
+#         identifier: 'alarm'
+#         actions:
+#           - identifier: 'SILENCE_ALARM'
+#             title: 'Silence Alarm'
+#             activationMode: 'background'
+#             authenticationRequired: no
+#             destructive: yes
+#             behavior: 'default'
+#       - name: Siren
+#         identifier: 'siren'
+#         actions:
+#           - identifier: 'ACTIVATE_SIRENS'
+#             title: 'Activate Sirens'
+#             activationMode: 'background'
+#             authenticationRequired: no
+#             destructive: yes
+#             behavior: 'default'
+#       - name: Snooze
+#         identifier: 'Snooze'
+#         actions:
+#           - identifier: 'SNOOZE'
+#             title: 'Snooze'
+#             activationMode: 'background'
+#             authenticationRequired: no
+#             destructive: yes
+#             behavior: 'default'
+#       - name: Test
+#         identifier: 'test'
+#         actions:
+#           - identifier: 'TEST'
+#             title: 'Testbutton 1'
+#             activationMode: 'background'
+#             authenticationRequired: no
+#             destructive: yes
+#             behavior: 'default'
             
             
             
@@ -216,16 +220,25 @@ ios:
 
 http:
 # use this below for a reverse proxy
-#   use_x_forwarded_for: true
-#   trusted_proxies:
-#     - 127.0.0.1
-#     - ::1
+  use_x_forwarded_for: true
+  trusted_proxies:
+    - 127.0.0.0/24
+    - 192.168.1.2
+    - 172.16.0.0/12
+    - ::1
+    - 172.30.33.0/24
 #   trusted_networks:
 #     - 192.168.1.0/24
 #     - 172.30.32.0/24
 #     - 172.30.33.0/24
   cors_allowed_origins: 
     - '*'
+    - http://localhost:8000
+    - http://192.168.1.144:8000
+    - 192.168.1.144
+    - http://192.168.1.144
+
+
       
   # Secrets are defined in the file secrets.yaml
 #   api_password: !secret http_api_password                           #### API Password was depreciated in ~0.72
@@ -243,7 +256,7 @@ http:
 # the developers to assist with development of Home Assistant.
 # For more information, please see:
 # https://home-assistant.io/blog/2016/10/25/explaining-the-updater/
-updater:
+# updater:
   # Optional, allows Home Assistant developers to focus on popular components.
   # include_used_components: true
 
@@ -268,6 +281,7 @@ logger:
     homeassistant.components.device_tracker: critical
     homeassistant.components.camera: critical
     # custom_components.my_integration: debug       # example filter
+    custom_components.instagram: debug # custom compoent - Instagram
 
 # Enables a map showing the location of tracked devices
 map:
@@ -302,13 +316,14 @@ rest_command:
     url: 'http://localhost:8055/gb/doBackup'
     timeout: '300'
   twilio_alarm:
-    url: "https://studio.twilio.com/v2/Flows/FW79cc6cc54bddc17e431f9e3d27fe8da1/Executions"
+    url: !secret twilio_studio_flow_url
     method: POST
     headers:
-    #   authorization: "Basic QUM3MTUwZGEwMTU2OTkxOGU5NzhiZGI2MGNhNmE5MGY1YzpiNmFmYzVlOGFmNGFmNWNjM2Q2NTVkNWZlZjVjZjE1Yg=="
+    #   authorization: "Basic QUM3MTUwZGEwMTU2OTkxOGU5NzhiZGI2MGNhNmE5MGY1YzoxYTBmZTk2ZWRiZDdmMjBhM2Y1OWU0YjJhNTE5NzFiNg=="
+    # old one #   authorization: "Basic QUM3MTUwZGEwMTU2OTkxOGU5NzhiZGI2MGNhNmE5MGY1YzpiNmFmYzVlOGFmNGFmNWNjM2Q2NTVkNWZlZjVjZjE1Yg=="
       Content-Type: "application/x-www-form-urlencoded"
-    username: AC7150da01569918e978bdb60ca6a90f5c
-    password: b6afc5e8af4af5cc3d655d5fef5cf15b
+    username: !secret twilio_account_sid
+    password: !secret twilio_api_key # old one that needs to be replaced: b6afc5e8af4af5cc3d655d5fef5cf15b
     payload: "To=+14157077908&From=+14153586870"
     # to: '+15558675310', from: '+15017122661'.   14158740125
 ## SF Landline: +14157951905
@@ -373,16 +388,13 @@ scene: !include scenes.yaml
 
 
 binary_sensor:
-  - platform: iss
-    # name: "International Space Station"
-    show_on_map: False
   - platform: workday
     country: US
     # state: 'CA'
     # workdays: [mon, tues, wed, thurs, fri]
 #This works, but theres not really a point -- if the system is down then the dashboard is unavailable lol
-#  - platform: uptimerobot
-#    api_key: !secret uptimerobot_api_key
+#   - platform: uptimerobot
+#     api_key: !secret uptimerobot_api_key
 ## Room-Assistant MQTT BTLE Sensor
 #   - platform: mqtt
 #     state_topic: 'room_presence/Michael-room'
@@ -405,18 +417,36 @@ binary_sensor:
 #     value_template: '{{ value_json.motion }}'
 #     device_class: 'motion'
 ## apcupsd binary sensor -- returns ON/OFF
-  - platform: apcupsd
+#   - platform: apcupsd ######## UPS is not being used currently
+#   - platform: ffmpeg_motion ############ this is for the direct RTSP stream direclty to the camera
+#     input: -rtsp_transport http -i rtsp://lunz:asdf@192.168.1.203/live
+#     name: wyzecam_office_motion
+#     extra_arguments: -pred 1 -q:v 2
+#     changes: 10
+#     reset: 10
+#   - platform: ffmpeg_motion ############ this is for the direct RTSP stream direclty to the camera
+#     input: -rtsp_transport http -i rtsp://lunz:asdf@192.168.1.204/live
+#     name: wyzecam_front_door_motion
+#     extra_arguments: -pred 1 -q:v 2
+#     changes: 5
+#     reset: 10
   - platform: ffmpeg_motion
-    input: -rtsp_transport http -i rtsp://lunz:asdf@192.168.1.203/live
-    name: wyzecam_office_motion
-    extra_arguments: -pred 1 -q:v 2
+    name: wyzecam_office_cam_motion
+    input: rtsp://homeassistant:8554/office-cam
+    # extra_arguments: -pred 1 -q:v 2
     changes: 10
     reset: 10
   - platform: ffmpeg_motion
-    input: -rtsp_transport http -i rtsp://lunz:asdf@192.168.1.204/live
-    name: wyzecam_front_door_motion
-    extra_arguments: -pred 1 -q:v 2
-    changes: 5
+    name: wyzecam_living_room_cam_motion
+    input: rtsp://homeassistant:8554/living-room-cam
+    # extra_arguments: -pred 1 -q:v 2
+    changes: 10
+    reset: 10
+  - platform: ffmpeg_motion
+    name: wyzecam_hallway_cam_motion
+    input: rtsp://homeassistant:8554/hallway-cam
+    # extra_arguments: -pred 1 -q:v 2
+    changes: 10
     reset: 10
     
     
@@ -449,7 +479,7 @@ binary_sensor:
     #   prob_given_false: 0.1
     #   platform: 'state'
     #   to_state: 'home'
-    - entity_id: 'device_tracker.lunziphone11_mobile' #### old device_tracker.0a8fb53497b2433297bd346d3aaffb24
+    - entity_id: 'device_tracker.lunziphone13_mobile' #### old device_tracker.0a8fb53497b2433297bd346d3aaffb24
       prob_given_true: 0.92
       prob_given_false: 0.1
       platform: 'state'
@@ -480,76 +510,92 @@ binary_sensor:
       platform: 'state'
       to_state: 'home'
 
-#D-Link Camera
+
+# ### imported into the GUI now in 2022.4.5
+
+# #D-Link Camera
 camera:
-  - platform: mjpeg #mjpeg doesn't work anymore
-    name: Laundry Camera
-    still_image_url: !secret camera_front_door_still_image_url
-    mjpeg_url: !secret camera_front_door_mjpeg_url
-    # username: admin
-    # password: hoytst
-    # authentication: basic
-    verify_ssl: false
+# ### imported into the GUI now in 2022.4.5
+# #   - platform: mjpeg #mjpeg doesn't work anymore
+# #     name: Laundry Camera
+# #     still_image_url: !secret camera_front_door_still_image_url
+# #     mjpeg_url: !secret camera_front_door_mjpeg_url
+# #     # username: admin
+# #     # password: hoytst
+# #     # authentication: basic
+# #     verify_ssl: false
+# #   - platform: generic
+# #     name: Office Camera
+# #     still_image_url: local/wyze-logo.jpg
+# #     stream_source: rtsp://lunz:asdf@192.168.1.203/live
+# # Shows device_tracker.tile_kia on a map.
+# #   - platform: generic
+# #     name: Kia Tile Map
+# #     still_image_url: https://maps.googleapis.com/maps/api/staticmap?center={{ states.device_tracker.tile_kia.attributes.latitude }},{{ states.device_tracker.tile_kia.attributes.longitude }}&zoom=17&size=500x500&maptype=roadmap&markers=color:blue%7Clabel:P%7C{{ states.device_tracker.tile_kia.attributes.latitude }},{{ states.device_tracker.tile_kia.attributes.longitude }}
+# #     limit_refetch_to_url_change: true
+# # # International Space Station Map
 #   - platform: generic
-#     name: Office Camera
-#     still_image_url: local/wyze-logo.jpg
-#     stream_source: rtsp://lunz:asdf@192.168.1.203/live
-# Shows device_tracker.tile_kia on a map.
-#   - platform: generic
-#     name: Kia Tile Map
-#     still_image_url: https://maps.googleapis.com/maps/api/staticmap?center={{ states.device_tracker.tile_kia.attributes.latitude }},{{ states.device_tracker.tile_kia.attributes.longitude }}&zoom=17&size=500x500&maptype=roadmap&markers=color:blue%7Clabel:P%7C{{ states.device_tracker.tile_kia.attributes.latitude }},{{ states.device_tracker.tile_kia.attributes.longitude }}
-#     limit_refetch_to_url_change: true
-# # International Space Station Map
-  - platform: generic
-    name: ISS
-    still_image_url: https://tyler-demo.herokuapp.com/?greyscale=False&lat={{ states.binary_sensor.iss.attributes.lat }}&lon={{ states.binary_sensor.iss.attributes.long }}&zoom=11&width=640&height=480&tile_url=http://%5Babcd%5D.tile.stamen.com/watercolor/%7Bzoom%7D/%7Bx%7D/%7By%7D.jpg 
-    ### old URL --> http://staticmap.openstreetmap.de/staticmap.php?center={{ states.binary_sensor.iss.attributes.lat }},{{ states.binary_sensor.iss.attributes.long }}&zoom=4&size=865x512&maptype=mapnik&markers={{ states.binary_sensor.iss.attributes.lat }},{{ states.binary_sensor.iss.attributes.long }},lightblue
-    limit_refetch_to_url_change: true
-  - platform: generic
-    name: LunziPhone11_painting
-    still_image_url: https://tyler-demo.herokuapp.com/?greyscale=False&lat={{ states.device_tracker.lunziphone11_mobile.attributes.latitude }}&lon={{ states.device_tracker.lunziphone11_mobile.attributes.longitude }}&zoom=11&width=640&height=480&tile_url=http://%5Babcd%5D.tile.stamen.com/watercolor/%7Bzoom%7D/%7Bx%7D/%7By%7D.jpg 
-    ### old URL --> http://staticmap.openstreetmap.de/staticmap.php?center={{ states.binary_sensor.iss.attributes.lat }},{{ states.binary_sensor.iss.attributes.long }}&zoom=4&size=865x512&maptype=mapnik&markers={{ states.binary_sensor.iss.attributes.lat }},{{ states.binary_sensor.iss.attributes.long }},lightblue
-    limit_refetch_to_url_change: true
-#   - platform: generic
-#     name: Heavenly
-#     still_image_url: https://maps.googleapis.com/maps/api/staticmap?center={{ states.binary_sensor.iss.attributes.lat }},{{ states.binary_sensor.iss.attributes.long }}&zoom=5&size=500x500&maptype=roadmap&markers=color:blue%7Clabel:P%7C{{ states.binary_sensor.iss.attributes.lat }},{{ states.binary_sensor.iss.attributes.long }}
+#     name: ISS
+#     still_image_url: https://tyler-demo.herokuapp.com/?greyscale=False&lat={{ states.binary_sensor.iss.attributes.lat }}&lon={{ states.binary_sensor.iss.attributes.long }}&zoom=11&width=640&height=480&tile_url=http://%5Babcd%5D.tile.stamen.com/watercolor/%7Bzoom%7D/%7Bx%7D/%7By%7D.jpg 
+#     ### old URL --> http://staticmap.openstreetmap.de/staticmap.php?center={{ states.binary_sensor.iss.attributes.lat }},{{ states.binary_sensor.iss.attributes.long }}&zoom=4&size=865x512&maptype=mapnik&markers={{ states.binary_sensor.iss.attributes.lat }},{{ states.binary_sensor.iss.attributes.long }},lightblue
 #     limit_refetch_to_url_change: true
 #   - platform: generic
-#     name: Kirkwood
-#     still_image_url: https://maps.googleapis.com/maps/api/staticmap?center={{ states.binary_sensor.iss.attributes.lat }},{{ states.binary_sensor.iss.attributes.long }}&zoom=5&size=500x500&maptype=roadmap&markers=color:blue%7Clabel:P%7C{{ states.binary_sensor.iss.attributes.lat }},{{ states.binary_sensor.iss.attributes.long }}
+#     name: LunziPhone13_painting
+#     still_image_url: https://tyler-demo.herokuapp.com/?greyscale=False&lat={{ states.device_tracker.lunziphone13_mobile.attributes.latitude }}&lon={{ states.device_tracker.lunziphone13_mobile.attributes.longitude }}&zoom=11&width=640&height=480&tile_url=http://%5Babcd%5D.tile.stamen.com/watercolor/%7Bzoom%7D/%7Bx%7D/%7By%7D.jpg 
+#     ### old URL --> http://staticmap.openstreetmap.de/staticmap.php?center={{ states.binary_sensor.iss.attributes.lat }},{{ states.binary_sensor.iss.attributes.long }}&zoom=4&size=865x512&maptype=mapnik&markers={{ states.binary_sensor.iss.attributes.lat }},{{ states.binary_sensor.iss.attributes.long }},lightblue
 #     limit_refetch_to_url_change: true
+# #   - platform: generic
+# #     name: Heavenly
+# #     still_image_url: https://maps.googleapis.com/maps/api/staticmap?center={{ states.binary_sensor.iss.attributes.lat }},{{ states.binary_sensor.iss.attributes.long }}&zoom=5&size=500x500&maptype=roadmap&markers=color:blue%7Clabel:P%7C{{ states.binary_sensor.iss.attributes.lat }},{{ states.binary_sensor.iss.attributes.long }}
+# #     limit_refetch_to_url_change: true
+# #   - platform: generic
+# #     name: Kirkwood
+# #     still_image_url: https://maps.googleapis.com/maps/api/staticmap?center={{ states.binary_sensor.iss.attributes.lat }},{{ states.binary_sensor.iss.attributes.long }}&zoom=5&size=500x500&maptype=roadmap&markers=color:blue%7Clabel:P%7C{{ states.binary_sensor.iss.attributes.lat }},{{ states.binary_sensor.iss.attributes.long }}
+# #     limit_refetch_to_url_change: true
+# #   - platform: generic
+# #     name: Northstar
+# #     still_image_url: https://maps.googleapis.com/maps/api/staticmap?center={{ states.binary_sensor.iss.attributes.lat }},{{ states.binary_sensor.iss.attributes.long }}&zoom=5&size=500x500&maptype=roadmap&markers=color:blue%7Clabel:P%7C{{ states.binary_sensor.iss.attributes.lat }},{{ states.binary_sensor.iss.attributes.long }}
+# #     limit_refetch_to_url_change: true
 #   - platform: generic
-#     name: Northstar
-#     still_image_url: https://maps.googleapis.com/maps/api/staticmap?center={{ states.binary_sensor.iss.attributes.lat }},{{ states.binary_sensor.iss.attributes.long }}&zoom=5&size=500x500&maptype=roadmap&markers=color:blue%7Clabel:P%7C{{ states.binary_sensor.iss.attributes.lat }},{{ states.binary_sensor.iss.attributes.long }}
-#     limit_refetch_to_url_change: true
-  - platform: generic
-    still_image_url: 'https://radblast.wunderground.com/cgi-bin/radar/WUNIDS_map?station=MUX&brand=wui&num=6&delay=15&type=NTP&frame=0&scale=1.000&noclutter=0&showstorms=0&mapx=400&mapy=240&centerx=400&centery=240&transx=0&transy=0&showlabels=1&severe=0&rainsnow=1&lightning=0&smooth=0&rand=25766028&lat=0&lon=0&label=you'
-    name: Doppler - Bay Area
-    # limit_refetch_to_url_change: true
-  - platform: generic
-    still_image_url: 'https://radblast.wunderground.com/cgi-bin/radar/WUNIDS_map?station=RGX&brand=wui&num=6&delay=15&type=N0R&frame=0&scale=1.000&noclutter=0&showstorms=0&mapx=400&mapy=240&centerx=400&centery=240&transx=0&transy=0&showlabels=1&severe=0&rainsnow=1&lightning=0&smooth=0&rand=25766055&lat=0&lon=0&label=you'
-    name: Doppler - Tahoe
-    # limit_refetch_to_url_change: true
-  - platform: generic
-    still_image_url: https://home.michaellunzer.com/lovelace/2
-    name: camera - lovelace
-  - platform: push
-    name: MotionEye Laundry
-    buffer: 3
-    timeout: 5
-    webhook_id: WH_motion_laundry01
+#     still_image_url: 'https://radblast.wunderground.com/cgi-bin/radar/WUNIDS_map?station=MUX&brand=wui&num=6&delay=15&type=NTP&frame=0&scale=1.000&noclutter=0&showstorms=0&mapx=400&mapy=240&centerx=400&centery=240&transx=0&transy=0&showlabels=1&severe=0&rainsnow=1&lightning=0&smooth=0&rand=25766028&lat=0&lon=0&label=you'
+#     name: Doppler - Bay Area
+#     # limit_refetch_to_url_change: true
+#   - platform: generic
+#     still_image_url: 'https://radblast.wunderground.com/cgi-bin/radar/WUNIDS_map?station=RGX&brand=wui&num=6&delay=15&type=N0R&frame=0&scale=1.000&noclutter=0&showstorms=0&mapx=400&mapy=240&centerx=400&centery=240&transx=0&transy=0&showlabels=1&severe=0&rainsnow=1&lightning=0&smooth=0&rand=25766055&lat=0&lon=0&label=you'
+#     name: Doppler - Tahoe
+#     # limit_refetch_to_url_change: true
+#   - platform: generic
+#     still_image_url: https://home.michaellunzer.com/lovelace/2
+#     name: camera - lovelace
+#   - platform: push
+#     name: MotionEye Laundry
+#     buffer: 3
+#     timeout: 5
+#     webhook_id: WH_motion_laundry01
+#   - platform: ffmpeg
+#     name: wyzecam_office
+#     input: -rtsp_transport http -i rtsp://lunz:asdf@192.168.1.203/live
+#     extra_arguments: -pred 1 -q:v 2
+#     ## front door camera
+#   - platform: ffmpeg
+#     name: wyzecam_front_door
+#     input: -rtsp_transport http -i rtsp://lunz:asdf@192.168.1.204/live
+#     extra_arguments: -pred 1 -q:v 2
   - platform: ffmpeg
-    name: wyzecam_office_motion
-    input: -rtsp_transport http -i rtsp://lunz:asdf@192.168.1.203/live
-    extra_arguments: -pred 1 -q:v 2
-    ## front door camera
+    name: wyzecam_office_cam
+    input: rtsp://homeassistant:8554/office-cam
+    # extra_arguments: -pred 1 -q:v 2
   - platform: ffmpeg
-    name: wyzecam_front_door_motion
-    input: -rtsp_transport http -i rtsp://lunz:asdf@192.168.1.204/live
-    extra_arguments: -pred 1 -q:v 2
+    name: wyzecam_living_room_cam
+    input: rtsp://homeassistant:8554/living-room-cam
+    # extra_arguments: -pred 1 -q:v 2
+  - platform: ffmpeg
+    name: wyzecam_hallway_cam
+    input: rtsp://homeassistant:8554/hallway-cam
+    # extra_arguments: -pred 1 -q:v 2
 
 
-
+#rtsp://homeassistant:8554/hallway-cam
 
 
 ### Depreciated MQTT config ###
@@ -579,7 +625,16 @@ camera:
 #     optimistic: false
 #     value_template: '{{ value.x }}'
 
-
+panel_custom:
+  - name: server_control
+    sidebar_title: Server Control
+    sidebar_icon: mdi:cog-transfer
+    js_url: /api/hassio/app/entrypoint.js
+    url_path: "config/system"
+    embed_iframe: true
+    require_admin: true
+    config:
+      ingress: core_configurator
 
 panel_iframe:
   configurator:
@@ -729,24 +784,25 @@ media_player:
 ###### Spotify Integration #################
 ############################################
 # Moved from Media Player in 0.105
+# removed yaml config in 2022.8.0
   
-spotify:
-  client_id: !secret spotify_client_id
-  client_secret: !secret spotify_client_secret
+# spotify:
+#   client_id: !secret spotify_client_id
+#   client_secret: !secret spotify_client_secret
   
 ############################################
 ###### WebOStv LG TV Living Room ###########
 ############################################
-  
-webostv:
-    name: Living Room TV
-    host: 192.168.1.112
-    #other settings
-    turn_on_action:
-        service: wake_on_lan.send_magic_packet
-        data:
-          mac: "60:AB:14:62:F1:EE"
-    # standby_connection: true #### not needed after 0.105.x
+#   #setup with GUI in 2022.4.5
+# webostv:
+#     name: Living Room TV
+#     host: 192.168.1.112
+#     #other settings
+#     turn_on_action:
+#         service: wake_on_lan.send_magic_packet
+#         data:
+#           mac: "60:AB:14:62:F1:EE"
+#     # standby_connection: true #### not needed after 0.105.x
   
     
 # remote:
@@ -909,6 +965,7 @@ device_tracker:
     hosts:
       lunziphone_ping: 192.168.1.8
       lunziphone11_ping: 192.168.1.9
+      lunziphone13_ping: 192.168.1.13
       lunzipad_ping: 192.168.1.239
       10lunz_ping: 192.168.1.144
     #   MadisongsiPhone_ping: 192.168.1.120
@@ -921,6 +978,7 @@ device_tracker:
     hosts:
       lunziphone_iphonedetect: 192.168.1.8
       lunziphone11_iphonedetect: 192.168.1.9
+      lunziphone13_iphonedetect: 192.168.1.13
         # icon:
         # mac:
         # name: hostname1
@@ -963,10 +1021,37 @@ image_processing:
   - platform: doods
     url: "http://192.168.1.2:8080"
     detector: default
+    file_out:
+      - "/tmp/{{ camera_entity.split('.')[1] }}_latest.jpg"
     source:
-      - entity_id: camera.laundry_camera
-      - entity_id: camera.wyzecam_front_door_camera
-      - entity_id: camera.wyzecam_office_camera
+    #   - entity_id: camera.laundry_camera
+    #   - entity_id: camera.wyzecam_front_door_camera
+      - entity_id: camera.wyzecam_office_cam
+      - entity_id: camera.wyzecam_living_room_cam
+      - entity_id: camera.wyzecam_hallway_cam
+    confidence: 50
+    # area:
+      # All detections must be inside this area to trigger
+    #   top: 0.1
+      # If true the entire detection must be inside the box
+      # If false if any part of the detection is in the box it will trigger
+      # defaults to true for legacy compatibility
+    #   contains: true
+    labels:
+    #   - name: person
+    #     confidence: 40
+        # area:
+        #   # Exclude top 10% of image
+        #   top: 0.1
+        #   # Exclude right 15% of image
+        #   right: 0.85
+          # If true the entire detection must be inside the area
+          # If false, if any part of the detection is in the box it will trigger
+          # defaults to true for legacy compatibility
+        #   contains: false
+      - car
+      - truck
+      - person
 
 
 ####################################
@@ -1006,10 +1091,11 @@ light:
 
 # not needed anymore. delete in 0.93
 # this is for the "new/official" Tuya component -- however it relies on 3rd party external servers.
-tuya:
-  username: !secret tuya_username
-  password: !secret tuya_password
-  country_code: 1
+### moved config to GUI 
+# tuya:
+#   username: !secret tuya_username
+#   password: !secret tuya_password
+#   country_code: 1
 #   platform: tuya #jinvoo_smart
 
 sonoff:
@@ -1067,7 +1153,8 @@ switch:
     mode: rgb
     transition: 10
     interval: 60
-### Circadian Lighting
+    #################################################### commented out for testing 2021.7.2
+# ### Circadian Lighting
   - platform: circadian_lighting
     lights_ct:
       - light.bedroom
@@ -1075,6 +1162,8 @@ switch:
     #   - light.ring_light
       - light.headboard_light
     #   - light.hallway
+    lights_brightness:
+      - light.ble01_lcd_display_backlight
     min_brightness: 20
 ### qBittorrent alternative speed custom compoent
   - platform: qbittorrent_alternative_speed
@@ -1111,6 +1200,7 @@ input_boolean:
     name: michael_home
   michael_morning_alarm:
     name: "Michael Morning Alarm"
+
 
 
 ####################################
@@ -1288,9 +1378,10 @@ iqvia:
 ####################################
 ##### apcupsd UPS Power Backup #####
 ####################################
+# This is not being used currently
 
-apcupsd:
-  host: a722577e-apcupsd
+# apcupsd:
+#   host: a722577e-apcupsd
 
 
 ####################################
@@ -1369,41 +1460,53 @@ spotcast:
 ####################################
 ######## Google Calendar ###########
 ####################################
-  
-google:
-  client_id: !secret gcal_client_id
-  client_secret: !secret gcal_client_secret
+  # removed yaml config in 2022.8.0
+
+# google:
+#   client_id: !secret gcal_client_id
+#   client_secret: !secret gcal_client_secret
   
   
 ####################################
 ######## Anniversary ###############
 ####################################
+### add these in the GUI now!!
 
 anniversaries:
   sensors:
   - name: Christmas
-    date: '2020-12-25'
-  - name: "ski_lease_starts_anniversary"
+    date: '2021-12-25'
+  - name: "ski_season_starts_anniversary"
     date: '2020-12-1'
-  - name: "ski_lease_ends_anniversary"
+  - name: "ski_season_ends_anniversary"
     date: '2021-5-1'
   - name: "Laura_birthday_anniversary"
-    date: '2020-3-5'
+    date: '1992-3-5'
+    count_up: false
   - name: "Michael_birthday_anniversary"
-    date: '2020-4-2'
+    date: '1991-4-2'
+    count_up: false
   - name: "laura_michael_anniversary"
     date: '2018-7-7'
+    count_up: false
   - name: "twilio_work_anniversary"
     date: '2020-9-20'
+    count_up: false
+  - name: "postman_work_anniversary"
+    date: '2022-7-5'
+    count_up: false
   - name: "Pandemic Started"
     date: '2020-3-9'
+    count_up: true
+  - name: "Gravy_birthday_anniversary"
+    date: '2020-8-20'
+    count_up: false
     
 ############################################################
 ######## Circadian Lighting Custom Component ###############
 ############################################################
 
 circadian_lighting:
-
 
 
 ############################################################
@@ -1456,12 +1559,12 @@ readme:
 ############################################################
 ######## NextCloud  ########################################
 ############################################################
+### nextcloud is broken so I'm removing it for now
 
-
-nextcloud:
-  url: http://omv5.local:8080/
-  username: !secret nextcloud_username
-  password: !secret nextcloud_password
+# nextcloud:
+#   url: http://omv5.local:8080/
+#   username: !secret nextcloud_username
+#   password: !secret nextcloud_password
   
   
  
@@ -1490,4 +1593,70 @@ zoom:
 
 
 
+
+####################################################################################################################
+######## Helium - Custom Component - Utility Meter to show HNT added to wallet over time ###########################
+####################################################################################################################
+
+utility_meter:
+  helium_wallet_today:
+    source: sensor.helium_wallet_131DzR51J16QetvhKpp55xgoZskFaZRpmPa45eUQPvAXTbSumCo
+    cycle: daily
+
+  helium_wallet_weekly:
+    source: sensor.helium_wallet_131DzR51J16QetvhKpp55xgoZskFaZRpmPa45eUQPvAXTbSumCo
+    cycle: weekly
+
+  helium_wallet_monthly:
+    source: sensor.helium_wallet_131DzR51J16QetvhKpp55xgoZskFaZRpmPa45eUQPvAXTbSumCo
+    cycle: monthly
+
+
+############################################################################
+######## Folding@Home Control - Custom Component ###########################
+############################################################################
+
+foldingathomecontrol:
+  - address: "192.168.1.2"
+    port: 36330
+    # password: "password"
+  - address: "192.168.1.209"
+    port: 36330
+    # password: "password"
+  - address: "192.168.1.144"
+    port: 36330
+    # password: "password"
+    
+    
+    
+    
+    
+    
+    
+# ############################################################################
+# ######## BART API REST PLATFORM ############################################
+# ############################################################################
+    
+# rest:
+#   - authentication: basic
+#     # username: "admin"
+#     # password: "password"
+#     scan_interval: 30
+#     resource: https://api.bart.gov/api/etd.aspx?orig=24TH&cmd=etd&key=MW9S-E7SL-26DU-VV8V&dir=s&json=y
+#     sensor:
+#       - name: "BART 24TH Street Station"
+#       # $.store.book[*].author          ..*         .estimate[0].minutes[0]
+#         json_attributes_path: "$.root.station.etd[*]"
+#         value_template: "{{ value_json['destination']['estimate']['minutes'] }}"
+#         json_attributes:
+#           - "destination"
+#           - "estimate[*].minutes"
+#           - "estimate[*].platform"
+#           - "estimate[*].direction"
+#           - "estimate[*].color"
+          
+          
+          
+          
+            
 

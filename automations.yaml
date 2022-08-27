@@ -51,14 +51,13 @@
       name: dark_mint
     service: frontend.set_theme
 - id: '1543992499281'
-  alias: SFTP Daily Backup at 4am
+  alias: SFTP Daily Backup at 4am - broken
   trigger:
-  - at: '4:00:00'
+  - at: 04:00:00
     platform: time
   condition: []
   action:
-  - data:
-      addon: ce20243c_remote_backup
+  - data: {}
     service: hassio.addon_start
 - id: '1550625961430'
   alias: Upload Snapshot to Google Drive at 430am
@@ -179,7 +178,7 @@
 - id: '1571872974980'
   alias: Zerver Low Disk Space
   trigger:
-  - above: '90'
+  - above: '95'
     entity_id: sensor.disk_use_percent_home
     platform: numeric_state
   condition:
@@ -187,10 +186,10 @@
     after_offset: '2'
     condition: sun
   action:
-  - service: notify.mobile_app_lunziphone11
+  - service: notify.mobile_app_lunziphone13
     data:
-      title: Out of Space!
-      message: Oh wow, you are out of space on Home Assistant!
+      title: Out of Disk Space
+      message: Hey you're running low on disk space
   mode: single
 - id: '1579081800469'
   alias: Turn off bright lights at 09:30pm
@@ -416,7 +415,7 @@
   - platform: state
     from: 'off'
     to: 'on'
-    entity_id: binary_sensor.mlunzer_twilio_mac_lunzpodz
+    entity_id: binary_sensor.mlunzer_fvfd7317mnhy_macbook_air_microphone
   condition: []
   action:
   - type: turn_on
@@ -432,7 +431,7 @@
   - platform: state
     from: 'on'
     to: 'off'
-    entity_id: binary_sensor.mlunzer_twilio_mac_lunzpodz
+    entity_id: binary_sensor.mlunzer_fvfd7317mnhy_macbook_air_microphone
   condition: []
   action:
   - type: turn_off
@@ -441,7 +440,7 @@
     domain: light
   mode: single
 - id: '1603772607768'
-  alias: Handrail Christmas Lights Automation
+  alias: Christmas Lights Automation
   description: ''
   trigger:
   - platform: time
@@ -451,6 +450,11 @@
   - condition: state
     entity_id: switch.sonoff_basic01_relay
     state: 'on'
+    for:
+      hours: 8
+      minutes: 0
+      seconds: 0
+      milliseconds: 0
   mode: single
 - id: '1621920723607'
   alias: Garbage Reminder
@@ -467,3 +471,405 @@
       garbage_sensor_4: sensor.10_lunz_hdd_total_free_space_e
       reminder_message: The garbage will be picked up tomorrow!
       day_offset: '1'
+- id: '1635123413145'
+  alias: Gravy - Cat Feeder
+  description: ''
+  trigger:
+  - platform: time
+    at: input_datetime.cat_feeder_time_helper1
+  - platform: time
+    at: input_datetime.cat_feeder_time_helper2
+  - platform: time
+    at: input_datetime.cat_feeder_time_helper3
+  condition: []
+  action:
+  - service: switch.turn_on
+    target:
+      entity_id:
+      - switch.sonoff_basic02_relay
+      device_id: af8d2dbaf5174136b70cd9c5cc5c1b6d
+    data: {}
+  - delay:
+      hours: 0
+      minutes: 2
+      seconds: 0
+      milliseconds: 0
+  - service: switch.turn_off
+    target:
+      entity_id: switch.sonoff_basic02_relay
+      device_id: af8d2dbaf5174136b70cd9c5cc5c1b6d
+    data: {}
+  mode: single
+- id: '1635401746672'
+  alias: Tag test tag is scanned
+  description: ''
+  trigger:
+  - platform: tag
+    tag_id: f64b5612-d1ef-4591-877d-d3e25abdad7f
+  condition: []
+  action:
+  - type: turn_on
+    device_id: af8d2dbaf5174136b70cd9c5cc5c1b6d
+    entity_id: light.sn1_light
+    domain: light
+    brightness_pct: 98
+  mode: single
+- id: '1638343035655'
+  alias: Cast to Google Hub
+  description: ''
+  use_blueprint:
+    path: kind3r/cast-and-re-cast-a-lovelace-view-to-a-google-hub.yaml
+    input:
+      dashboard: lovelace
+      player: media_player.nesthub1707
+      view: livingroom
+- id: '1642483787871'
+  alias: Wake-up light alarm with sunrise effect
+  description: ''
+  use_blueprint:
+    path: sbyx/wake-up-light-alarm-with-sunrise-effect.yaml
+    input:
+      manual_time: 07:45:00
+      light_entity: light.wled
+      start_brightness: 5
+      sunrise_duration: 30
+      post_sunrise_actions:
+      - service: rest_command.twilio_alarm
+        data: {}
+      - type: turn_on
+        device_id: 6d1b7cec790240ff93aa82d46e856858
+        entity_id: switch.stereo_relay
+        domain: switch
+      - delay:
+          hours: 0
+          minutes: 1
+          seconds: 0
+          milliseconds: 0
+      - service: media_player.play_media
+        target:
+          entity_id:
+          - media_player.master_bedroom_echo
+        data:
+          media_content_id: https://open.spotify.com/playlist/4kjmj0mI47O3HdlQuK8kN5?si=D9BM9cw7RlSvFWAslFGKfA
+          media_content_type: playlist
+      - service: script.bluetooth_keyboard_startup_config
+        data: {}
+      - service: script.1648852468318
+        data: {}
+      check_entity: binary_sensor.workday_sensor
+- id: '1643493797410'
+  alias: Living Room Evening Automation
+  description: turn on lights at sundown
+  trigger:
+  - platform: sun
+    event: sunset
+    offset: '0'
+  condition: []
+  action:
+  - scene: scene.living_room_scene
+  mode: single
+- id: '1643792367274'
+  alias: Heating Pad - turn off heating pad after 2 hours
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: switch.powermonitor_plug02
+    from: 'off'
+    to: 'on'
+    for:
+      hours: 2
+      minutes: 0
+      seconds: 0
+  condition: []
+  action:
+  - service: switch.turn_off
+    target:
+      entity_id: switch.powermonitor_plug02
+  mode: single
+- id: '1649497774027'
+  alias: Update notifications
+  description: ''
+  use_blueprint:
+    path: mdegat01/update_notifications.yaml
+    input:
+      reminder_hours: None
+      update_entities:
+      - update.home_assistant_core_update
+      - update.home_assistant_operating_system_update
+      - update.home_assistant_supervisor_update
+      mobile_app_device: dde0543a442947b9844de84746c7294b
+      send_to_ha: true
+      take_backup: true
+      run_config_check: true
+- id: '1650262192614'
+  alias: Stereo - turn off Stereo after 2 minutes
+  description: ''
+  trigger:
+  - platform: state
+    from: 'off'
+    to: 'on'
+    for:
+      hours: 0
+      minutes: 2
+      seconds: 0
+    entity_id:
+    - switch.stereo_relay
+  condition:
+  - condition: state
+    entity_id: media_player.master_bedroom_echo
+    state: standby
+    for:
+      hours: 0
+      minutes: 2
+      seconds: 0
+    attribute: media_content_type
+  - condition: or
+    conditions:
+    - condition: state
+      entity_id: media_player.master_bedroom_echo
+      state: paused
+      attribute: media_content_type
+      for:
+        hours: 0
+        minutes: 2
+        seconds: 0
+  action:
+  - service: switch.turn_off
+    data: {}
+    target:
+      entity_id: switch.stereo_relay
+  mode: single
+- id: '1650582183741'
+  alias: Turn On Living Room TV with WakeOnLan
+  description: ''
+  trigger:
+  - platform: webostv.turn_on
+    entity_id: media_player.living_room
+  condition: []
+  action:
+  - service: wake_on_lan.send_magic_packet
+    data:
+      mac: 60:AB:14:62:F1:EE
+  mode: single
+- id: '1650583416587'
+  alias: Gravy - Play Netflix for Gravy
+  description: ''
+  trigger:
+  - platform: sun
+    event: sunset
+    offset: 0
+  condition: []
+  action:
+  - service: wake_on_lan.send_magic_packet
+    data:
+      mac: 60:AB:14:62:F1:EE
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 20
+      milliseconds: 0
+  - service: webostv.button
+    data:
+      entity_id: media_player.living_room
+      button: NETFLIX
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 12
+      milliseconds: 0
+  - service: webostv.button
+    data:
+      entity_id: media_player.living_room
+      button: DOWN
+  - service: webostv.button
+    data:
+      entity_id: media_player.living_room
+      button: ENTER
+  - service: webostv.button
+    data:
+      entity_id: media_player.living_room
+      button: ENTER
+  mode: single
+- id: '1650590978795'
+  alias: Gravy - Turn off TV at 9:30pm
+  description: ''
+  trigger:
+  - platform: time
+    at: '21:30:00'
+  condition: []
+  action:
+  - condition: state
+    entity_id: media_player.living_room
+    state: 'off'
+  mode: single
+- id: '1651469080707'
+  alias: Kindle Screensaver Battery Level
+  description: ''
+  use_blueprint:
+    path: sibbl/battery_sensor_blueprint.yaml
+    input:
+      battery_level: input_number.kindle_battery_level
+      battery_charging: input_boolean.kindle_battery_charging
+- id: '1652510669988'
+  alias: Goodnight at Midnight
+  description: ''
+  trigger:
+  - platform: time
+    at: 00:00:00
+  condition: []
+  action:
+  - service: scene.turn_on
+    target:
+      entity_id: scene.bedtime
+    metadata: {}
+  mode: single
+- id: '1655594474586'
+  alias: Gravy - Litter box 95% full alert
+  description: ''
+  trigger: []
+  condition:
+  - type: is_value
+    condition: device
+    device_id: 5da498e6450cbaec1777426a31a57f60
+    entity_id: sensor.my_litter_robot_waste_drawer
+    domain: sensor
+    above: 90
+  action:
+  - service: notify.mobile_app_lunziphone13
+    data:
+      title: ⚠️ Litter Bot is 95% Full ⚠️
+      message: Please take it out soon!
+      data:
+        actions:
+        - action: RESET_LITERBOT
+          title: I took it out the litter
+  - wait_for_trigger:
+    - platform: event
+      event_type: mobile_app_notification_action
+      event_data:
+        action: RESET_LITERBOT
+    timeout: 0:30
+    continue_on_timeout: false
+  - service: litterrobot.reset_waste_drawer
+    data: {}
+    target:
+      entity_id: vacuum.my_litter_robot_litter_box
+  - service: notify.mobile_app_lunziphone13
+    data:
+      message: Litter Robot was reset!
+  mode: single
+- id: '1657434683289'
+  alias: Gravy - Turn off Super Feeder after 5 minutes
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - switch.sonoff_basic02_relay
+    from: 'off'
+    to: 'on'
+    for:
+      hours: 0
+      minutes: 7
+      seconds: 0
+  condition: []
+  action:
+  - service: switch.turn_off
+    data: {}
+    target:
+      entity_id: switch.sonoff_basic02_relay
+  mode: single
+- id: '1659419220209'
+  alias: Tag Welcome-Card is scanned
+  description: ''
+  trigger:
+  - platform: tag
+    tag_id: B9-B1-C5-49
+  condition: []
+  action:
+  - service: light.turn_on
+    data:
+      rgb_color:
+      - 255
+      - 0
+      - 0
+      transition: 0
+      brightness: 255
+    target:
+      entity_id: light.controller_rgb_ir_8d4333
+  mode: single
+- id: '1659425113447'
+  alias: Tag Viceroy1-Card is scanned
+  description: ''
+  trigger:
+  - platform: tag
+    tag_id: 04-31-B3-82-AF-6B-81
+  condition: []
+  action:
+  - service: light.turn_on
+    data:
+      rgb_color:
+      - 0
+      - 255
+      - 0
+      transition: 0
+      brightness: 255
+    target:
+      entity_id: light.controller_rgb_ir_8d4333
+  mode: single
+- id: '1659425267556'
+  alias: Tag Viceroy2-Card is scanned
+  description: ''
+  trigger:
+  - platform: tag
+    tag_id: 04-92-B3-82-AF-6B-80
+  condition: []
+  action:
+  - service: light.turn_on
+    data:
+      rgb_color:
+      - 0
+      - 0
+      - 255
+      transition: 0
+      brightness: 255
+    target:
+      entity_id: light.controller_rgb_ir_8d4333
+  mode: single
+- id: '1659513702872'
+  alias: Tag Viceroy3-Card is scanned
+  description: ''
+  trigger:
+  - platform: tag
+    tag_id: 04-E2-B1-82-AF-6B-80
+  condition: []
+  action:
+  - service: light.turn_on
+    data:
+      rgb_color:
+      - 255
+      - 37
+      - 0
+      transition: 0
+      brightness: 255
+    target:
+      entity_id: light.controller_rgb_ir_8d4333
+  mode: single
+- id: '1660877710458'
+  alias: Restore Samba Backup sensor on startup
+  description: ''
+  use_blueprint:
+    path: thomasmauerer/restore_samba_backup_sensor.yaml
+    input:
+      addon: 15d21743_samba_backup
+- id: '1661470099049'
+  alias: Purge MariaDB
+  description: ''
+  trigger:
+  - platform: time
+    at: '22:20:00'
+  condition: []
+  action:
+  - service: recorder.purge
+    data:
+      keep_days: 1
+  mode: single

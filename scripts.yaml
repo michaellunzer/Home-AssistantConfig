@@ -31,3 +31,81 @@
       transfer_playback: true
     entity_id: media_player.chromecastaudio9394
     service: spotcast.start
+'1638344768314':
+  sequence:
+  - service: media_player.volume_mute
+    data:
+      is_volume_muted: true
+      entity_id: media_player.nesthub1707
+  - service: cast.show_lovelace_view
+    data:
+      dashboard_path: lovelace
+      entity_id: media_player.nesthub1707
+      view_path: '0'
+  - delay:
+      seconds: 10
+  - service: media_player.volume_mute
+    data:
+      is_volume_muted: false
+      entity_id: media_player.nesthub1707
+  mode: single
+  alias: Cast to Nest Hub
+  icon: mdi:cast-connected
+'1648852468318':
+  alias: Log into Work Computer
+  sequence:
+  - service: esphome.blekeyboard_send
+    data:
+      delay_ms: 14
+      message: KEY_LEFT_ARROW
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 3
+      milliseconds: 0
+  - service: esphome.blekeyboard_send
+    data:
+      message: Gravythecat88!twilio
+      delay_ms: 14
+  - service: esphome.blekeyboard_send
+    data:
+      delay_ms: 14
+      message: KEY_RETURN
+  mode: single
+  icon: mdi:account-check
+bluetooth_keyboard_startup_config:
+  alias: Bluetooth Keyboard Startup Config
+  sequence:
+  - service: esphome.blekeyboard_send
+    data:
+      message: z
+      delay_ms: 14
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+      milliseconds: 0
+  - service: esphome.blekeyboard_send
+    data:
+      message: /
+      delay_ms: 14
+  mode: single
+  icon: mdi:keyboard
+slack_postman_focus_time:
+  alias: Slack Postman Focus Time
+  sequence:
+  - service: slack_user.set_status
+    data:
+      entity_id: sensor.slack_postman_michael_lunzer
+      status_text: Focus Time
+      status_emoji: ':bulb:'
+  mode: single
+  icon: mdi:slack
+slack_postman_clear_status:
+  alias: Slack Postman Clear Status
+  sequence:
+  - service: slack_user.clear_status
+    data:
+      entity_id: sensor.slack_postman_michael_lunzer
+  mode: single
+  icon: mdi:slack

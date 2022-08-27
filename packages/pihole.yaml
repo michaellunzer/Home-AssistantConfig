@@ -18,17 +18,19 @@ homeassistant:
       friendly_name: Unique Domains
       icon: mdi:approval
 
-pi_hole:
-#   - host: 'localhost:4865' # 4865 is the port on the container
-#     # name: 'pihole_docker'
+### moved configuration to GUI
+
+# pi_hole:
+# #   - host: 'localhost:4865' # 4865 is the port on the container
+# #     # name: 'pihole_docker'
+# #     ssl: false
+# #     verify_ssl: false
+# #     # api: !secret pihole_docker_api
+#   - host: '192.168.1.17' # 4865 is the port on the container
+#     name: 'pihole_pogoplug'
+#     # api: !secret pihole_pogoplug_api
 #     ssl: false
 #     verify_ssl: false
-#     # api: !secret pihole_docker_api
-  - host: '192.168.1.17' # 4865 is the port on the container
-    name: 'pihole_pogoplug'
-    # api: !secret pihole_pogoplug_api
-    ssl: false
-    verify_ssl: false
 
 # This config is depreciated! 
 # sensor:
