@@ -7,6 +7,7 @@
 !esphome/*.yaml
 !.gitignore
 !README.md
+google_calendar.yaml
 secrets.yaml
 known_devices.yaml
 home-assistant.log
