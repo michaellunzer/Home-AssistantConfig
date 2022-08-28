@@ -992,18 +992,13 @@ device_tracker:
 #   picture:
 #   track: true
       lunzipad_iphonedetect: 192.168.1.239
-    #   ahmads_iphone_iphonedetect: 192.168.1.46
-    #   MadisongsiPhone_iphonedetect: 192.168.1.120
-    #   KatieFodsiPhone: 192.168.1.91
-      LaurenBdsiPhone_iphonedetect: 192.168.1.125
-    #   AD-iPhone-6_iphonedetect: 192.168.1.162
       laura_iphonedetect: 192.168.1.118
   ### traccar
   - platform: traccar
     host: 192.168.1.2
     port: 18782
-    username: admin
-    password: admin
+    username: !secret traccar_username
+    password: !secret traccar_password
 
 
 # duckDNS
